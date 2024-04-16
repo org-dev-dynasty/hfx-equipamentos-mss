@@ -1,27 +1,14 @@
-import { STATE, toEnum } from '../enums/state_enum'
+import bcrypt from 'bcryptjs'
 import { EntityError } from '../../helpers/errors/domain_errors'
 
 export type UserProps = {
-  id: number;
-  name: string;
-  email: string;
-  state?: STATE;
-}
-
-export type JsonProps = {
-  user_id: number;
-  name: string;
-  email: string;
-  state?: string;
+  name: string
+  email: string
+  password: string
 }
 
 export class User {
-  constructor (public props: UserProps) {
-    if (!User.validateId(props.id as number)) {
-      throw new EntityError('props.id')
-    }
-    this.props.id = props.id
-
+  constructor(public props: UserProps) {
     if (!User.validateName(props.name)) {
       throw new EntityError('props.name')
     }
@@ -32,22 +19,12 @@ export class User {
     }
     this.props.email = props.email
 
-    if (!User.validateState(props.state as STATE)) {
-      throw new EntityError('props.state')
+    if (!User.validatePassword(props.password)) {
+      throw new EntityError('props.password')
     }
-    this.props.state = props.state
 
-  }
-
-  get id() {
-    return this.props.id
-  }
-
-  set setId(id: number) {
-    if (!User.validateId(id)) {
-      throw new EntityError('props.id')
-    }
-    this.props.id = id
+    const hashedPassword = bcrypt.hashSync(props.password, 10)
+    this.props.password = hashedPassword
   }
 
   get name() {
@@ -72,48 +49,29 @@ export class User {
     this.props.email = email
   }
 
-  get state() {
-    return this.props.state
+  get password() {
+    return this.props.password
   }
 
-  set setState(state: STATE) {
-    if (!User.validateState(state)) {
-      throw new EntityError('props.state')
+  set setPassword(password: string) {
+    if (!User.validatePassword(password)) {
+      throw new EntityError('props.password')
     }
-    this.props.state = state
-  }
-    
-  static fromJSON(json: JsonProps) {
-    return new User({
-      id: json.user_id,
-      name: json.name,
-      email: json.email,
-      state: toEnum(json.state as string)
-    })
+    this.props.password = password
   }
 
   toJSON() {
     return {
-      id: this.id,
       name: this.name,
       email: this.email,
-      state: this.state
+      password: this.password,
     }
-  }
-
-  static validateId(id: number): boolean {
-    if (id == null) {
-      return false
-    } else if (typeof(id) != 'number') {
-      return false
-    }
-    return true
   }
 
   static validateName(name: string): boolean {
     if (name == null) {
       return false
-    } else if (typeof(name) != 'string') {
+    } else if (typeof name !== 'string') {
       return false
     } else if (name.length < 3) {
       return false
@@ -122,12 +80,12 @@ export class User {
   }
 
   static validateEmail(email: string): boolean {
-    const regexp = '(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$)'
+    const regexp = '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$'
 
     if (email == null) {
       return false
     }
-    if (typeof(email) != 'string') {
+    if (typeof email !== 'string') {
       return false
     }
     if (!email.match(regexp)) {
@@ -136,14 +94,16 @@ export class User {
     return true
   }
 
-  static validateState(state: STATE): boolean {
-    if (state == null) {
+  static validatePassword(password: string): boolean {
+    if (password == null) {
       return false
-    } 
-    if (Object.values(STATE).includes(state) == false) {
+    } else if (typeof password !== 'string') {
+      return false
+    } else if (password.length < 6) {
+      return false
+    } else if (!/(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)/.test(password)) {
       return false
     }
     return true
   }
-
 }
