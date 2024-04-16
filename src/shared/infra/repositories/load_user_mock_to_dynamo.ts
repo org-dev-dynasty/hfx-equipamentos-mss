@@ -25,6 +25,7 @@ async function setupDynamoTable(): Promise<void> {
 
   console.log(dynamoClient)
 
+
   const tables = (await dynamoClient.send(new ListTablesCommand({}))).TableNames || []
 
   if (!tables.includes(dynamoTableName)) {
