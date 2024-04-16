@@ -19,3 +19,4 @@ package-lock.json
 
 # sam build
 .aws-sam
+/local/docker
