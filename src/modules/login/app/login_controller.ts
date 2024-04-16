@@ -48,7 +48,7 @@ export class LoginController {
         request.data.password,
       )
 
-      const jwtSecret = envs.JWT_SECRET || '' // não sei pq mas ele ta falando que sepa pode ser undefined, não entendi
+      const jwtSecret = envs.JWT_SECRET
 
       const token = jsonwebtoken.sign({ user: JSON.stringify(user) }, jwtSecret)
 
