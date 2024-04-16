@@ -1,7 +1,7 @@
 import { STAGE } from './domain/enums/stage_enum'
 import { IUserRepository } from './domain/repositories/user_repository_interface'
 import { UserRepositoryDynamo } from './infra/repositories/user_repository_dynamo'
-import { UserRepositoryMock } from './infra/repositories/user_repository_mock'
+// import { UserRepositoryMock } from './infra/repositories/user_repository_mock'
 import { config } from 'dotenv'
 config()
 
@@ -60,7 +60,7 @@ export class Environments {
     console.log('Environments.getEnvs().stage - [ENVIRONMENTS - { GET USER REPO }] - ', Environments.getEnvs().stage)
 
     if (Environments.getEnvs().stage === STAGE.TEST) {
-      return new UserRepositoryMock()
+      throw new Error('Invalid STAGE')
     } else if (Environments.getEnvs().stage === STAGE.DEV || Environments.getEnvs().stage === STAGE.PROD) {
       return new UserRepositoryDynamo()
     } else {
