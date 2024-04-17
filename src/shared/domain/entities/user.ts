@@ -1,4 +1,3 @@
-import bcrypt from 'bcryptjs'
 import { EntityError } from '../../helpers/errors/domain_errors'
 
 export type UserProps = {
@@ -23,8 +22,7 @@ export class User {
       throw new EntityError('props.password')
     }
 
-    const hashedPassword = bcrypt.hashSync(props.password, 10)
-    this.props.password = hashedPassword
+    this.props.password = props.password
   }
 
   get name() {
