@@ -5,9 +5,9 @@
     "iac": "app.ts"
   },
   "scripts": {
-    "start-local": "sam local start-api -t ./cdk.out/HfxEquipamentosMss.template.json --host 127.0.0.1 --docker-network dynamodb-local --skip-pull-image --debug",
+    "s": "sam local start-api -t ./cdk.out/HfxEquipamentosMss.template.json --docker-network dynamodb-local --skip-pull-image --debug",
     "start-local-env": "sam local start-api -t ./cdk.out/HfxEquipamentosMss.template.json --skip-pull-image --debug --env-vars ./env_sam.json",
-    "build-sam": "sam build -t ./cdk.out/HfxEquipamentosMss.template.json",
+    "b": "sam build -t ./cdk.out/HfxEquipamentosMss.template.json",
     "build": "tsc",
     "watch": "tsc -w",
     "cdk": "cdk"
