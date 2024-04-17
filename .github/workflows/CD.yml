@@ -48,6 +48,12 @@ jobs:
                 echo GITHUB_REF_NAME=${{ github.ref_name }} >> $GITHUB_ENV
                 echo DYNAMO_TABLE_NAME=${{ vars.DYNAMO_TABLE_NAME }} >> $GITHUB_ENV
                 echo "JWT_SECRET=${{ vars.JWT_SECRET }}" >> $GITHUB_ENV
+            - name: CDK Bootstrap
+              run: |
+                echo "CDK Bootstrap"
+                cd iac
+                aws cloudformation describe-stacks --stack-name CDKToolkit 2>&1 > /dev/null || \
+                  cdk bootstrap aws://${{ secrets.AWS_ACCOUNT_ID }}/sa-east-1
             - name: Deploy with CDK
               run: |
                 cd iac
