@@ -23,8 +23,6 @@ async function setupDynamoTable(): Promise<void> {
   })
   console.log('DynamoDB client created')
 
-  console.log(dynamoClient)
-
 
   const tables = (await dynamoClient.send(new ListTablesCommand({}))).TableNames || []
 
@@ -83,8 +81,6 @@ async function loadMockToLocalDynamo() {
 
 async function loadMockToRealDynamo() {
   const dynamoRepo = new UserRepositoryDynamo()
-
-  const count = 0
   
   console.log('Loading mock to real DynamoDB...')
   // const users = generateAllUsersFromJson()
@@ -95,7 +91,15 @@ async function loadMockToRealDynamo() {
   //   count += 1
   // }
 
-  console.log(`${count} users loaded to real DynamoDB`)
+  const user = new User({
+    name: 'John Doe',
+    email: 'johndoe@gmail.com',
+    password: 'Teste123$'
+  })
+
+  await dynamoRepo.createUser(user) 
+
+  console.log(`${user.name} loaded to real DynamoDB`)
   
 }
 
@@ -103,13 +107,13 @@ async function loadMockToRealDynamo() {
 if (require.main === module) {
   (async () => {
     await setupDynamoTable()
-    await loadMockToLocalDynamo()
-    // await loadMockToRealDynamo()
+    // await loadMockToLocalDynamo()
+    await loadMockToRealDynamo()
   })()
 } else {
   (async () => {
     await setupDynamoTable()
-    await loadMockToLocalDynamo()
-    // await loadMockToRealDynamo()
+    // await loadMockToLocalDynamo()
+    await loadMockToRealDynamo()
   })()
 }
