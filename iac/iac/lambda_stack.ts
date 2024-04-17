@@ -10,11 +10,7 @@ export class LambdaStack extends Construct {
   functionsThatNeedDynamoPermissions: lambda.Function[] = []
   lambdaLayer: lambda.LayerVersion
 
-  getUserFunction: lambda.Function
-  getAllUsersFunction: lambda.Function
-  createUserFunction: lambda.Function
-  deleteUserFunction: lambda.Function
-  updateUserFunction: lambda.Function
+  loginFunction: lambda.Function
 
   createLambdaApiGatewayIntegration(moduleName: string, method: string, mssStudentApiResource: Resource, environmentVariables: Record<string, any>) {
     const modifiedModuleName = moduleName.toLowerCase().split(' ').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
@@ -36,19 +32,19 @@ export class LambdaStack extends Construct {
   }
 
   constructor(scope: Construct, apiGatewayResource: Resource, environmentVariables: Record<string, any>) {
-    super(scope, 'Template_Lambdas')
+    super(scope, 'HfxLambdaStack')
 
-    this.lambdaLayer = new lambda.LayerVersion(this, 'Template_Layer', {
+    this.lambdaLayer = new lambda.LayerVersion(this, 'HfxMss_Layer', {
       code: lambda.Code.fromAsset('./shared'),
       compatibleRuntimes: [lambda.Runtime.NODEJS_18_X],
     })
 
-    this.getUserFunction = this.createLambdaApiGatewayIntegration('get_user', 'GET', apiGatewayResource, environmentVariables)
-    this.getAllUsersFunction = this.createLambdaApiGatewayIntegration('get_all_users', 'GET', apiGatewayResource, environmentVariables)
-    this.createUserFunction = this.createLambdaApiGatewayIntegration('create_user', 'POST', apiGatewayResource, environmentVariables)
-    this.deleteUserFunction = this.createLambdaApiGatewayIntegration('delete_user', 'POST', apiGatewayResource, environmentVariables)
-    this.updateUserFunction = this.createLambdaApiGatewayIntegration('update_user', 'POST', apiGatewayResource, environmentVariables)
+    this.loginFunction = this.createLambdaApiGatewayIntegration('login', 'POST', apiGatewayResource, environmentVariables)
 
-    this.functionsThatNeedDynamoPermissions = [this.getUserFunction, this.createUserFunction, this.deleteUserFunction, this.updateUserFunction, this.getAllUsersFunction]
+    
+
+    this.functionsThatNeedDynamoPermissions = [
+      this.loginFunction
+    ]
   }
 }
