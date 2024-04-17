@@ -61,6 +61,7 @@ jobs:
                   cdk bootstrap aws://${{ secrets.AWS_ACCOUNT_ID }}/sa-east-1
             - name: Deploy with CDK
               run: |
+                source $GITHUB_ENV
                 cd iac
                 cdk synth
                 cdk deploy --require-approval never
