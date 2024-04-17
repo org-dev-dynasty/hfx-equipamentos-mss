@@ -18,6 +18,14 @@ jobs:
             id-token: write
             contents: read
         steps:
+              env:
+                STAGE: $(echo ${{ github.ref_name }} | tr '[:lower:]' '[:upper:]')
+                AWS_ACCESS_KEY: ${{ vars.AWS_ACCESS_KEY }}
+                AWS_SECRET_ACCESS_KEY: ${{ vars.AWS_SECRET_ACCESS_KEY }}
+                AWS_REGION: sa-east-1
+                STACK_NAME: ${{ vars.STACK_NAME }}
+                DYNAMO_TABLE_NAME: ${{ vars.DYNAMO_TABLE_NAME }}
+                JWT_SECRET: ${{ vars.JWT_SECRET }}
             - uses: actions/checkout@v2
             - name: Setup AWS Credentials
               run: |
@@ -32,7 +40,7 @@ jobs:
                 node-version: 18.x
             - name: Setting stage, stack name
               run: |
-                echo "STAGE=${{ github.ref_name }}"
+                echo "STAGE=$(echo ${{ github.ref_name }} | tr '[:lower:]' '[:upper:]')"
                 echo "STACK_NAME=${{ vars.STACK_NAME }}${{ github.ref_name }}" >> $GITHUB_ENV
             - name: Install dependencies
               run: |
