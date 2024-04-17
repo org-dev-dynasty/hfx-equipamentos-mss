@@ -46,6 +46,7 @@ jobs:
                 yarn build
             - name: Setup envs
               run: |
+                echo "STAGE=$(echo ${{ github.ref_name }} | tr '[:lower:]' '[:upper:]')"
                 echo AWS_REGION=sa-east-1>> $GITHUB_ENV
                 echo AWS_ACCOUNT_ID=${{ secrets.AWS_ACCOUNT_ID }} >> $GITHUB_ENV 
                 echo STACK_NAME=${{ env.STACK_NAME }} >> $GITHUB_ENV
