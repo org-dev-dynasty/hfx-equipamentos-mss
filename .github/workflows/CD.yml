@@ -1,5 +1,9 @@
 name: Node.js Typescript CD
 on:
+    workflow_run:
+        workflows: ["Check & Create PR"]
+        types:
+            - completed
     push:
         branches:
             - dev
