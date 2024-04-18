@@ -27,7 +27,7 @@ export class LambdaStack extends Construct {
       memorySize: 512
     })
 
-    mssStudentApiResource.addResource(moduleName.replace('_','-')).addMethod(method, new LambdaIntegration(lambdaFunction))
+    mssStudentApiResource.addResource(moduleName.replace(/_/g,'-')).addMethod(method, new LambdaIntegration(lambdaFunction))
     
     return lambdaFunction
   }
