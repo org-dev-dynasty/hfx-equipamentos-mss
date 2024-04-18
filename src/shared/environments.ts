@@ -51,12 +51,12 @@ export class Environments {
       this.cloudFrontGetUserPresenterDistributionDomain = 'https://d3q9q9q9q9q9q9.cloudfront.net'
     } else {
       this.s3BucketName = env.S3_BUCKET_NAME as string
-      this.region = env.REGION as string
-      this.endpointUrl = env.ENDPOINT_URL as string
-      this.dynamoTableName = env.DYNAMO_TABLE_NAME as string
-      this.dynamoProductsTableName = env.DYNAMO_PRODUCTS_TABLE_NAME as string
-      this.dynamoPartitionKey = env.DYNAMO_PARTITION_KEY as string
-      this.dynamoSortKey = env.DYNAMO_SORT_KEY as string
+      this.region = env.REGION 
+      this.endpointUrl = env.ENDPOINT_URL 
+      this.dynamoTableName = env.DYNAMO_TABLE_NAME 
+      this.dynamoProductsTableName = env.DYNAMO_PRODUCTS_TABLE_NAME 
+      this.dynamoPartitionKey = env.DYNAMO_PARTITION_KEY 
+      this.dynamoSortKey = env.DYNAMO_SORT_KEY 
       this.cloudFrontGetUserPresenterDistributionDomain = env.CLOUD_FRONT_DISTRIBUTION_DOMAIN as string
 
       console.log('this.region - [CHEGOU NO LOAD_ENVS] - ', this.region)

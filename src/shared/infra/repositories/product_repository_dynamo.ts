@@ -26,7 +26,11 @@ export class ProductRepositoryDynamo implements IProductRepository {
       Environments.getEnvs().endpointUrl,
       Environments.getEnvs().dynamoSortKey,
     ),
-  ) {}
+  ) {
+
+    console.log('[ProductRepositoryDynamo] - Environments.getEnvs(): ', Environments.getEnvs())
+    console.log('[ProductRepositoryDynamo] - Environments.getEnvs().dynamoProductsTableName: ', Environments.getEnvs().dynamoProductsTableName)
+  }
 
   async createProduct(product: Product): Promise<Product> {
     const productDto = ProductDynamoDTO.fromEntity(product)
