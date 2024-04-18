@@ -3,6 +3,7 @@ import { Product } from '../../../shared/domain/entities/product'
 import { IProductRepository } from '../../../shared/domain/repositories/product_repository_interface'
 import { EntityError } from '../../../shared/helpers/errors/domain_errors'
 import { v4 as uuid } from 'uuid'
+import { ConflictItems } from '../../../shared/helpers/errors/usecase_errors'
 
 export class CreateProductUsecase {
   constructor(private readonly repo: IProductRepository) {}
@@ -57,7 +58,7 @@ export class CreateProductUsecase {
       }
     }
     if (models && categories) {
-      throw new EntityError('models and categories cannot be used together')
+      throw new ConflictItems('models and categories')
     }
     if (videos) {
       const videosWithIds = videos.map(video => `${video}#${id}`)
