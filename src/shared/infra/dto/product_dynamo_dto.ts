@@ -57,6 +57,8 @@ export class ProductDynamoDTO {
   }
 
   static fromDynamo(productData: any) {
+    console.log('[ProductDynamoDTO] - fromDynamo - productData: ', productData)
+    
     const id = productData['id'] && productData['id']['S'] ? productData['id']['S'] : null
     const name = productData['name'] && productData['name']['S'] ? productData['name']['S'] : null
     const description = productData['description'] && productData['description']['S'] ? productData['description']['S'] : null
@@ -70,6 +72,7 @@ export class ProductDynamoDTO {
       return attributes
     }) : null
     const videos = productData['videos'] && productData['videos'] ? productData['videos'].map((video: Record<string, any>) => video['S']) : null
+
 
     return new ProductDynamoDTO({
       id,

@@ -171,6 +171,8 @@ export class DynamoDatasource {
       lastEvaluatedKey = response.LastEvaluatedKey
     } while (lastEvaluatedKey)
 
+    console.log('items - [DYNAMO_DATASOURCE] - GetAllItems() - ', items)  
+    
     return {
       Items: items,
       Count: items.length,
