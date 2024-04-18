@@ -3,6 +3,9 @@ import { IUserRepository } from './domain/repositories/user_repository_interface
 import { UserRepositoryDynamo } from './infra/repositories/user_repository_dynamo'
 // import { UserRepositoryMock } from './infra/repositories/user_repository_mock'
 import env from '../../'
+import { IProductRepository } from './domain/repositories/product_repository_interface'
+import { ProductRepositoryMock } from './infra/repositories/product_repository_mock'
+import { ProductRepositoryDynamo } from './infra/repositories/product_repository_dynamo'
 
 export class Environments {
   stage: STAGE = STAGE.TEST
@@ -62,6 +65,18 @@ export class Environments {
       throw new Error('Invalid STAGE')
     } else if (Environments.getEnvs().stage === STAGE.DEV || Environments.getEnvs().stage === STAGE.PROD) {
       return new UserRepositoryDynamo()
+    } else {
+      throw new Error('Invalid STAGE')
+    }
+  }
+
+  static getProductRepo(): IProductRepository {
+    console.log('Environments.getEnvs().stage - [ENVIRONMENTS - { GET PRODUCT REPO }] - ', Environments.getEnvs().stage)
+
+    if (Environments.getEnvs().stage === STAGE.TEST) {
+      return new ProductRepositoryMock()
+    } else if (Environments.getEnvs().stage === STAGE.DEV || Environments.getEnvs().stage === STAGE.PROD) {
+      return new ProductRepositoryDynamo()
     } else {
       throw new Error('Invalid STAGE')
     }
