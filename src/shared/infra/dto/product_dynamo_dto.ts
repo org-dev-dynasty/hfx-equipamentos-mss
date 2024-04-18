@@ -58,7 +58,8 @@ export class ProductDynamoDTO {
 
   static fromDynamo(productData: any) {
     console.log('[ProductDynamoDTO] - fromDynamo - productData: ', productData)
-    
+    console.log('[ProductDynamoDTO] - fromDynamo - unMarshall(productData): ', unmarshall(productData))
+
     const id = productData['id'] && productData['id']['S'] ? productData['id']['S'] : null
     const name = productData['name'] && productData['name']['S'] ? productData['name']['S'] : null
     const description = productData['description'] && productData['description']['S'] ? productData['description']['S'] : null
