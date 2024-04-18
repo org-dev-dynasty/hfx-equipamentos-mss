@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { MissingParameters, WrongTypeParameters } from '../../../shared/helpers/errors/controller_errors'
 import { EntityError } from '../../../shared/helpers/errors/domain_errors'
-import { ForbiddenAction, NoItemsFound } from '../../../shared/helpers/errors/usecase_errors'
+import { ConflictItems, ForbiddenAction, NoItemsFound } from '../../../shared/helpers/errors/usecase_errors'
 import { IRequest } from '../../../shared/helpers/external_interfaces/external_interface'
 import { BadRequest, Created, InternalServerError, NotFound, Unauthorized } from '../../../shared/helpers/external_interfaces/http_codes'
 import { CreateProductUsecase } from './create_product_usecase'
@@ -97,6 +97,9 @@ export class CreateProductController {
         return new BadRequest(error.message)
       }
       if (error instanceof WrongTypeParameters) {
+        return new BadRequest(error.message)
+      }
+      if (error instanceof ConflictItems) {
         return new BadRequest(error.message)
       }
       if (error instanceof EntityError) {
