@@ -41,9 +41,9 @@ export class LambdaStack extends Construct {
     })
 
     this.loginFunction = this.createLambdaApiGatewayIntegration('login', 'POST', apiGatewayResource, environmentVariables)
-
     this.getAllProductsFunction = this.createLambdaApiGatewayIntegration('get_all_products', 'GET', apiGatewayResource, environmentVariables)
     
+
     this.functionsThatNeedDynamoPermissions = [
       this.loginFunction,
       this.getAllProductsFunction
