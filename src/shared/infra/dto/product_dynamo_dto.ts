@@ -76,6 +76,14 @@ export class ProductDynamoDTO {
 
     const { id, name, description, models, categories, attributes, videos } = unmarshall(productData)
 
+    console.log('[ProductDynamoDTO] - fromDynamo - id: ', id)
+    console.log('[ProductDynamoDTO] - fromDynamo - name: ', name)
+    console.log('[ProductDynamoDTO] - fromDynamo - description: ', description)
+    console.log('[ProductDynamoDTO] - fromDynamo - models: ', models)
+    console.log('[ProductDynamoDTO] - fromDynamo - categories: ', categories)
+    console.log('[ProductDynamoDTO] - fromDynamo - attributes: ', attributes)
+    console.log('[ProductDynamoDTO] - fromDynamo - videos: ', videos)
+
     return new ProductDynamoDTO({
       id,
       name,
