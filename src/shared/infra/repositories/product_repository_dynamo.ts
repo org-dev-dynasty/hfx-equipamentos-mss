@@ -51,6 +51,7 @@ export class ProductRepositoryDynamo implements IProductRepository {
       console.log('[async getAllProducts()] - product: ', product)
       ProductDynamoDTO.fromDynamo(product)
       console.log('[async getAllProducts()] - ProductDynamoDTO.fromDynamo(product): ', ProductDynamoDTO.fromDynamo(product))
+      console.log('[async getAllProducts()] - ProductDynamoDTO.fromDynamo(product).toEntity(): ', ProductDynamoDTO.fromDynamo(product).toEntity())
     })    
     console.log('[async getAllProducts()] - products: ', products)
     return Promise.resolve(products)
