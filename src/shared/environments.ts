@@ -13,6 +13,7 @@ export class Environments {
   region: string = ''
   endpointUrl: string = ''
   dynamoTableName: string = ''
+  dynamoProductsTableName: string = ''
   dynamoPartitionKey: string = ''
   dynamoSortKey: string = ''
   cloudFrontGetUserPresenterDistributionDomain: string = ''
@@ -32,7 +33,8 @@ export class Environments {
     this.stage = env.STAGE as STAGE
 
     console.log('env.STAGE - [CHEGOU NO LOAD_ENVS] - ', env.STAGE)
-    console.log('env.DYNAMOTABLENAME - [CHEGOU NO LOAD_ENVS] - ', env.DYNAMO_TABLE_NAME)
+    console.log('env.DYNAMO_TABLE_NAME - [CHEGOU NO LOAD_ENVS] - ', env.DYNAMO_TABLE_NAME)
+    console.log('env.DYNAMO_PRODUCTS_TABLE_NAME - [CHEGOU NO LOAD_ENVS] - ', env.DYNAMO_PRODUCTS_TABLE_NAME)
     console.log('env.ENDPOINT_URL - [CHEGOU NO LOAD_ENVS] - ', env.ENDPOINT_URL)
     console.log('env.REGION - [CHEGOU NO LOAD_ENVS] - ', env.REGION)
     console.log('this.stage - [CHEGOU NO LOAD_ENVS] - ', this.stage)
@@ -44,17 +46,26 @@ export class Environments {
       this.region = 'sa-east-1'
       this.endpointUrl = 'http://localhost:8000'
       this.dynamoTableName = 'UserMssTemplateTable'
+      this.dynamoProductsTableName = 'hfx-products'
       this.dynamoPartitionKey = 'PK'
       this.dynamoSortKey = 'SK'
       this.cloudFrontGetUserPresenterDistributionDomain = 'https://d3q9q9q9q9q9q9.cloudfront.net'
     } else {
       this.s3BucketName = env.S3_BUCKET_NAME as string
-      this.region = env.REGION as string
-      this.endpointUrl = env.ENDPOINT_URL as string
-      this.dynamoTableName = env.DYNAMO_TABLE_NAME as string
-      this.dynamoPartitionKey = env.DYNAMO_PARTITION_KEY as string
-      this.dynamoSortKey = env.DYNAMO_SORT_KEY as string
+      this.region = env.REGION 
+      this.endpointUrl = env.ENDPOINT_URL 
+      this.dynamoTableName = env.DYNAMO_TABLE_NAME 
+      this.dynamoProductsTableName = env.DYNAMO_PRODUCTS_TABLE_NAME 
+      this.dynamoPartitionKey = env.DYNAMO_PARTITION_KEY 
+      this.dynamoSortKey = env.DYNAMO_SORT_KEY 
       this.cloudFrontGetUserPresenterDistributionDomain = env.CLOUD_FRONT_DISTRIBUTION_DOMAIN as string
+
+      console.log('this.region - [CHEGOU NO LOAD_ENVS] - ', this.region)
+      console.log('this.dynamoTableName - [CHEGOU NO LOAD_ENVS] - ', this.dynamoTableName)
+      console.log('this.dynamoProductsTableName - [CHEGOU NO LOAD_ENVS] - ', this.dynamoProductsTableName)
+      console.log('this.dynamoPartitionKey - [CHEGOU NO LOAD_ENVS] - ', this.dynamoPartitionKey)
+      console.log('this.dynamoSortKey - [CHEGOU NO LOAD_ENVS] - ', this.dynamoSortKey)
+      console.log('this.cloudFrontGetUserPresenterDistributionDomain - [CHEGOU NO LOAD_ENVS] - ', this.cloudFrontGetUserPresenterDistributionDomain)
     }
   }
 
@@ -85,6 +96,8 @@ export class Environments {
   static getEnvs() {
     const envs = new Environments()
     envs.loadEnvs()
+
+    console.log('envs - [ENVIRONMENTS - { GET ENVS }] - ', envs)
     return envs
   }
 }

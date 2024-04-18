@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Product } from '../../domain/entities/product'
+import { unmarshall } from '@aws-sdk/util-dynamodb'
 
 export type ProductDynamoDTOProps = {
   id: string
@@ -56,13 +57,32 @@ export class ProductDynamoDTO {
   }
 
   static fromDynamo(productData: any) {
-    const id = productData['id'] && productData['id']['S'] ? productData['id']['S'] : null
-    const name = productData['name'] && productData['name']['S'] ? productData['name']['S'] : null
-    const description = productData['description'] && productData['description']['S'] ? productData['description']['S'] : null
-    const models = productData['models'] && productData['models']['SS'] ? productData['models']['SS'] : null
-    const categories = productData['categories'] && productData['categories']['SS'] ? productData['categories']['SS'] : null
-    const attributes = productData['attributes'] && productData['attributes']['L'] ? productData['attributes']['L'] : null
-    const videos = productData['videos'] && productData['videos']['SS'] ? productData['videos']['SS'] : null
+    console.log('[ProductDynamoDTO] - fromDynamo - productData: ', productData)
+    console.log('[ProductDynamoDTO] - fromDynamo - unMarshall(productData): ', unmarshall(productData))
+
+    // const id = productData['id'] && productData['id']['S'] ? productData['id']['S'] : null
+    // const name = productData['name'] && productData['name']['S'] ? productData['name']['S'] : null
+    // const description = productData['description'] && productData['description']['S'] ? productData['description']['S'] : null
+    // const models = productData['models'] && productData['models'] ? productData['models'].map((model: Record<string, any>) => model['S']) : null
+    // const categories = productData['categories'] && productData['categories']['M'] ? productData['categories'].map((category: Record<string, any>) => {
+    //   const categories = unmarshall(category)
+    //   return categories
+    // }) : null
+    // const attributes = productData['attributes'] && productData['attributes']['M'] ? productData['attributes'].map((attribute: Record<string, any>) => {
+    //   const attributes = unmarshall(attribute)
+    //   return attributes
+    // }) : null
+    // const videos = productData['videos'] && productData['videos'] ? productData['videos'].map((video: Record<string, any>) => video['S']) : null
+
+    const { id, name, description, models, categories, attributes, videos } = unmarshall(productData)
+
+    console.log('[ProductDynamoDTO] - fromDynamo - id: ', id)
+    console.log('[ProductDynamoDTO] - fromDynamo - name: ', name)
+    console.log('[ProductDynamoDTO] - fromDynamo - description: ', description)
+    console.log('[ProductDynamoDTO] - fromDynamo - models: ', models)
+    console.log('[ProductDynamoDTO] - fromDynamo - categories: ', categories)
+    console.log('[ProductDynamoDTO] - fromDynamo - attributes: ', attributes)
+    console.log('[ProductDynamoDTO] - fromDynamo - videos: ', videos)
 
     return new ProductDynamoDTO({
       id,
@@ -76,6 +96,7 @@ export class ProductDynamoDTO {
   }
 
   toEntity() {
+    console.log('[ProductDynamoDTO] - toEntity - this: ', this)
     return new Product({
       id: this.id,
       name: this.name,
