@@ -19,14 +19,15 @@
     "aws-sdk": "^2.1506.0",
     "aws-sdk-js-codemod": "^0.28.2",
     "bcryptjs": "^2.4.3",
-    "uuid": "^9.0.1",
     "dotenv": "^16.4.5",
     "jsonwebtoken": "^9.0.2",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.6",
+    "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^6.2.0",
     "@typescript-eslint/parser": "^6.2.0",
     "eslint": "^8.45.0",
