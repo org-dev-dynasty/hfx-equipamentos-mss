@@ -96,6 +96,7 @@ export class ProductDynamoDTO {
   }
 
   toEntity() {
+    console.log('[ProductDynamoDTO] - toEntity - this: ', this)
     return new Product({
       id: this.id,
       name: this.name,
