@@ -49,7 +49,7 @@ export class ProductRepositoryDynamo implements IProductRepository {
     console.log('[async getAllProducts()] - resp: ', resp)
     const products = resp.Items.map((product: Record<any, any>) => {
       console.log('[async getAllProducts()] - product: ', product)
-      ProductDynamoDTO.fromDynamo(product)
+      ProductDynamoDTO.fromDynamo(product).toEntity()
       console.log('[async getAllProducts()] - ProductDynamoDTO.fromDynamo(product): ', ProductDynamoDTO.fromDynamo(product))
       console.log('[async getAllProducts()] - ProductDynamoDTO.fromDynamo(product).toEntity(): ', ProductDynamoDTO.fromDynamo(product).toEntity())
     })    
