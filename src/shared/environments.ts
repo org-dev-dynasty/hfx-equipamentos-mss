@@ -54,7 +54,7 @@ export class Environments {
       this.region = env.REGION 
       this.endpointUrl = env.ENDPOINT_URL 
       this.dynamoTableName = env.DYNAMO_TABLE_NAME 
-      this.dynamoProductsTableName = env.DYNAMO_PRODUCTS_TABLE_NAME 
+      this.dynamoProductsTableName = process.env.DYNAMO_PRODUCTS_TABLE_NAME 
       this.dynamoPartitionKey = env.DYNAMO_PARTITION_KEY 
       this.dynamoSortKey = env.DYNAMO_SORT_KEY 
       this.cloudFrontGetUserPresenterDistributionDomain = env.CLOUD_FRONT_DISTRIBUTION_DOMAIN as string
