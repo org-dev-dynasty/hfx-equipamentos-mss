@@ -8,7 +8,7 @@ export class TemplateDynamoTable extends Construct {
   constructor(scope: Construct, constructId: string, dynamoTableName?: string) {
     super(scope, constructId)
 
-    if (!dynamoTableName || dynamoTableName === undefined || dynamoTableName === '') throw new Error('DYNAMO_TABLE_NAME is undefined')
+    if (!dynamoTableName || dynamoTableName === undefined || dynamoTableName === '' || dynamoTableName === null) throw new Error('DYNAMO_TABLE_NAME is undefined')
 
     this.table = new Table(this, 'HfxMssTable', {
       tableName: dynamoTableName,
