@@ -27,15 +27,19 @@ export class GetProductByIdController {
       if (!request) {
         throw new InvalidRequest()
       }
-      if (!request.body.queryStringParameters) {
-        throw new MissingParameters('queryStringParameters')
+      const id = request.data.id
+
+      if (!id) {
+        throw new MissingParameters('id')
+      }
+      if (typeof id !== 'string') {
+        throw new WrongTypeParameters('id', typeof id, 'string')
       }
 
-      const queryParams = request.body.queryStringParameters
-
-      const response = await this.usecase.execute(queryParams)
+      const response = await this.usecase.execute(id)
       const viewmodel = new GetProductByIdViewModel(response)
       return new OK(viewmodel.toJSON())
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       if (error instanceof NoItemsFound) {
