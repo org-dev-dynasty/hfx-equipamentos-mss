@@ -6,13 +6,13 @@ export type ProductProps = {
   id: string
   name: string
   description: string
-  // model será um array de strings, essas strings terão esse formato: "nome_do_modelo#id_do_produto"
-  // const id = model.split('#')[1]
-  model?: string[]
-  category?: string[]
+  // models será um array de strings, essas strings terão esse formato: "nome_do_modelo#id_do_produto"
+  // const id = models.split('#')[1]
+  models?: string[]
+  categories?: string[]
   attributes?: Record<string, any>[] 
-  // If model is !== undefined, first element of an attribute will be the modelId
-  // If model is === undefined, first element of an attribute will be the categoryId
+  // If models is !== undefined, first element of an attribute will be the modelId
+  // If models is === undefined, first element of an attribute will be the categoryId
   /* [
     { 
       "modelId" : "uuid" ,
@@ -46,18 +46,18 @@ export class Product {
     }
     this.props.description = props.description
 
-    if (props.model !== undefined) {
-      if (!Product.validateModel(props.model)) {
-        throw new EntityError('props.model')
+    if (props.models !== undefined) {
+      if (!Product.validateModel(props.models)) {
+        throw new EntityError('props.models')
       }
-      this.props.model = props.model
+      this.props.models = props.models
     }
 
-    if (props.category !== undefined) {
-      if (!Product.validateCategory(props.category)) {
-        throw new EntityError('props.category')
+    if (props.categories !== undefined) {
+      if (!Product.validateCategory(props.categories)) {
+        throw new EntityError('props.categories')
       }
-      this.props.category = props.category
+      this.props.categories = props.categories
     }
 
     if (props.attributes !== undefined) {
@@ -108,26 +108,26 @@ export class Product {
     this.props.description = description
   }
 
-  get model() {
-    return this.props.model
+  get models() {
+    return this.props.models
   }
 
-  set setModel(model: string[]) {
-    if (!Product.validateModel(model)) {
-      throw new EntityError('props.model')
+  set setModels(models: string[]) {
+    if (!Product.validateModel(models)) {
+      throw new EntityError('props.models')
     }
-    this.props.model = model
+    this.props.models = models
   }
 
-  get category() {
-    return this.props.category
+  get categories() {
+    return this.props.categories
   }
 
-  set setCategory(category: string[]) {
-    if (!Product.validateCategory(category)) {
-      throw new EntityError('props.category')
+  set setCategories(categories: string[]) {
+    if (!Product.validateCategory(categories)) {
+      throw new EntityError('props.categories')
     }
-    this.props.category = category
+    this.props.categories = categories
   }
 
   get attributes() {
@@ -178,24 +178,24 @@ export class Product {
     return true
   }
 
-  static validateModel(model: string[]) {
-    if (model.length === 0) return false
-    if (Array.isArray(model) === false) return false
-    model.map((value) => {
+  static validateModel(models: string[]) {
+    if (models.length === 0) return false
+    if (Array.isArray(models) === false) return false
+    models.map((value) => {
       if (value.split('#').length !== 2) return false
       if (value.split('#')[0] === '') return false
       if (value.split('#')[1] === '') return false
-      if (model.includes(value.split('#')[0])) return false
+      if (models.includes(value.split('#')[0])) return false
       if (typeof value !== 'string') return false
     })
     
     return true
   }
   
-  static validateCategory(category: string[]) {
-    if (category.length === 0) return false
-    if (Array.isArray(category) === false) return false
-    category.map((value) => {
+  static validateCategory(categories: string[]) {
+    if (categories.length === 0) return false
+    if (Array.isArray(categories) === false) return false
+    categories.map((value) => {
       if (value.split('#').length !== 2) return false
       if (value.split('#')[0] === '') return false
       if (value.split('#')[1] === '') return false

@@ -7,7 +7,7 @@ test('should be able to create a product', () => {
     id: '0195d92b-776d-4662-b233-1d14137b1f95',
     name: 'Rompedores',
     description: 'Os rompedores hidráulicos da HXF Equipamentos são verdadeiros aliados quando se trata de demolição e escavação. Com eficiência e robustez, eles enfrentam os desafios mais difíceis, seja na construção civil, mineração ou terraplanagem.',
-    model: ['HR150#0195d92b-776d-4662-b233-1d14137b1f95'],
+    models: ['HR150#0195d92b-776d-4662-b233-1d14137b1f95'],
     attributes: [
       {
         modelId: 'HR150#0195d92b-776d-4662-b233-1d14137b1f95',
