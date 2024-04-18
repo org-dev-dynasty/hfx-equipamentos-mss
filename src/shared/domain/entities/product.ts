@@ -171,7 +171,6 @@ export class Product {
 
   static validateDescription(description: string) {
     if (description.length < 3) return false
-    if (description.length > 255) return false
     if (description === '') return false
     if (description === null) return false
     if (typeof description !== 'string') return false

@@ -16,7 +16,7 @@ export class ProductRepositoryDynamo implements IProductRepository {
 
   constructor(
     private dynamo: DynamoDatasource = new DynamoDatasource(
-      Environments.getEnvs().dynamoTableName,
+      Environments.getEnvs().dynamoProductsTableName,
       Environments.getEnvs().dynamoPartitionKey,
       Environments.getEnvs().region,
       undefined,

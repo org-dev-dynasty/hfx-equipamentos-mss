@@ -13,6 +13,7 @@ export class Environments {
   region: string = ''
   endpointUrl: string = ''
   dynamoTableName: string = ''
+  dynamoProductsTableName: string = ''
   dynamoPartitionKey: string = ''
   dynamoSortKey: string = ''
   cloudFrontGetUserPresenterDistributionDomain: string = ''
@@ -52,6 +53,7 @@ export class Environments {
       this.region = env.REGION as string
       this.endpointUrl = env.ENDPOINT_URL as string
       this.dynamoTableName = env.DYNAMO_TABLE_NAME as string
+      this.dynamoProductsTableName = env.DYNAMO_PRODUCTS_TABLE_NAME as string
       this.dynamoPartitionKey = env.DYNAMO_PARTITION_KEY as string
       this.dynamoSortKey = env.DYNAMO_SORT_KEY as string
       this.cloudFrontGetUserPresenterDistributionDomain = env.CLOUD_FRONT_DISTRIBUTION_DOMAIN as string
