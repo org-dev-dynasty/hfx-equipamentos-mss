@@ -12,6 +12,7 @@ export class LambdaStack extends Construct {
 
   loginFunction: lambda.Function
   getAllProductsFunction: lambda.Function
+  getProductByIdFunction: lambda.Function
   createProductFunction: lambda.Function
 
   createLambdaApiGatewayIntegration(moduleName: string, method: string, mssStudentApiResource: Resource, environmentVariables: Record<string, any>) {
@@ -43,11 +44,13 @@ export class LambdaStack extends Construct {
 
     this.loginFunction = this.createLambdaApiGatewayIntegration('login', 'POST', apiGatewayResource, environmentVariables)
     this.getAllProductsFunction = this.createLambdaApiGatewayIntegration('get_all_products', 'GET', apiGatewayResource, environmentVariables)
+    this.getProductByIdFunction = this.createLambdaApiGatewayIntegration('get_product_by_id', 'GET', apiGatewayResource, environmentVariables)
     this.createProductFunction = this.createLambdaApiGatewayIntegration('create_product', 'POST', apiGatewayResource, environmentVariables)
 
     this.functionsThatNeedDynamoPermissions = [
       this.loginFunction,
       this.getAllProductsFunction,
+      this.getProductByIdFunction,
       this.createProductFunction
     ]
   }
