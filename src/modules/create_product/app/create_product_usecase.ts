@@ -27,21 +27,37 @@ export class CreateProductUsecase {
     if (models) {
       const modelsWithIds = models.map(model => `${model}#${id}`)
       models = modelsWithIds
+      if (attributes) {
+        const attributesWithIds = attributes.map(attribute => {
+          const modelName = models?.map(model => model.split('#')[0])
+          const attributesWithIds = modelName?.map(name => {
+            const newModelId = `${name}#${id}`
+            return { ...attribute, modelId: newModelId }
+          })
+          return attributesWithIds as Record<string, any>
+          
+        })
+        attributes = attributesWithIds
+      }
     }
     if (categories) {
       const categoriesWithIds = categories.map(category => `${category}#${id}`)
       categories = categoriesWithIds
+
+      if (attributes) {
+        const attributesWithIds = attributes.map(attribute => {
+          const categoryName = categories?.map(category => category.split('#')[0])
+          const attributesWithIds = categoryName?.map(name => {
+            const newCategoryId = `${name}#${id}`
+            return { ...attribute, categoryId: newCategoryId }
+          })
+          return attributesWithIds as Record<string, any>
+        })
+        attributes = attributesWithIds
+      }
     }
-    if (attributes) {
-      const attributesWithIds = attributes.map(attribute => {
-        const modelId = attribute.modelId
-        const newModelId = `${modelId}#${id}`
-        return {
-          ...attribute,
-          modelId: newModelId
-        }
-      })
-      attributes = attributesWithIds
+    if (models && categories) {
+      throw new EntityError('models and categories cannot be used together')
     }
     if (videos) {
       const videosWithIds = videos.map(video => `${video}#${id}`)
