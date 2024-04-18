@@ -33,7 +33,8 @@ export class Environments {
     this.stage = env.STAGE as STAGE
 
     console.log('env.STAGE - [CHEGOU NO LOAD_ENVS] - ', env.STAGE)
-    console.log('env.DYNAMOTABLENAME - [CHEGOU NO LOAD_ENVS] - ', env.DYNAMO_TABLE_NAME)
+    console.log('env.DYNAMO_TABLE_NAME - [CHEGOU NO LOAD_ENVS] - ', env.DYNAMO_TABLE_NAME)
+    console.log('env.DYNAMO_PRODUCTS_TABLE_NAME - [CHEGOU NO LOAD_ENVS] - ', env.DYNAMO_PRODUCTS_TABLE_NAME)
     console.log('env.ENDPOINT_URL - [CHEGOU NO LOAD_ENVS] - ', env.ENDPOINT_URL)
     console.log('env.REGION - [CHEGOU NO LOAD_ENVS] - ', env.REGION)
     console.log('this.stage - [CHEGOU NO LOAD_ENVS] - ', this.stage)
@@ -57,6 +58,13 @@ export class Environments {
       this.dynamoPartitionKey = env.DYNAMO_PARTITION_KEY as string
       this.dynamoSortKey = env.DYNAMO_SORT_KEY as string
       this.cloudFrontGetUserPresenterDistributionDomain = env.CLOUD_FRONT_DISTRIBUTION_DOMAIN as string
+
+      console.log('this.region - [CHEGOU NO LOAD_ENVS] - ', this.region)
+      console.log('this.dynamoTableName - [CHEGOU NO LOAD_ENVS] - ', this.dynamoTableName)
+      console.log('this.dynamoProductsTableName - [CHEGOU NO LOAD_ENVS] - ', this.dynamoProductsTableName)
+      console.log('this.dynamoPartitionKey - [CHEGOU NO LOAD_ENVS] - ', this.dynamoPartitionKey)
+      console.log('this.dynamoSortKey - [CHEGOU NO LOAD_ENVS] - ', this.dynamoSortKey)
+      console.log('this.cloudFrontGetUserPresenterDistributionDomain - [CHEGOU NO LOAD_ENVS] - ', this.cloudFrontGetUserPresenterDistributionDomain)
     }
   }
 
@@ -87,6 +95,8 @@ export class Environments {
   static getEnvs() {
     const envs = new Environments()
     envs.loadEnvs()
+
+    console.log('envs - [ENVIRONMENTS - { GET ENVS }] - ', envs)
     return envs
   }
 }

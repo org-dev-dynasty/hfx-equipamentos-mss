@@ -15,6 +15,8 @@ export class ProductRepositoryDynamo implements IProductRepository {
   }
 
   constructor(
+    
+
     private dynamo: DynamoDatasource = new DynamoDatasource(
       Environments.getEnvs().dynamoProductsTableName,
       Environments.getEnvs().dynamoPartitionKey,
@@ -38,6 +40,7 @@ export class ProductRepositoryDynamo implements IProductRepository {
   }
 
   async getAllProducts(): Promise<Product[]> {
+    console.log('[async getAllProducts()] - envs: ', console.log(Environments.getEnvs()))
     const resp = await this.dynamo.getAllItems()
     const products = resp.Items.map((product: Record<any, any>) =>
       ProductDynamoDTO.fromDynamo(product).toEntity(),
