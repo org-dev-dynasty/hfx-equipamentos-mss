@@ -39,8 +39,10 @@ export class ProductRepositoryDynamo implements IProductRepository {
 
   async getAllProducts(): Promise<Product[]> {
     const resp = await this.dynamo.getAllItems()
-    const products = resp.Items.map((product: Record<any, any>) => ProductDynamoDTO.fromDynamo(product).toEntity())
-    return Promise.resolve(products)    
+    const products = resp.Items.map((product: Record<any, any>) =>
+      ProductDynamoDTO.fromDynamo(product).toEntity(),
+    )
+    return Promise.resolve(products)
   }
 
   async getProductById(id: string): Promise<Product> {
@@ -54,7 +56,7 @@ export class ProductRepositoryDynamo implements IProductRepository {
 
     const productDto = ProductDynamoDTO.fromDynamo(resp['Item'])
 
-    return Promise.resolve(productDto.toEntity())    
+    return Promise.resolve(productDto.toEntity())
   }
 
   async updateProduct(
@@ -66,32 +68,46 @@ export class ProductRepositoryDynamo implements IProductRepository {
     attributes?: Record<string, any>[],
     videos?: string[],
   ): Promise<Product> {
-    const itemsToUpdate: Record<string, any> = {}
+    // Obtém o produto atual do DynamoDB
+    const productDto = await this.dynamo.getItem(
+      ProductRepositoryDynamo.partitionKeyFormat(id),
+      ProductRepositoryDynamo.sortKeyFormat(id),
+    )
 
+    // Se o produto não existir, lança um erro
+    if (!productDto.Item) {
+      throw new Error('Product not found')
+    }
+
+    // Atualiza os campos do produto, se fornecidos
     if (name) {
-      itemsToUpdate['name'] = name
+      productDto.Item.name = name
     }
-
     if (description) {
-      itemsToUpdate['description'] = description
+      productDto.Item.description = description
     }
-
-    const product = await this.getProductById(id)
-
     if (models) {
-      if (product.models) {
-        const modelsIds = product.models.map((model) => model.split('#')[1])
-        const newModels = models.map((model) => model.split('#')[1])
-
-        const oldModels = modelsIds.filter((model) => !newModels.includes(model))
-
-        
-
-      }
-      
+      productDto.Item.models = models
+    }
+    if (categories) {
+      productDto.Item.categories = categories
+    }
+    if (attributes) {
+      productDto.Item.attributes = attributes
+    }
+    if (videos) {
+      productDto.Item.videos = videos
     }
 
-    throw new Error('Method not implemented.')
+    // Salva o produto atualizado de volta no DynamoDB
+    await this.dynamo.putItem(
+      productDto.Item,
+      ProductRepositoryDynamo.partitionKeyFormat(id),
+      ProductRepositoryDynamo.sortKeyFormat(id),
+    )
+
+    // Retorna o produto atualizado
+    return ProductDynamoDTO.fromDynamo(productDto.Item).toEntity()
   }
 
   async deleteProduct(id: string): Promise<Product> {
@@ -101,6 +117,6 @@ export class ProductRepositoryDynamo implements IProductRepository {
       ProductRepositoryDynamo.sortKeyFormat(id),
     )
 
-    return Promise.resolve(product)   
+    return Promise.resolve(product)
   }
 }
