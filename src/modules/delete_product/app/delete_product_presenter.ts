@@ -13,7 +13,7 @@ const repo = Environments.getProductRepo()
 const usecase = new DeleteProductUsecase(repo)
 const controller = new DeleteProductController(usecase)
 
-export async function GetProductByIdPresenter(event: Record<string, any>) {
+export async function DeleteProductPresenter(event: Record<string, any>) {
   const httpRequest = new LambdaHttpRequest(event)
   const response = await controller.handle(httpRequest)
   const httpResponse = new LambdaHttpResponse(
@@ -26,6 +26,6 @@ export async function GetProductByIdPresenter(event: Record<string, any>) {
 }
 
 export async function handler(event: any, context: any) {
-  const response = await GetProductByIdPresenter(event)
+  const response = await DeleteProductPresenter(event)
   return response
 }
