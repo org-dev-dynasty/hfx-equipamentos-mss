@@ -90,6 +90,8 @@ export class ProductRepositoryDynamo implements IProductRepository {
       }
       
     }
+
+    throw new Error('Method not implemented.')
   }
 
   async deleteProduct(id: string): Promise<Product> {
