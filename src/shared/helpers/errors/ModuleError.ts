@@ -16,22 +16,6 @@ export class InvalidParameter extends BaseError {
   }
 }
 
-export class MissingParameter extends BaseError {
-  constructor(parameter: string) {
-    super(`Missing parameter: ${parameter}`)
-  }
-}
-
-export class UserNotAuthenticated extends BaseError {
-  constructor(message?: string) {
-    if (message) {
-      super(message)
-    } else {
-      super('User not authentificated')
-    }
-  }
-}
-
 export class ConflictError extends BaseError {
   constructor(message: string) {
     super(message)
