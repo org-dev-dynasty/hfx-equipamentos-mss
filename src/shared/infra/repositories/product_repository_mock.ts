@@ -217,10 +217,19 @@ export class ProductRepositoryMock implements IProductRepository {
       id: 'd77ffb97-c99e-470f-b788-0678e0aabcad',
       name: 'Engate Rápido',
       description: 'Um engate rápido é um dispositivo utilizado para conectar e desconectar de forma fácil e rápida mangueiras ou tubulações em sistemas hidráulicos, pneumáticos ou de fluidos em geral. Ele é composto por duas partes principais: um conector macho e um conector fêmea. Estes conectores são projetados para se encaixarem perfeitamente, proporcionando uma vedação eficiente e segura. A principal vantagem do engate rápido é a sua praticidade e agilidade na conexão e desconexão, o que facilita a manutenção e a operação de sistemas industriais e automotivos.',
-      categories: ['Engate Rápido'],
+      categories: [
+        'HXFMini#d77ffb97-c99e-470f-b788-0678e0aabcad', 
+        'HXF02#d77ffb97-c99e-470f-b788-0678e0aabcad', 
+        'HXF04#d77ffb97-c99e-470f-b788-0678e0aabcad', 
+        'HXF06#d77ffb97-c99e-470f-b788-0678e0aabcad', 
+        'HXF08#d77ffb97-c99e-470f-b788-0678e0aabcad', 
+        'HXF08S#d77ffb97-c99e-470f-b788-0678e0aabcad', 
+        'HXF10#d77ffb97-c99e-470f-b788-0678e0aabcad', 
+        'HXF17#d77ffb97-c99e-470f-b788-0678e0aabcad'
+      ],
       attributes: [
         {
-          categoria: 'HXFMini',
+          categoria: 'HXFMini#d77ffb97-c99e-470f-b788-0678e0aabcad',
           comprimento: '300-450 mm',
           largura: '150-250 mm',
           altura: '225-270 mm',
@@ -355,10 +364,10 @@ export class ProductRepositoryMock implements IProductRepository {
       name: 'Tesoura Hidráulica',
       description: 'A tesoura hidráulica é um equipamento utilizado para cortar materiais metálicos, como chapas, vigas, perfis, entre outros. Ela é composta por uma lâmina superior e uma inferior, que se movem em direções opostas para realizar o corte. O acionamento da tesoura é feito por meio de um sistema hidráulico, que proporciona maior precisão e eficiência no corte. Além disso, a tesoura hidráulica é um equipamento versátil, que pode ser utilizada em diversos segmentos, como serralherias, metalúrgicas, indústrias de construção civil, entre outros.',
       models: [
-        'HXF180R',
-        'HXF280R',
-        'HXF350R',
-        'HXF450R'
+        'HXF180R#fdab69d1-a87a-4d21-a7e4-77d214bb4924',
+        'HXF280R#fdab69d1-a87a-4d21-a7e4-77d214bb4924',
+        'HXF350R#fdab69d1-a87a-4d21-a7e4-77d214bb4924',
+        'HXF450R#fdab69d1-a87a-4d21-a7e4-77d214bb4924'
       ],
       attributes: [
         {
