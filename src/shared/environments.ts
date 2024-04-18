@@ -46,6 +46,7 @@ export class Environments {
       this.region = 'sa-east-1'
       this.endpointUrl = 'http://localhost:8000'
       this.dynamoTableName = 'UserMssTemplateTable'
+      this.dynamoProductsTableName = 'hfx-products'
       this.dynamoPartitionKey = 'PK'
       this.dynamoSortKey = 'SK'
       this.cloudFrontGetUserPresenterDistributionDomain = 'https://d3q9q9q9q9q9q9.cloudfront.net'
@@ -54,7 +55,7 @@ export class Environments {
       this.region = env.REGION 
       this.endpointUrl = env.ENDPOINT_URL 
       this.dynamoTableName = env.DYNAMO_TABLE_NAME 
-      this.dynamoProductsTableName = process.env.DYNAMO_PRODUCTS_TABLE_NAME 
+      this.dynamoProductsTableName = env.DYNAMO_PRODUCTS_TABLE_NAME 
       this.dynamoPartitionKey = env.DYNAMO_PARTITION_KEY 
       this.dynamoSortKey = env.DYNAMO_SORT_KEY 
       this.cloudFrontGetUserPresenterDistributionDomain = env.CLOUD_FRONT_DISTRIBUTION_DOMAIN as string
