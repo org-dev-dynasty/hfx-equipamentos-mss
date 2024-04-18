@@ -44,16 +44,18 @@ export class ProductRepositoryDynamo implements IProductRepository {
   }
 
   async getAllProducts(): Promise<Product[]> {
+    const finalProducts: Product[] = []
     console.log('[async getAllProducts()] - envs: ', console.log(Environments.getEnvs()))
     const resp = await this.dynamo.getAllItems()
     console.log('[async getAllProducts()] - resp: ', resp)
     const products = resp.Items.map((product: Record<any, any>) => {
       console.log('[async getAllProducts()] - product: ', product)
-      ProductDynamoDTO.fromDynamo(product).toEntity()
+      const productEntity = ProductDynamoDTO.fromDynamo(product).toEntity()
+      finalProducts.push(productEntity)
       console.log('[async getAllProducts()] - ProductDynamoDTO.fromDynamo(product): ', ProductDynamoDTO.fromDynamo(product))
       console.log('[async getAllProducts()] - ProductDynamoDTO.fromDynamo(product).toEntity(): ', ProductDynamoDTO.fromDynamo(product).toEntity())
     })    
-    console.log('[async getAllProducts()] - products: ', products)
+    console.log('[async getAllProducts()] - finalProducts: ', finalProducts)
     return Promise.resolve(products)
   }
 
