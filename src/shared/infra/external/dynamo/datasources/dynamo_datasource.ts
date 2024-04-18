@@ -94,6 +94,49 @@ export class DynamoDatasource {
     return await this.dynamoTable.send(new PutItemCommand(params))
   }
 
+  async updateItem_UpdatedNew(partitionKey: string, sortKey: string, item: Record<string, any>): Promise<any> {
+    item[this.partitionKey] = partitionKey
+
+    if (sortKey) {
+      item[this.sortKey] = sortKey
+    }
+
+    const updateExpression = Object.keys(item)
+      .filter(key => key !== 'PK' && key !== 'SK')  // Exclua as chaves primárias
+      .map(key => `#${key} = :${key}`)
+      .join(', ')
+
+    const expressionAttributeValues = Object.fromEntries(
+      Object.entries(item)
+        .filter(([key]) => key !== 'PK' && key !== 'SK')  // Exclua as chaves primárias
+        .map(([key, value]) => [`:${key}`, value])
+    )
+
+    const expressionAttributeNames = Object.fromEntries(
+      Object.keys(item)
+        .filter(key => key !== 'PK' && key !== 'SK')  // Exclua as chaves primárias
+        .map(key => [`#${key}`, key])
+    )
+
+    console.log('updateExpression - [DYNAMO_DATASOURCE] - ', updateExpression)
+    console.log('expressionAttributeValues - [DYNAMO_DATASOURCE] - ', expressionAttributeValues)
+    console.log('expressionAttributeNames - [DYNAMO_DATASOURCE] - ', expressionAttributeNames)
+
+    const params: UpdateItemCommandInput = {
+      TableName: this.dynamoTableName,
+      Key: marshall({
+        [this.partitionKey]: partitionKey,
+        [this.sortKey]: sortKey
+      }),
+      UpdateExpression: `SET ${updateExpression}`,
+      ExpressionAttributeNames: expressionAttributeNames,
+      ExpressionAttributeValues: marshall(expressionAttributeValues),
+      ReturnValues: 'ALL_NEW'
+    }
+
+    return await this.dynamoTable.send(new UpdateItemCommand(params))
+  }
+
   async updateItem(partitionKey: string, sortKey: string, item: Record<string, any>): Promise<any> {
     item[this.partitionKey] = partitionKey
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Product } from '../../domain/entities/product'
 import { IProductRepository } from '../../domain/repositories/product_repository_interface'
@@ -83,45 +84,40 @@ export class ProductRepositoryDynamo implements IProductRepository {
     videos?: string[],
   ): Promise<Product> {
     // Obtém o produto atual do DynamoDB
-    const productDto = await this.dynamo.getItem(
-      ProductRepositoryDynamo.partitionKeyFormat(id),
-      ProductRepositoryDynamo.sortKeyFormat(id),
-    )
 
-    // Se o produto não existir, lança um erro
-    if (!productDto.Item) {
-      throw new Error('Product not found')
-    }
+    let itemsToUpdate: Record<string, any> = {}
 
-    // Atualiza os campos do produto, se fornecidos
+    // Atualiza os campos do produto
     if (name) {
-      productDto.Item.name = name
+      itemsToUpdate = { ...itemsToUpdate, name }
     }
     if (description) {
-      productDto.Item.description = description
+      itemsToUpdate = { ...itemsToUpdate, description }
     }
     if (models) {
-      productDto.Item.models = models
+      itemsToUpdate = { ...itemsToUpdate, models }
     }
     if (categories) {
-      productDto.Item.categories = categories
+      itemsToUpdate = { ...itemsToUpdate, categories }
     }
     if (attributes) {
-      productDto.Item.attributes = attributes
+      itemsToUpdate = { ...itemsToUpdate, attributes }
     }
     if (videos) {
-      productDto.Item.videos = videos
+      itemsToUpdate = { ...itemsToUpdate, videos }
     }
 
-    // Salva o produto atualizado de volta no DynamoDB
-    await this.dynamo.putItem(
-      productDto.Item,
+    // Atualiza o produto no DynamoDB
+    await this.dynamo.updateItem(
       ProductRepositoryDynamo.partitionKeyFormat(id),
       ProductRepositoryDynamo.sortKeyFormat(id),
+      itemsToUpdate,
     )
 
     // Retorna o produto atualizado
-    return ProductDynamoDTO.fromDynamo(productDto.Item).toEntity()
+    const product = await this.getProductById(id)
+    return Promise.resolve(product)
+    
   }
 
   async deleteProduct(id: string): Promise<Product> {

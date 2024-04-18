@@ -48,6 +48,7 @@ export class TemplateStack extends Stack {
     dynamoProductsTable.table.grantReadWriteData(lambdaStack.getAllProductsFunction)
     dynamoProductsTable.table.grantReadWriteData(lambdaStack.getProductByIdFunction)
     dynamoProductsTable.table.grantReadWriteData(lambdaStack.createProductFunction)
+    dynamoProductsTable.table.grantReadWriteData(lambdaStack.updateProductFunction)
 
   }
 }
