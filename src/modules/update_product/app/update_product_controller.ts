@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   MissingParameters,
@@ -21,14 +22,20 @@ export class UpdateProductController {
   async handle(request: IRequest) {
     try {
       if (request.data.id === undefined) {
-        throw new EntityError('id')
+        throw new MissingParameters('id')
+      }
+      if (request.data.name === undefined) {
+        throw new MissingParameters('name')
+      }
+      if (request.data.description === undefined) {
+        throw new MissingParameters('description')
       }
 
       if (typeof request.data.id !== 'string') {
         throw new WrongTypeParameters('id', 'string', typeof request.data.id)
       }
 
-      if (request.data.name && typeof request.data.name !== 'string') {
+      if (typeof request.data.name !== 'string') {
         throw new WrongTypeParameters(
           'name',
           'string',
@@ -36,10 +43,7 @@ export class UpdateProductController {
         )
       }
 
-      if (
-        request.data.description &&
-        typeof request.data.description !== 'string'
-      ) {
+      if (typeof request.data.description !== 'string') {
         throw new WrongTypeParameters(
           'description',
           'string',
@@ -52,16 +56,26 @@ export class UpdateProductController {
         typeof request.data.models,
       )
 
+      const models: string[] = []
       if (
         request.data.models !== undefined &&
-        request.data.models !== null && // Verificação adicionada para null
-        Array.isArray(request.data.models)
+        request.data.models !== null // Verificação adicionada para null
       ) {
-        console.log('Antes do length', request.data.models.length)
+        if (typeof request.data.models === 'string') {
+          models.push(JSON.parse(request.data.models as string))
+        } else {
+          throw new WrongTypeParameters(
+            'models',
+            'string',
+            typeof request.data.models,
+          )
+        }
         // Restante do seu código de verificação...
       }
-      const categories: string[] = JSON.parse(request.data.categories as string)
-      if (categories !== undefined) {
+      console.log('[Após if models]')
+      const categories: string[] = []
+      if (request.data.categories !== undefined) {
+        categories.push(JSON.parse(request.data.categories as string))
         if (!Array.isArray(categories)) {
           throw new WrongTypeParameters(
             'categories',
@@ -84,7 +98,7 @@ export class UpdateProductController {
           )
         }
       }
-      console.log('pssou aqui')
+      console.log('[Após if categories]')
       if (request.data.attributes !== undefined) {
         if (!Array.isArray(request.data.attributes)) {
           throw new WrongTypeParameters(
@@ -109,20 +123,22 @@ export class UpdateProductController {
         }
       }
 
-      console.log('pssou aqui 2')
-      if (request.data.videos !== undefined) {
-        if (!Array.isArray(request.data.videos)) {
+      console.log('[Após if attributes]')
+      const videos: string[] = []
+      if (request.data.videos !== undefined && request.data.videos !== null) {
+        videos.push(JSON.parse(request.data.videos as string))
+        if (!Array.isArray(videos)) {
           throw new WrongTypeParameters(
             'videos',
             'array',
             typeof request.data.videos,
           )
         }
-        if (request.data.videos.length === 0) {
+        if (videos.length === 0) {
           throw new EntityError('videos')
         }
         if (
-          !request.data.videos.every(
+          !videos.every(
             (video: string) => typeof video === 'string',
           )
         ) {
@@ -137,13 +153,11 @@ export class UpdateProductController {
       const updatedProduct = await this.usecase.execute(
         request.data.id,
         request.data.name ? (request.data.name as string) : undefined,
-        request.data.description
-          ? (request.data.description as string)
-          : undefined,
-        request.data.models as string[] | undefined,
+        request.data.description,
+        models,
         categories,
         request.data.attributes,
-        request.data.videos,
+        videos,
       )
 
       const viewmodel = new UpdateProductViewModel(updatedProduct)
