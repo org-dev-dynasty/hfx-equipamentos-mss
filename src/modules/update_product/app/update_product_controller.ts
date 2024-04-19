@@ -24,18 +24,12 @@ export class UpdateProductController {
       if (request.data.id === undefined) {
         throw new MissingParameters('id')
       }
-      if (request.data.name === undefined) {
-        throw new MissingParameters('name')
-      }
-      if (request.data.description === undefined) {
-        throw new MissingParameters('description')
-      }
 
       if (typeof request.data.id !== 'string') {
         throw new WrongTypeParameters('id', 'string', typeof request.data.id)
       }
 
-      if (typeof request.data.name !== 'string') {
+      if (request.data.name && typeof request.data.name !== 'string') {
         throw new WrongTypeParameters(
           'name',
           'string',
@@ -43,7 +37,7 @@ export class UpdateProductController {
         )
       }
 
-      if (typeof request.data.description !== 'string') {
+      if (request.data.description && typeof request.data.description !== 'string') {
         throw new WrongTypeParameters(
           'description',
           'string',
@@ -153,7 +147,7 @@ export class UpdateProductController {
       const updatedProduct = await this.usecase.execute(
         request.data.id,
         request.data.name ? (request.data.name as string) : undefined,
-        request.data.description,
+        request.data.description ? (request.data.description as string) : undefined,
         models,
         categories,
         request.data.attributes,
