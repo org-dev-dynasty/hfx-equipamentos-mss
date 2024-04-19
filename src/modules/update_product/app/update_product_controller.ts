@@ -146,6 +146,10 @@ export class UpdateProductController {
 
       console.log('[Após if videos]')
 
+      console.log('[UPDATE PRODUCT CONTROLLER] request.data.models', request.data.models)
+      console.log('[UPDATE PRODUCT CONTROLLER] request.data.categories', request.data.categories)
+      console.log('[UPDATE PRODUCT CONTROLLER] request.data.attributes', request.data.attributes)
+
       const updatedProduct = await this.usecase.execute(
         request.data.id,
         request.data.name ? (request.data.name as string) : undefined,
