@@ -60,31 +60,31 @@ export class UpdateProductController {
         console.log('Antes do length', request.data.models.length)
         // Restante do seu código de verificação...
       }
-
-      if (request.data.categories !== undefined) {
-        if (!Array.isArray(request.data.categories)) {
+      const categories: string[] = JSON.parse(request.data.categories as string)
+      if (categories !== undefined) {
+        if (!Array.isArray(categories)) {
           throw new WrongTypeParameters(
             'categories',
             'array',
-            typeof request.data.categories,
+            typeof categories,
           )
         }
-        if (request.data.categories.length === 0) {
+        if (categories.length === 0) {
           throw new EntityError('categories')
         }
         if (
-          !request.data.categories.every(
+          !categories.every(
             (category: string) => typeof category === 'string',
           )
         ) {
           throw new WrongTypeParameters(
             'categories',
             'array of strings',
-            typeof request.data.categories,
+            typeof categories,
           )
         }
       }
-
+      console.log('pssou aqui')
       if (request.data.attributes !== undefined) {
         if (!Array.isArray(request.data.attributes)) {
           throw new WrongTypeParameters(
@@ -109,6 +109,7 @@ export class UpdateProductController {
         }
       }
 
+      console.log('pssou aqui 2')
       if (request.data.videos !== undefined) {
         if (!Array.isArray(request.data.videos)) {
           throw new WrongTypeParameters(
@@ -140,7 +141,7 @@ export class UpdateProductController {
           ? (request.data.description as string)
           : undefined,
         request.data.models as string[] | undefined,
-        request.data.categories,
+        categories,
         request.data.attributes,
         request.data.videos,
       )
