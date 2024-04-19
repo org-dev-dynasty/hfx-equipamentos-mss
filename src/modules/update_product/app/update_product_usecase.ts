@@ -23,6 +23,57 @@ export class UpdateProductUsecase {
     if (description && !Product.validateDescription(description)) {
       throw new EntityError('description')
     }
+    
+    if (models && categories) {
+      throw new ConflictItems('models and categories')
+    }
+    
+    if (models) {
+      const modelsAlreadyExistent = (await this.repo.getProductById(id)).models
+      
+      const modelsWithIds = models.map(model => {
+        if (modelsAlreadyExistent?.includes(model)) {
+          return model
+        }
+        return `${model}#${id}`
+      })
+      
+      if (attributes) {
+        const attributesWithIds = attributes.map(attribute => {
+          const attributesWithIds = models?.map(name => {
+            const newModelId = `${name}#${id}`
+            return { ...attribute, modelId: newModelId }
+          })
+          return attributesWithIds as Record<string, any>
+        })
+        attributes = attributesWithIds
+      }
+      models = modelsWithIds
+    }
+    
+    if (categories) {
+      const categoriesAlreadyExistent = (await this.repo.getProductById(id)).categories
+
+      const categoriesWithIds = categories.map(category => {
+        if (categoriesAlreadyExistent?.includes(category)) {
+          return category
+        }
+        return `${category}#${id}`
+      })
+      
+      if (attributes) {
+        const attributesWithIds = attributes.map(attribute => {
+          const attributesWithIds = categories?.map(name => {
+            const newCategoryId = `${name}#${id}`
+            return { ...attribute, categoryId: newCategoryId }
+          })
+          return attributesWithIds as Record<string, any>
+        })
+        attributes = attributesWithIds
+      }
+      categories = categoriesWithIds
+    }
+    
     if (models && !Product.validateModel(models)) {
       throw new EntityError('models')
     }
@@ -36,57 +87,9 @@ export class UpdateProductUsecase {
       throw new EntityError('videos')
     }
 
-    if (models && categories) {
-      throw new ConflictItems('models and categories')
-    }
-
-    if (models) {
-      const modelsAlreadyExistent = (await this.repo.getProductById(id)).models
-
-      const modelsWithIds = models.map(model => {
-        if (modelsAlreadyExistent?.includes(model)) {
-          return model
-        }
-        return `${model}#${id}`
-      })
-
-      if (attributes) {
-        const attributesWithIds = attributes.map(attribute => {
-          const attributesWithIds = models?.map(name => {
-            const newModelId = `${name}#${id}`
-            return { ...attribute, modelId: newModelId }
-          })
-          return attributesWithIds as Record<string, any>
-        })
-        attributes = attributesWithIds
-      }
-      models = modelsWithIds
-    }
-
-    if (categories) {
-      const categoriesAlreadyExistent = (await this.repo.getProductById(id)).categories
-
-      const categoriesWithIds = categories.map(category => {
-        if (categoriesAlreadyExistent?.includes(category)) {
-          return category
-        }
-        return `${category}#${id}`
-      })
-
-      if (attributes) {
-        const attributesWithIds = attributes.map(attribute => {
-          const attributesWithIds = categories?.map(name => {
-            const newCategoryId = `${name}#${id}`
-            return { ...attribute, categoryId: newCategoryId }
-          })
-          return attributesWithIds as Record<string, any>
-        })
-        attributes = attributesWithIds
-      }
-      categories = categoriesWithIds
-    }
-
-    console.log('[antes de criar o produto]')
+    console.log('[Create usecase] models:', models)
+    console.log('[Create usecase] categories:', categories) 
+    console.log('[Create usecase] attributes:', attributes)
 
     const updatedProduct = await this.repo.updateProduct(
       id,
@@ -97,7 +100,7 @@ export class UpdateProductUsecase {
       attributes,
       videos,
     )
-
+    
     console.log('[depois de criar o produto]')
 
     return updatedProduct

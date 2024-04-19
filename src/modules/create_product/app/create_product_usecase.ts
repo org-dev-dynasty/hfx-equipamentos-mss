@@ -61,10 +61,9 @@ export class CreateProductUsecase {
       videos = videosWithIds
     }
 
-    console.log('[Update usecase] models:', models)
-    console.log('[Update usecase] categories:', categories) 
-    console.log('[Update usecase] attributes:', attributes)
-    console.log('[Update usecase] videos:', videos)
+    console.log('[Create usecase] models:', models)
+    console.log('[Create usecase] categories:', categories) 
+    console.log('[Create usecase] attributes:', attributes)
 
     if (models && !Product.validateModel(models)) throw new EntityError('models')
     if (categories && !Product.validateCategory(categories)) throw new EntityError('categories')
