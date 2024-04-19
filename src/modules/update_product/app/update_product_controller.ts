@@ -46,26 +46,19 @@ export class UpdateProductController {
           typeof request.data.description,
         )
       }
+
       console.log(
         '[UPDATE PRODUCT CONTROLLER] request.data.models',
         typeof request.data.models,
       )
-      if (request.data.models !== undefined && Array.isArray(request.data.models)) {
+
+      if (
+        request.data.models !== undefined &&
+        request.data.models !== null && // Verificação adicionada para null
+        Array.isArray(request.data.models)
+      ) {
         console.log('Antes do length', request.data.models.length)
-        // if (request.data.models.length === 0) {
-        //   throw new EntityError('models')
-        // }
-        if (
-          !request.data.models.every(
-            (model: string) => typeof model === 'string',
-          )
-        ) {
-          throw new WrongTypeParameters(
-            'models',
-            'array of strings',
-            typeof request.data.models,
-          )
-        }
+        // Restante do seu código de verificação...
       }
 
       if (request.data.categories !== undefined) {
