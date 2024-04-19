@@ -5,7 +5,7 @@ import {
   WrongTypeParameters,
 } from '../../../shared/helpers/errors/controller_errors'
 import { EntityError } from '../../../shared/helpers/errors/domain_errors'
-import { NoItemsFound } from '../../../shared/helpers/errors/usecase_errors'
+import { ConflictItems, NoItemsFound } from '../../../shared/helpers/errors/usecase_errors'
 import { IRequest } from '../../../shared/helpers/external_interfaces/external_interface'
 import {
   BadRequest,
@@ -164,7 +164,8 @@ export class UpdateProductController {
       if (
         error instanceof MissingParameters ||
         error instanceof WrongTypeParameters ||
-        error instanceof EntityError
+        error instanceof EntityError ||
+        error instanceof ConflictItems
       ) {
         return new BadRequest(error.message)
       }
