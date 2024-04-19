@@ -46,13 +46,16 @@ export class UpdateProductController {
           typeof request.data.description,
         )
       }
-      console.log('[UPDATE PRODUCT CONTROLLER] request.data.models', typeof(request.data.models))
+      console.log(
+        '[UPDATE PRODUCT CONTROLLER] request.data.models',
+        typeof request.data.models,
+      )
       if (request.data.models !== undefined) {
         if (!Array.isArray(request.data.models)) {
           throw new WrongTypeParameters(
             'models',
-            typeof request.data.models,
             'array',
+            typeof request.data.models,
           )
         }
         console.log('Antes do length', request.data.models.length)
@@ -76,8 +79,8 @@ export class UpdateProductController {
         if (!Array.isArray(request.data.categories)) {
           throw new WrongTypeParameters(
             'categories',
-            typeof request.data.categories,
             'array',
+            typeof request.data.categories,
           )
         }
         if (request.data.categories.length === 0) {
@@ -100,8 +103,8 @@ export class UpdateProductController {
         if (!Array.isArray(request.data.attributes)) {
           throw new WrongTypeParameters(
             'attributes',
-            typeof request.data.attributes,
             'array',
+            typeof request.data.attributes,
           )
         }
         if (request.data.attributes.length === 0) {
@@ -124,8 +127,8 @@ export class UpdateProductController {
         if (!Array.isArray(request.data.videos)) {
           throw new WrongTypeParameters(
             'videos',
-            typeof request.data.videos,
             'array',
+            typeof request.data.videos,
           )
         }
         if (request.data.videos.length === 0) {
