@@ -34,7 +34,7 @@ export class UpdateProductUsecase {
       throw new ConflictItems('models and categories')
     }
     
-    if (models) {
+    if (models && models.length > 0) {
       const modelsAlreadyExistent = (await this.repo.getProductById(id)).models
       
       const modelsWithIds = models.map(model => {
@@ -44,7 +44,7 @@ export class UpdateProductUsecase {
         return `${model}#${id}`
       })
       
-      if (attributes) {
+      if (attributes && attributes.length > 0) {
         const attributesWithIds = attributes.map(attribute => {
           const attributesWithIds = models?.map(name => {
             const newModelId = `${name}#${id}`
@@ -57,7 +57,7 @@ export class UpdateProductUsecase {
       models = modelsWithIds
     }
     
-    if (categories) {
+    if (categories && categories.length > 0) {
       const categoriesAlreadyExistent = (await this.repo.getProductById(id)).categories
 
       const categoriesWithIds = categories.map(category => {
@@ -67,7 +67,7 @@ export class UpdateProductUsecase {
         return `${category}#${id}`
       })
       
-      if (attributes) {
+      if (attributes && attributes.length > 0) {
         const attributesWithIds = attributes.map(attribute => {
           const attributesWithIds = categories?.map(name => {
             const newCategoryId = `${name}#${id}`
