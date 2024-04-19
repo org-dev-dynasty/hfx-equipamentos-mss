@@ -46,7 +46,7 @@ export class UpdateProductController {
           typeof request.data.description,
         )
       }
-      console.log('[UPDATE PRODUCT CONTROLLER] request.data.models', request.data.models)
+      console.log('[UPDATE PRODUCT CONTROLLER] request.data.models', typeof(request.data.models))
       if (request.data.models !== undefined) {
         if (!Array.isArray(request.data.models)) {
           throw new WrongTypeParameters(
@@ -55,6 +55,7 @@ export class UpdateProductController {
             'array',
           )
         }
+        console.log('Antes do length', request.data.models.length)
         if (request.data.models.length === 0) {
           throw new EntityError('models')
         }
