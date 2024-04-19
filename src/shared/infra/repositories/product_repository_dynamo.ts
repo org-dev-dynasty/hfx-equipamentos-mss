@@ -85,6 +85,8 @@ export class ProductRepositoryDynamo implements IProductRepository {
   ): Promise<Product> {
     // Obtém o produto atual do DynamoDB
 
+    console.log('[Chegou no repo dynamo updateProduct()]')
+
     let itemsToUpdate: Record<string, any> = {}
 
     // Atualiza os campos do produto
@@ -113,6 +115,8 @@ export class ProductRepositoryDynamo implements IProductRepository {
       ProductRepositoryDynamo.sortKeyFormat(id),
       itemsToUpdate,
     )
+
+    console.log('[ProductRepositoryDynamo] - updateProduct - itemsToUpdate: ', itemsToUpdate)
 
     // Retorna o produto atualizado
     const product = await this.getProductById(id)
