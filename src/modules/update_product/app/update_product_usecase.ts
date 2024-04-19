@@ -16,6 +16,7 @@ export class UpdateProductUsecase {
     attributes?: Record<string, any>[],
     videos?: string[],
   ) {
+    console.log('[chegou no usecase do update]')
     if (name && !Product.validateName(name)) {
       throw new EntityError('name')
     }
@@ -85,6 +86,8 @@ export class UpdateProductUsecase {
       categories = categoriesWithIds
     }
 
+    console.log('[antes de criar o produto]')
+
     const updatedProduct = await this.repo.updateProduct(
       id,
       name,
@@ -94,6 +97,8 @@ export class UpdateProductUsecase {
       attributes,
       videos,
     )
+
+    console.log('[depois de criar o produto]')
 
     return updatedProduct
   }
