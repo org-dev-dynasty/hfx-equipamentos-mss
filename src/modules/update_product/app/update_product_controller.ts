@@ -30,7 +30,7 @@ export class UpdateProductController {
 
       if (request.data.models !== undefined) {
         if (!Array.isArray(request.data.models)) {
-          throw new WrongTypeParameters('models', typeof request.data.models, 'array')
+          throw new WrongTypeParameters('models', 'array', typeof request.data.models)
         }
         if (request.data.models.length === 0) {
           throw new EntityError('models')
@@ -42,7 +42,7 @@ export class UpdateProductController {
 
       if (request.data.categories !== undefined) {
         if (!Array.isArray(request.data.categories)) {
-          throw new WrongTypeParameters('categories', typeof request.data.categories, 'array')
+          throw new WrongTypeParameters('categories', 'array', typeof request.data.categories)
         }
         if (request.data.categories.length === 0) {
           throw new EntityError('categories')
@@ -54,7 +54,7 @@ export class UpdateProductController {
 
       if (request.data.attributes !== undefined) {
         if (!Array.isArray(request.data.attributes)) {
-          throw new WrongTypeParameters('attributes', typeof request.data.attributes, 'array')
+          throw new WrongTypeParameters('attributes', 'array', typeof request.data.attributes)
         }
         if (request.data.attributes.length === 0) {
           throw new EntityError('attributes')
@@ -66,7 +66,7 @@ export class UpdateProductController {
 
       if (request.data.videos !== undefined) {
         if (!Array.isArray(request.data.videos)) {
-          throw new WrongTypeParameters('videos', typeof request.data.videos, 'array')
+          throw new WrongTypeParameters('videos', 'array', typeof request.data.videos)
         }
         if (request.data.videos.length === 0) {
           throw new EntityError('videos')
