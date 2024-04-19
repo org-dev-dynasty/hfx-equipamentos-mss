@@ -2,6 +2,7 @@
 import { Product } from '../../../shared/domain/entities/product'
 import { IProductRepository } from '../../../shared/domain/repositories/product_repository_interface'
 import { EntityError } from '../../../shared/helpers/errors/domain_errors'
+import { ConflictItems } from '../../../shared/helpers/errors/usecase_errors'
 
 export class UpdateProductUsecase {
   constructor(private readonly repo: IProductRepository) {}
@@ -32,6 +33,56 @@ export class UpdateProductUsecase {
     }
     if (videos && !Product.validateVideos(videos)) {
       throw new EntityError('videos')
+    }
+
+    if (models && categories) {
+      throw new ConflictItems('models and categories')
+    }
+
+    if (models) {
+      const modelsAlreadyExistent = (await this.repo.getProductById(id)).models
+
+      const modelsWithIds = models.map(model => {
+        if (modelsAlreadyExistent?.includes(model)) {
+          return model
+        }
+        return `${model}#${id}`
+      })
+
+      if (attributes) {
+        const attributesWithIds = attributes.map(attribute => {
+          const attributesWithIds = models?.map(name => {
+            const newModelId = `${name}#${id}`
+            return { ...attribute, modelId: newModelId }
+          })
+          return attributesWithIds as Record<string, any>
+        })
+        attributes = attributesWithIds
+      }
+      models = modelsWithIds
+    }
+
+    if (categories) {
+      const categoriesAlreadyExistent = (await this.repo.getProductById(id)).categories
+
+      const categoriesWithIds = categories.map(category => {
+        if (categoriesAlreadyExistent?.includes(category)) {
+          return category
+        }
+        return `${category}#${id}`
+      })
+
+      if (attributes) {
+        const attributesWithIds = attributes.map(attribute => {
+          const attributesWithIds = categories?.map(name => {
+            const newCategoryId = `${name}#${id}`
+            return { ...attribute, categoryId: newCategoryId }
+          })
+          return attributesWithIds as Record<string, any>
+        })
+        attributes = attributesWithIds
+      }
+      categories = categoriesWithIds
     }
 
     const updatedProduct = await this.repo.updateProduct(
