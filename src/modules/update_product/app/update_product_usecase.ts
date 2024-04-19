@@ -17,6 +17,12 @@ export class UpdateProductUsecase {
     videos?: string[],
   ) {
     console.log('[chegou no usecase do update]')
+
+    console.log('[Update usecase] - models ', models)
+    console.log('[Update usecase] - categories ', categories)
+    console.log('[Update usecase] - attributes ', attributes)
+    console.log('[Update usecase] - videos ', videos)
+
     if (name && !Product.validateName(name)) {
       throw new EntityError('name')
     }
