@@ -52,9 +52,9 @@ export class UpdateProductController {
       )
       if (request.data.models !== undefined && Array.isArray(request.data.models)) {
         console.log('Antes do length', request.data.models.length)
-        if (request.data.models.length === 0) {
-          throw new EntityError('models')
-        }
+        // if (request.data.models.length === 0) {
+        //   throw new EntityError('models')
+        // }
         if (
           !request.data.models.every(
             (model: string) => typeof model === 'string',
