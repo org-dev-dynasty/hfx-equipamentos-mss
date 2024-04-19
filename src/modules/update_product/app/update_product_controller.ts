@@ -144,6 +144,8 @@ export class UpdateProductController {
         }
       }
 
+      console.log('[Após if videos]')
+
       const updatedProduct = await this.usecase.execute(
         request.data.id,
         request.data.name ? (request.data.name as string) : undefined,
