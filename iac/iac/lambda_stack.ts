@@ -16,6 +16,7 @@ export class LambdaStack extends Construct {
   createProductFunction: lambda.Function
   updateProductFunction: lambda.Function
   deleteProductFunction: lambda.Function
+  deleteModelOfProductFunction: lambda.Function
 
   createLambdaApiGatewayIntegration(moduleName: string, method: string, mssStudentApiResource: Resource, environmentVariables: Record<string, any>) {
     const modifiedModuleName = moduleName.toLowerCase().split(' ').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
@@ -50,6 +51,7 @@ export class LambdaStack extends Construct {
     this.createProductFunction = this.createLambdaApiGatewayIntegration('create_product', 'POST', apiGatewayResource, environmentVariables)
     this.updateProductFunction = this.createLambdaApiGatewayIntegration('update_product', 'PUT', apiGatewayResource, environmentVariables)
     this.deleteProductFunction = this.createLambdaApiGatewayIntegration('delete_product', 'DELETE', apiGatewayResource, environmentVariables)
+    this.deleteModelOfProductFunction = this.createLambdaApiGatewayIntegration('delete_model_of_product', 'DELETE', apiGatewayResource, environmentVariables)
 
     this.functionsThatNeedDynamoPermissions = [
       this.loginFunction,
@@ -57,7 +59,8 @@ export class LambdaStack extends Construct {
       this.getProductByIdFunction,
       this.createProductFunction,
       this.updateProductFunction,
-      this.deleteProductFunction
+      this.deleteProductFunction,
+      this.deleteModelOfProductFunction
     ]
   }
 }
