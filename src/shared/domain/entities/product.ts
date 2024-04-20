@@ -60,12 +60,12 @@ export class Product {
       this.props.categories = props.categories
     }
 
-    if (props.attributes !== undefined && props.attributes !== null) {
-      if (!Product.validateAttributes(props.attributes)) {
-        throw new EntityError('props.attributes')
-      }
-      this.props.attributes = props.attributes
-    }
+    // if (props.attributes !== undefined && props.attributes !== null) {
+    //   if (!Product.validateAttributes(props.attributes)) {
+    //     throw new EntityError('props.attributes')
+    //   }
+    //   this.props.attributes = props.attributes
+    // }
 
     if (props.videos !== undefined && props.videos !== null) {
       if (!Product.validateVideos(props.videos)) {
