@@ -30,7 +30,7 @@ export class UpdateProductUsecase {
       throw new EntityError('description')
     }
     
-    if (models && categories) {
+    if (models && models.length > 0 && categories && categories.length > 0) {
       throw new ConflictItems('models and categories')
     }
     
