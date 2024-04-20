@@ -46,12 +46,12 @@ export class Product {
     }
     this.props.description = props.description
 
-    if (props.models !== undefined && props.models !== null) {
-      if (!Product.validateModel(props.models)) {
-        throw new EntityError('props.models')
-      }
-      this.props.models = props.models
-    }
+    // if (props.models !== undefined && props.models !== null) {
+    //   if (!Product.validateModel(props.models)) {
+    //     throw new EntityError('props.models')
+    //   }
+    //   this.props.models = props.models
+    // }
 
     if (props.categories !== undefined && props.categories !== null) {
       if (!Product.validateCategory(props.categories)) {
