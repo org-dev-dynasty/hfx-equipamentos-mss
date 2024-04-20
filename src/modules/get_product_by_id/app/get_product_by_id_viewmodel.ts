@@ -5,10 +5,10 @@ export class GetProductByIdViewModel {
   private id: string
   private name: string
   private description: string
-  private models?: string[]
-  private categories?: string[]
-  private attributes?: Record<string, any>[]
-  private videos?: string[]
+  private models?: string[] | null
+  private categories?: string[] | null
+  private attributes?: Record<string, any>[] | null
+  private videos?: string[] | null
 
   constructor(product: Product) {
     this.id = product.id
