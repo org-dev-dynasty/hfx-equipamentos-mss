@@ -6,22 +6,35 @@ export type ProductDynamoDTOProps = {
   id: string
   name: string
   description: string
-  models?: string[]
-  categories?: string[]
-  attributes?: Record<string, any>[] 
-  videos?: string[]
+  models?: string[] | null
+  categories?: string[] | null
+  attributes?: Record<string, any>[] | null
+  videos?: string[] | null
 }
 
 export class ProductDynamoDTO {
   private id: string
   private name: string
   private description: string
-  private models?: string[]
-  private categories?: string[]
-  private attributes?: Record<string, any>[]
-  private videos?: string[]
+  private models?: string[] | null
+  private categories?: string[] | null
+  private attributes?: Record<string, any>[] | null
+  private videos?: string[] | null
 
   constructor(props: ProductDynamoDTOProps) {
+    if (this.models === undefined) {
+      this.models = null
+    }
+    if (this.categories === undefined) {
+      this.categories = null
+    }
+    if (this.attributes === undefined) {
+      this.attributes = null
+    }
+    if (this.videos === undefined) {
+      this.videos = null
+    }
+
     this.id = props.id
     this.name = props.name
     this.description = props.description

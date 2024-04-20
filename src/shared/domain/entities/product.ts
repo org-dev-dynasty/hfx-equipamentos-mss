@@ -8,9 +8,9 @@ export type ProductProps = {
   description: string
   // models será um array de strings, essas strings terão esse formato: "nome_do_modelo#id_do_produto"
   // const id = models.split('#')[1]
-  models?: string[]
-  categories?: string[]
-  attributes?: Record<string, any>[] 
+  models?: string[] | null
+  categories?: string[] | null
+  attributes?: Record<string, any>[] | null
   // If models is !== undefined, first element of an attribute will be the modelId
   // If models is === undefined, first element of an attribute will be the categoryId
   /* [
@@ -26,7 +26,7 @@ export type ProductProps = {
   ] 
 
   */
-  videos?: string[]
+  videos?: string[] | null
 }
 
 export class Product {
@@ -46,28 +46,28 @@ export class Product {
     }
     this.props.description = props.description
 
-    if (props.models !== undefined) {
+    if (props.models !== undefined && props.models !== null) {
       if (!Product.validateModel(props.models)) {
         throw new EntityError('props.models')
       }
       this.props.models = props.models
     }
 
-    if (props.categories !== undefined) {
+    if (props.categories !== undefined && props.categories !== null) {
       if (!Product.validateCategory(props.categories)) {
         throw new EntityError('props.categories')
       }
       this.props.categories = props.categories
     }
 
-    if (props.attributes !== undefined) {
+    if (props.attributes !== undefined && props.attributes !== null) {
       if (!Product.validateAttributes(props.attributes)) {
         throw new EntityError('props.attributes')
       }
       this.props.attributes = props.attributes
     }
 
-    if (props.videos !== undefined) {
+    if (props.videos !== undefined && props.videos !== null) {
       if (!Product.validateVideos(props.videos)) {
         throw new EntityError('props.videos')
       }
