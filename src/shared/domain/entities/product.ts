@@ -26,6 +26,9 @@ export type ProductProps = {
   ] 
 
   */
+  productImages?: string[] | null
+  modelsImages?: string[] | null
+  categoriesImages?: string[] | null
   videos?: string[] | null
 }
 
@@ -58,6 +61,27 @@ export class Product {
         throw new EntityError('props.categories')
       }
       this.props.categories = props.categories
+    }
+
+    if (props.productImages !== undefined && props.productImages !== null) {
+      if (!Product.validateProductImages(props.productImages)) {
+        throw new EntityError('props.productImages')
+      }
+      this.props.productImages = props.productImages
+    }
+
+    if (props.modelsImages !== undefined && props.modelsImages !== null) {
+      if (!Product.validateModelsImages(props.modelsImages)) {
+        throw new EntityError('props.modelsImages')
+      }
+      this.props.modelsImages = props.modelsImages
+    }
+
+    if (props.categoriesImages !== undefined && props.categoriesImages !== null) {
+      if (!Product.validateCategoriesImages(props.categoriesImages)) {
+        throw new EntityError('props.categoriesImages')
+      }
+      this.props.categoriesImages = props.categoriesImages
     }
 
     // if (props.attributes !== undefined && props.attributes !== null) {
@@ -139,6 +163,28 @@ export class Product {
       throw new EntityError('props.attributes')
     }
     this.props.attributes = attributes
+  }
+
+  get productImages() {
+    return this.props.productImages
+  }
+
+  set setProductImages(productImages: string[]) {
+    if (!Product.validateProductImages(productImages)) {
+      throw new EntityError('props.productImages')
+    }
+    this.props.productImages = productImages
+  }
+
+  get modelsImages() {
+    return this.props.modelsImages
+  }
+
+  set setModelsImages(modelsImages: string[]) {
+    if (!Product.validateModelsImages(modelsImages)) {
+      throw new EntityError('props.modelsImages')
+    }
+    this.props.modelsImages = modelsImages
   }
 
   get videos() {
@@ -225,6 +271,33 @@ export class Product {
       }
     })
     return true
+  }
+
+  static validateProductImages(productImages: string[]) {
+    if (!Array.isArray(productImages)) return false
+    productImages.map((value) => {
+      if (value === '') return false
+      if (value === null) return false
+      if (typeof value !== 'string') return false
+    })
+  }
+
+  static validateModelsImages(modelsImages: string[]) {
+    if (!Array.isArray(modelsImages)) return false
+    modelsImages.map((value) => {
+      if (value === '') return false
+      if (value === null) return false
+      if (typeof value !== 'string') return false
+    })
+  }
+
+  static validateCategoriesImages(categoriesImages: string[]) {
+    if (!Array.isArray(categoriesImages)) return false
+    categoriesImages.map((value) => {
+      if (value === '') return false
+      if (value === null) return false
+      if (typeof value !== 'string') return false
+    })
   }
 
   static validateVideos(videos: string[]) {
