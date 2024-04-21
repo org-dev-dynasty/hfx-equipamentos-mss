@@ -1,7 +1,7 @@
 /* eslint-disable no-prototype-builtins */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Product } from '../../domain/entities/product'
-import { marshall, unmarshall } from '@aws-sdk/util-dynamodb'
+import { unmarshall } from '@aws-sdk/util-dynamodb'
 
 export type ProductDynamoDTOProps = {
   id: string
@@ -57,7 +57,7 @@ export class ProductDynamoDTO {
     })
   }
 
-  validateDynamoItemTypes(dynamoItem: Record<string, any>) {
+  static validateDynamoItemTypes(dynamoItem: Record<string, any>) {
     const expectedTypes: Record<string, 'S' | 'L' | 'NULL'> = {
       entity: 'S',
       id: 'S',
@@ -96,7 +96,7 @@ export class ProductDynamoDTO {
   }
 
   toDynamo() {
-    const productData: any = {
+    return {
       'entity': 'product',
       'id': this.id,
       'name': this.name,
@@ -107,19 +107,13 @@ export class ProductDynamoDTO {
       'videos': this.videos || null
     }
 
-    const marshalledProductData = marshall(productData, { removeUndefinedValues: true  })
-
-    this.validateDynamoItemTypes(marshalledProductData)
-
-    console.log('[ProductDynamoDTO] - toDynamo - productData: ', productData)
-
-    console.log('[ProductDynamoDTO] - toDynamo - marshalledProductData: ', marshalledProductData)
-
-    return marshalledProductData
   }
 
   static fromDynamo(productData: any) {
     console.log('[ProductDynamoDTO] - fromDynamo - productData: ', productData)
+    
+    ProductDynamoDTO.validateDynamoItemTypes(productData)
+
     console.log('[ProductDynamoDTO] - fromDynamo - unMarshall(productData): ', unmarshall(productData))
 
     // const id = productData['id'] && productData['id']['S'] ? productData['id']['S'] : null
