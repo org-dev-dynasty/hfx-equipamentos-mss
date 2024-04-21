@@ -31,20 +31,24 @@ export type ProductProps = {
 
 export class Product {
   constructor(private props: ProductProps) {
+
+
     // if (!Product.validateId(props.id)) {
     //   throw new EntityError('props.id')
     // }
-    this.props.id = props.id
+    // this.props.id = props.id
 
-    if (!Product.validateName(props.name)) {
-      throw new EntityError('props.name')
-    }
-    this.props.name = props.name
+    // if (!Product.validateName(props.name)) {
+    //   throw new EntityError('props.name')
+    // }
+    // this.props.name = props.name
 
-    if (!Product.validateDescription(props.description)) {
-      throw new EntityError('props.description')
-    }
-    this.props.description = props.description
+    // if (!Product.validateDescription(props.description)) {
+    //   throw new EntityError('props.description')
+    // }
+    // this.props.description = props.description
+
+
 
     // if (props.models !== undefined && props.models !== null) {
     //   if (!Product.validateModel(props.models)) {
