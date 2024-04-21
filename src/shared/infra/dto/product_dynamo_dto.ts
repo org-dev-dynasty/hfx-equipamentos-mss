@@ -101,7 +101,7 @@ export class ProductDynamoDTO {
       'id': this.id,
       'name': this.name,
       'description': this.description,
-      'models': this.models,
+      'models': this.models || null,
       'categories': this.categories || null,
       'attributes': this.attributes || null,
       'videos': this.videos || null
