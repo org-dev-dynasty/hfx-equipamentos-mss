@@ -6,14 +6,14 @@ import {
   LambdaHttpRequest,
   LambdaHttpResponse,
 } from '../../../shared/helpers/external_interfaces/http_lambda_requests'
-import { DeleteModelOfProductController } from './delete_model_of_product_controller'
-import { DeleteModelOfProductUsecase } from './delete_model_of_product_usecase'
+import { DeleteCategoryOfProductController } from './delete_category_of_product_controller'
+import { DeleteCategoryOfProductUsecase } from './delete_category_of_product_usecase'
 
 const repo = Environments.getProductRepo()
-const usecase = new DeleteModelOfProductUsecase(repo)
-const controller = new DeleteModelOfProductController(usecase)
+const usecase = new DeleteCategoryOfProductUsecase(repo)
+const controller = new DeleteCategoryOfProductController(usecase)
 
-export async function DeleteModelOfProductPresenter(event: Record<string, any>) {
+export async function DeleteCategoryOfProductPresenter(event: Record<string, any>) {
   const httpRequest = new LambdaHttpRequest(event)
   const response = await controller.handle(httpRequest)
   const httpResponse = new LambdaHttpResponse(
@@ -26,6 +26,6 @@ export async function DeleteModelOfProductPresenter(event: Record<string, any>) 
 }
 
 export async function handler(event: any, context: any) {
-  const response = await DeleteModelOfProductPresenter(event)
+  const response = await DeleteCategoryOfProductPresenter(event)
   return response
 }
