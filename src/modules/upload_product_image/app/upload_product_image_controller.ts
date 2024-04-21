@@ -14,6 +14,7 @@ export class UploadProductImageController {
     console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] request', request)
 
     try {
+      console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] request.data.body', request.data.body)
       if (request.data.productId === undefined) {
         throw new MissingParameters('productId')
       }
