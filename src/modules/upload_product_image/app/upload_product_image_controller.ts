@@ -13,6 +13,8 @@ export class UploadProductImageController {
   async handle(request: Record<string, any>) {
     console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] request', request)
     const contentType = request.headers['content-type'] || request.headers['Content-Type']
+    const formDataRequest = new FormData(contentType)
+    console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] formDataRequest', formDataRequest)
     console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] contentType', contentType)
     const body = {
       'content-type': contentType,
