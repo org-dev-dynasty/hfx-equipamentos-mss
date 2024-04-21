@@ -34,6 +34,8 @@ export type ProductProps = {
 
 export class Product {
   constructor(private props: ProductProps) {
+
+
     if (!Product.validateId(props.id)) {
       throw new EntityError('props.id')
     }
@@ -49,12 +51,14 @@ export class Product {
     }
     this.props.description = props.description
 
-    // if (props.models !== undefined && props.models !== null) {
-    //   if (!Product.validateModel(props.models)) {
-    //     throw new EntityError('props.models')
-    //   }
-    //   this.props.models = props.models
-    // }
+
+
+    if (props.models !== undefined && props.models !== null) {
+      if (!Product.validateModel(props.models)) {
+        throw new EntityError('props.models')
+      }
+      this.props.models = props.models
+    }
 
     if (props.categories !== undefined && props.categories !== null) {
       if (!Product.validateCategory(props.categories)) {
@@ -84,12 +88,12 @@ export class Product {
       this.props.categoriesImages = props.categoriesImages
     }
 
-    // if (props.attributes !== undefined && props.attributes !== null) {
-    //   if (!Product.validateAttributes(props.attributes)) {
-    //     throw new EntityError('props.attributes')
-    //   }
-    //   this.props.attributes = props.attributes
-    // }
+    if (props.attributes !== undefined && props.attributes !== null) {
+      if (!Product.validateAttributes(props.attributes)) {
+        throw new EntityError('props.attributes')
+      }
+      this.props.attributes = props.attributes
+    }
 
     if (props.videos !== undefined && props.videos !== null) {
       if (!Product.validateVideos(props.videos)) {

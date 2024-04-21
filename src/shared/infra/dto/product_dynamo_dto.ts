@@ -68,7 +68,7 @@ export class ProductDynamoDTO {
       attributes: 'L',
       videos: 'L'
     }
-  
+
     for (const [key, value] of Object.entries(dynamoItem)) {
       const expectedType = expectedTypes[key]
       if (!expectedType) {
@@ -80,7 +80,7 @@ export class ProductDynamoDTO {
       if (!value.hasOwnProperty(expectedType)) {
         throw new Error(`Tipo incorreto para a chave '${key}'. Esperado '${expectedType}', encontrado '${Object.keys(value)[0]}' no DynamoDB item.`)
       }
-  
+
       // Validação específica para 'attributes'
       if (key === 'attributes' && expectedType === 'L') {
         if (!Array.isArray(value.L)) {

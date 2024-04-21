@@ -52,5 +52,6 @@ export class TemplateStack extends Stack {
     dynamoProductsTable.table.grantReadWriteData(lambdaStack.updateProductFunction)
     dynamoProductsTable.table.grantReadWriteData(lambdaStack.deleteProductFunction)
     dynamoProductsTable.table.grantReadWriteData(lambdaStack.deleteModelOfProductFunction)
+    dynamoProductsTable.table.grantReadWriteData(lambdaStack.deleteCategoryOfProductFunction)
   }
 }
