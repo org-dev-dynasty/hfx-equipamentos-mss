@@ -58,22 +58,26 @@ export class ProductDynamoDTO {
   }
 
   validateDynamoItemTypes(dynamoItem: Record<string, any>) {
-    const expectedTypes = {
+    const expectedTypes: Record<string, 'S' | 'L' | 'NULL'> = {
+      entity: 'S',
       id: 'S',
       name: 'S',
       description: 'S',
       models: 'L',
       categories: 'L',
       attributes: 'L',
-      videos: 'L',
-    } as any
+      videos: 'L'
+    }
   
     for (const [key, value] of Object.entries(dynamoItem)) {
       const expectedType = expectedTypes[key]
       if (!expectedType) {
         throw new Error(`Tipo inesperado para a chave '${key}' no DynamoDB item.`)
       }
-      if (value && !value.hasOwnProperty(expectedType)) {
+      if (value.hasOwnProperty('NULL')) {
+        continue // Permite valores nulos, então pula a verificação de tipo para essa chave
+      }
+      if (!value.hasOwnProperty(expectedType)) {
         throw new Error(`Tipo incorreto para a chave '${key}'. Esperado '${expectedType}', encontrado '${Object.keys(value)[0]}' no DynamoDB item.`)
       }
   
@@ -97,13 +101,13 @@ export class ProductDynamoDTO {
       'id': this.id,
       'name': this.name,
       'description': this.description,
-      'models': this.models,
-      'categories': this.categories,
-      'attributes': this.attributes,
-      'videos': this.videos
+      'models': this.models || null,
+      'categories': this.categories || null,
+      'attributes': this.attributes || null,
+      'videos': this.videos || null
     }
 
-    const marshalledProductData = marshall(productData, { removeUndefinedValues: false })
+    const marshalledProductData = marshall(productData, { removeUndefinedValues: true  })
 
     this.validateDynamoItemTypes(marshalledProductData)
 
