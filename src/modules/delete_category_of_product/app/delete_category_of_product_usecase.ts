@@ -13,12 +13,15 @@ export class DeleteCategoryOfProductUsecase {
 
     const updatedCategories =
       product.categories && product.categories.length > 0
-        ? product.categories.filter((category) => category.split('#')[0] !== categoryId)
+        ? product.categories.filter((category) => {
+          return category && category.split('#')[0] !== categoryId
+        })
         : []
 
     const updatedAttributes = product.attributes
       ? product.attributes.filter((attribute) => {
-        const attributeCategoryId = attribute.CategoryId.split('#')[0]
+        const attributeCategoryId =
+          attribute.categoryId && attribute.categoryId.split('#')[0]
         return attributeCategoryId !== categoryId
       })
       : []
