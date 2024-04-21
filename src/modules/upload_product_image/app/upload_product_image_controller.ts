@@ -2,7 +2,7 @@
 import { MissingParameters, WrongTypeParameters } from '../../../shared/helpers/errors/controller_errors'
 import { EntityError } from '../../../shared/helpers/errors/domain_errors'
 import { NoItemsFound } from '../../../shared/helpers/errors/usecase_errors'
-import { IRequest } from '../../../shared/helpers/external_interfaces/external_interface'
+// import { IRequest } from '../../../shared/helpers/external_interfaces/external_interface'
 import { BadRequest, InternalServerError, NotFound, OK } from '../../../shared/helpers/external_interfaces/http_codes'
 import { UploadProductImageUsecase } from './upload_product_image_usecase'
 import  Busboy  from 'busboy'
@@ -10,10 +10,13 @@ import  Busboy  from 'busboy'
 export class UploadProductImageController {
   constructor(private readonly usecase: UploadProductImageUsecase) {}
 
-  async handle(request: IRequest) {
-    console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] request.data', request.data)
+  async handle(request: Record<string, any>) {
     console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] request', request)
-    const body = request.data.body as any
+    const contentType = request.headers['content-type'] || request.headers['Content-Type']
+    console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] contentType', contentType)
+    const body = {
+      'content-type': contentType,
+    }
     const busboy = Busboy({ headers: body })
 
     console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] busboy', busboy)
