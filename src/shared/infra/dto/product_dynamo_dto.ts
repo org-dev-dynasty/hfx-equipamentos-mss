@@ -112,7 +112,6 @@ export class ProductDynamoDTO {
   static fromDynamo(productData: any) {
     console.log('[ProductDynamoDTO] - fromDynamo - productData: ', productData)
     
-    ProductDynamoDTO.validateDynamoItemTypes(productData)
 
     console.log('[ProductDynamoDTO] - fromDynamo - unMarshall(productData): ', unmarshall(productData))
 
