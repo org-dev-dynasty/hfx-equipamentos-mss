@@ -12,7 +12,7 @@ const controller = new UploadProductImageController(usecase)
 
 export async function uploadProductImagePresenter(event: Record<string, any>) {
   const httpRequest = new LambdaHttpRequest(event)
-  const response = await controller.handle(httpRequest)
+  const response = await controller.handle(event)
   const httpResponse = new LambdaHttpResponse(
     response?.body,
     response?.statusCode,
