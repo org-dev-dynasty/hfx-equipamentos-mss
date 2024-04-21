@@ -63,6 +63,7 @@ export class CreateProductController {
           }
         })
       }
+
       if (request.data.videos !== undefined) {
         if (!Array.isArray(request.data.videos)) {
           throw new WrongTypeParameters('videos', 'array', typeof request.data.videos)
@@ -76,6 +77,7 @@ export class CreateProductController {
           throw new EntityError('videos')
         }
       }
+      
 
       const product = await this.usecase.execute(
         request.data.name,

@@ -13,9 +13,20 @@ export class UploadProductImageController {
     console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] request.data', request.data)
     console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] request', request)
 
+    const bodyBuffer = Buffer.from(request.data.body as string, 'base64')
+    const bodyString = bodyBuffer.toString()
+
+    console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] bodyString', bodyString)
+    const contentDispositionMatch = bodyString.match(/Content-Disposition: form-data;(.+?)filename="(.+?)"/)
+
+    if (contentDispositionMatch) {
+      console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] contentDispositionMatch', contentDispositionMatch)
+    }
+
     try {
       console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] request.data.body', request.data.body)
-      const formDataRequest = new FormData(request.data.body as any)
+      const formDataRequest = new FormData((request.data.body as any))
+      console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] formData', request.data.body)
       console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] formDataRequest', formDataRequest)
       const productId = formDataRequest.get('productId')?.toString() as string
       console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] productId', productId)
