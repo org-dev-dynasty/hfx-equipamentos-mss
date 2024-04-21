@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { S3 } from 'aws-sdk'
 import { Product } from '../../domain/entities/product'
 import { IProductRepository } from '../../domain/repositories/product_repository_interface'
 import { Environments } from '../../environments'
@@ -27,6 +28,11 @@ export class ProductRepositoryDynamo implements IProductRepository {
       Environments.getEnvs().endpointUrl,
       Environments.getEnvs().dynamoSortKey,
     ),
+
+    private s3: S3 = new S3({
+      region: Environments.getEnvs().region,
+      endpoint: Environments.getEnvs().endpointUrl,
+    }),
   ) {
 
     console.log('[ProductRepositoryDynamo] - Environments.getEnvs(): ', Environments.getEnvs())
@@ -132,5 +138,30 @@ export class ProductRepositoryDynamo implements IProductRepository {
     )
 
     return Promise.resolve(product)
+  }
+
+  async uploadProductImage(id: string, image: string): Promise<Product> {
+    const product = await this.getProductById(id)
+
+    const params = {
+      Bucket: Environments.getEnvs().s3BucketName,
+      Key: id,
+      Body: image,
+    }
+
+    await this.s3.upload(params).promise()
+
+    return Promise.resolve(product)
+  }
+
+  async downloadProductImage(id: string): Promise<string> {
+    const params = {
+      Bucket: Environments.getEnvs().s3BucketName,
+      Key: id,
+    }
+
+    const data = await this.s3.getObject(params).promise()
+
+    return Promise.resolve(data.Body!.toString())   
   }
 }
