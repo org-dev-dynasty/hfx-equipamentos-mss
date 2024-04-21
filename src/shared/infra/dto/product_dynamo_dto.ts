@@ -1,6 +1,7 @@
+/* eslint-disable no-prototype-builtins */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Product } from '../../domain/entities/product'
-import { unmarshall } from '@aws-sdk/util-dynamodb'
+import { marshall, unmarshall } from '@aws-sdk/util-dynamodb'
 
 export type ProductDynamoDTOProps = {
   id: string
@@ -56,17 +57,61 @@ export class ProductDynamoDTO {
     })
   }
 
-  toDynamo() {
-    return {
-      entity: 'product',
-      id: this.id,
-      name: this.name,
-      description: this.description,
-      models: this.models,
-      categories: this.categories,
-      attributes: this.attributes,
-      videos: this.videos,
+  validateDynamoItemTypes(dynamoItem: Record<string, any>) {
+    const expectedTypes = {
+      id: 'S',
+      name: 'S',
+      description: 'S',
+      models: 'L',
+      categories: 'L',
+      attributes: 'L',
+      videos: 'L',
+    } as any
+  
+    for (const [key, value] of Object.entries(dynamoItem)) {
+      const expectedType = expectedTypes[key]
+      if (!expectedType) {
+        throw new Error(`Tipo inesperado para a chave '${key}' no DynamoDB item.`)
+      }
+      if (value && !value.hasOwnProperty(expectedType)) {
+        throw new Error(`Tipo incorreto para a chave '${key}'. Esperado '${expectedType}', encontrado '${Object.keys(value)[0]}' no DynamoDB item.`)
+      }
+  
+      // Validação específica para 'attributes'
+      if (key === 'attributes' && expectedType === 'L') {
+        if (!Array.isArray(value.L)) {
+          throw new Error(`Esperado um array para 'attributes', encontrado ${typeof value.L}`)
+        }
+        value.L.forEach((attribute: Record<string, any>, index: number) => {
+          if (!attribute.hasOwnProperty('M') || Array.isArray(attribute.M)) {
+            throw new Error(`Esperado um objeto para 'attributes[${index}]', encontrado ${typeof attribute.M}`)
+          }
+        })
+      }
     }
+  }
+
+  toDynamo() {
+    const productData: any = {
+      'entity': 'product',
+      'id': this.id,
+      'name': this.name,
+      'description': this.description,
+      'models': this.models,
+      'categories': this.categories,
+      'attributes': this.attributes,
+      'videos': this.videos
+    }
+
+    const marshalledProductData = marshall(productData, { removeUndefinedValues: false })
+
+    this.validateDynamoItemTypes(marshalledProductData)
+
+    console.log('[ProductDynamoDTO] - toDynamo - productData: ', productData)
+
+    console.log('[ProductDynamoDTO] - toDynamo - marshalledProductData: ', marshalledProductData)
+
+    return marshalledProductData
   }
 
   static fromDynamo(productData: any) {
