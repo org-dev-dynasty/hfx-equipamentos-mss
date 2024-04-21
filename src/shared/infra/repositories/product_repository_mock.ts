@@ -1,8 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Product } from '../../domain/entities/product'
 import { IProductRepository } from '../../domain/repositories/product_repository_interface'
 
 export class ProductRepositoryMock implements IProductRepository {
+  uploadProductImage(_id: string, _image: string): Promise<Product> {
+    throw new Error('Method not implemented.')
+  }
+  downloadProductImage(_id: string): Promise<string> {
+    throw new Error('Method not implemented.')
+  }
   private products: Product[] = [
     new Product({
       id: '0195d92b-776d-4662-b233-1d14137b1f95',

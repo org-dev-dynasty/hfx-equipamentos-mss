@@ -54,6 +54,7 @@ jobs:
             echo DYNAMO_TABLE_NAME=${{ secrets.DYNAMO_TABLE_NAME }} >> $GITHUB_ENV
             echo DYNAMO_PRODUCTS_TABLE_NAME=${{ secrets.DYNAMO_PRODUCTS_TABLE_NAME }} >> $GITHUB_ENV
             echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> $GITHUB_ENV
+            echo S3_BUCKET_NAME=${{ secrets.S3_BUCKET_NAME }} >> $GITHUB_ENV
         - name: CDK Bootstrap
           run: |
             echo "CDK Bootstrap"
@@ -76,3 +77,4 @@ jobs:
               JWT_SECRET: ${{ secrets.JWT_SECRET }}
               REGION: ${{ secrets.REGION }}
               AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+              S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}

@@ -39,7 +39,8 @@ export class TemplateStack extends Stack {
       'DYNAMO_SORT_KEY': 'SK',
       'REGION': env.REGION,
       'ENDPOINT_URL': env.ENDPOINT_URL,
-      'JWT_SECRET': env.JWT_SECRET
+      'JWT_SECRET': env.JWT_SECRET,
+      'S3_BUCKET_NAME': env.S3_BUCKET_NAME,
     }
 
     const lambdaStack = new LambdaStack(this, apigatewayResource, ENVIRONMENT_VARIABLES)
