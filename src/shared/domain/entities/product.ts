@@ -228,7 +228,6 @@ export class Product {
   }
 
   static validateModel(models: string[]) {
-    if (models.length === 0) return false
     if (Array.isArray(models) === false) return false
     models.map((value) => {
       if (value.split('#').length !== 2) return false
@@ -242,7 +241,6 @@ export class Product {
   }
   
   static validateCategory(categories: string[]) {
-    if (categories.length === 0) return false
     if (Array.isArray(categories) === false) return false
     categories.map((value) => {
       if (value.split('#').length !== 2) return false
@@ -257,7 +255,6 @@ export class Product {
   }
 
   static validateAttributes(attributes: Record<string, any>[]) {
-    if (attributes.length === 0) return false
     if (Array.isArray(attributes) === false) return false
     attributes.map((value) => {
       if (!value) return false
@@ -305,7 +302,6 @@ export class Product {
   }
 
   static validateVideos(videos: string[]) {
-    if (videos.length === 0) return false
     if (Array.isArray(videos) === false) return false
     videos.map((value) => {
       if (value === '') return false

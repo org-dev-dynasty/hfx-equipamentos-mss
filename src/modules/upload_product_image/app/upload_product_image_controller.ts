@@ -5,6 +5,7 @@ import { NoItemsFound } from '../../../shared/helpers/errors/usecase_errors'
 import { IRequest } from '../../../shared/helpers/external_interfaces/external_interface'
 import { BadRequest, InternalServerError, NotFound, OK } from '../../../shared/helpers/external_interfaces/http_codes'
 import { UploadProductImageUsecase } from './upload_product_image_usecase'
+import  Busboy  from 'busboy'
 
 export class UploadProductImageController {
   constructor(private readonly usecase: UploadProductImageUsecase) {}
@@ -12,24 +13,35 @@ export class UploadProductImageController {
   async handle(request: IRequest) {
     console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] request.data', request.data)
     console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] request', request)
+    const body = request.data.body as any
+    const busboy = Busboy({ headers: body })
 
-    const bodyBuffer = Buffer.from(request.data.body as string, 'base64')
-    const bodyString = bodyBuffer.toString()
-
-    console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] bodyString', bodyString)
-    const contentDispositionMatch = bodyString.match(/Content-Disposition: form-data;(.+?)filename="(.+?)"/)
-
-    if (contentDispositionMatch) {
-      console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] contentDispositionMatch', contentDispositionMatch)
+    console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] busboy', busboy)
+    const result = {
+      files: [],
+      fields: {},
     }
+
+    busboy.on('file', (_fieldname: any, file: any, filename: any, encoding: any, mimetype: any) => {
+      console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] file', file)
+      console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] filename', filename)
+      console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] encoding', encoding)
+      console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] mimetype', mimetype)
+      file.on('data', (data: any) => {
+        console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] data', data)
+        // result.files.push(data)
+      })
+    })
+    console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] result', result)
+
 
     try {
       console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] request.data.body', request.data.body)
-      const formDataRequest = new FormData((request.data.body as any))
       console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] formData', request.data.body)
-      console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] formDataRequest', formDataRequest)
-      const productId = formDataRequest.get('productId')?.toString() as string
-      console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] productId', productId)
+      // console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] formDataRequest', formDataRequest)
+      // const productId = formDataRequest.get('productId')?.toString() as string
+      // console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] productId', productId)
+      const productId = request.data.productId as string
       if (request.data.productId === undefined) {
         throw new MissingParameters('productId')
       }
