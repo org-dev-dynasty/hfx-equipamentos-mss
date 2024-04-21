@@ -17,6 +17,8 @@ export class UploadProductImageController {
       console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] request.data.body', request.data.body)
       const formDataRequest = new FormData(request.data.body as any)
       console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] formDataRequest', formDataRequest)
+      const productId = formDataRequest.get('productId')?.toString() as string
+      console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] productId', productId)
       if (request.data.productId === undefined) {
         throw new MissingParameters('productId')
       }
@@ -32,8 +34,6 @@ export class UploadProductImageController {
       if (typeof request.data.image !== 'string') {
         throw new WrongTypeParameters('image', 'string', typeof request.data.image)
       }
-
-      const productId = request.data.productId
       const image = request.data.image
 
       await this.usecase.execute(productId, image)
