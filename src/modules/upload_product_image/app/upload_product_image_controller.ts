@@ -20,21 +20,38 @@ export class UploadProductImageController {
     const busboy = Busboy({ headers: body })
 
     console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] busboy', busboy)
-    const result = {
+    const result: { files: [], fields: any } = {
       files: [],
       fields: {},
     }
-
-    busboy.on('file', (_fieldname: any, file: any, filename: any, encoding: any, mimetype: any) => {
-      console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] file', file)
-      console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] filename', filename)
-      console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] encoding', encoding)
-      console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] mimetype', mimetype)
-      file.on('data', (data: any) => {
-        console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] data', data)
-        // result.files.push(data)
+    console.log('vai entrar no busboy')
+    const parseForm = new Promise((resolve, reject) => {
+      busboy.on('file', (_fieldname: any, file: any, filename: any, encoding: any, mimetype: any) => {
+        console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] file', file)
+        console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] filename', filename)
+        console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] encoding', encoding)
+        console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] mimetype', mimetype)
+        file.on('data', (data: any) => {
+          console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] data', data)
+          // result.files.push(data)
+        })
       })
+      busboy.on('field', (fieldname: any, val: any) => {
+        console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] fieldname', fieldname)
+        console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] val', val)
+        result.fields[fieldname] = val
+      })
+      busboy.on('finish', () => {
+        console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] finish')
+        resolve(result)
+      })
+      busboy.on('error', (error: any) => {
+        console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] error', error)
+        reject(error)
+      })
+
     })
+    console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] parseForm', parseForm)
     console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] result', result)
 
 
