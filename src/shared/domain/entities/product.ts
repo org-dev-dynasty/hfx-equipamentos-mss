@@ -33,50 +33,50 @@ export class Product {
   constructor(private props: ProductProps) {
 
 
-    // if (!Product.validateId(props.id)) {
-    //   throw new EntityError('props.id')
-    // }
-    // this.props.id = props.id
+    if (!Product.validateId(props.id)) {
+      throw new EntityError('props.id')
+    }
+    this.props.id = props.id
 
-    // if (!Product.validateName(props.name)) {
-    //   throw new EntityError('props.name')
-    // }
-    // this.props.name = props.name
+    if (!Product.validateName(props.name)) {
+      throw new EntityError('props.name')
+    }
+    this.props.name = props.name
 
-    // if (!Product.validateDescription(props.description)) {
-    //   throw new EntityError('props.description')
-    // }
-    // this.props.description = props.description
+    if (!Product.validateDescription(props.description)) {
+      throw new EntityError('props.description')
+    }
+    this.props.description = props.description
 
 
 
-    // if (props.models !== undefined && props.models !== null) {
-    //   if (!Product.validateModel(props.models)) {
-    //     throw new EntityError('props.models')
-    //   }
-    //   this.props.models = props.models
-    // }
+    if (props.models !== undefined && props.models !== null) {
+      if (!Product.validateModel(props.models)) {
+        throw new EntityError('props.models')
+      }
+      this.props.models = props.models
+    }
 
-    // if (props.categories !== undefined && props.categories !== null) {
-    //   if (!Product.validateCategory(props.categories)) {
-    //     throw new EntityError('props.categories')
-    //   }
-    //   this.props.categories = props.categories
-    // }
+    if (props.categories !== undefined && props.categories !== null) {
+      if (!Product.validateCategory(props.categories)) {
+        throw new EntityError('props.categories')
+      }
+      this.props.categories = props.categories
+    }
 
-    // // if (props.attributes !== undefined && props.attributes !== null) {
-    // //   if (!Product.validateAttributes(props.attributes)) {
-    // //     throw new EntityError('props.attributes')
-    // //   }
-    // //   this.props.attributes = props.attributes
-    // // }
+    if (props.attributes !== undefined && props.attributes !== null) {
+      if (!Product.validateAttributes(props.attributes)) {
+        throw new EntityError('props.attributes')
+      }
+      this.props.attributes = props.attributes
+    }
 
-    // if (props.videos !== undefined && props.videos !== null) {
-    //   if (!Product.validateVideos(props.videos)) {
-    //     throw new EntityError('props.videos')
-    //   }
-    //   this.props.videos = props.videos
-    // }
+    if (props.videos !== undefined && props.videos !== null) {
+      if (!Product.validateVideos(props.videos)) {
+        throw new EntityError('props.videos')
+      }
+      this.props.videos = props.videos
+    }
   }
 
   get id() {
