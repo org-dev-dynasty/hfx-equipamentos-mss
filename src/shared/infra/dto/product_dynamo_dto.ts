@@ -101,7 +101,7 @@ export class ProductDynamoDTO {
       'id': this.id,
       'name': this.name,
       'description': this.description,
-      'models': this.models || null,
+      'models': this.models,
       'categories': this.categories || null,
       'attributes': this.attributes || null,
       'videos': this.videos || null
@@ -112,7 +112,6 @@ export class ProductDynamoDTO {
   static fromDynamo(productData: any) {
     console.log('[ProductDynamoDTO] - fromDynamo - productData: ', productData)
     
-    ProductDynamoDTO.validateDynamoItemTypes(productData)
 
     console.log('[ProductDynamoDTO] - fromDynamo - unMarshall(productData): ', unmarshall(productData))
 
