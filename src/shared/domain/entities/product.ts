@@ -31,9 +31,9 @@ export type ProductProps = {
 
 export class Product {
   constructor(private props: ProductProps) {
-    if (!Product.validateId(props.id)) {
-      throw new EntityError('props.id')
-    }
+    // if (!Product.validateId(props.id)) {
+    //   throw new EntityError('props.id')
+    // }
     this.props.id = props.id
 
     if (!Product.validateName(props.name)) {
