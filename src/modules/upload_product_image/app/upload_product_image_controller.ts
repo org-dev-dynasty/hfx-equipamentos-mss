@@ -15,10 +15,14 @@ export class UploadProductImageController {
     const contentType = request.headers['content-type'] || request.headers['Content-Type']
     
     console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] contentType', contentType)
+
+    const requestBody = Buffer.from(request.body, 'base64')
+    console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] requestBody', requestBody)
+
     const busboy = Busboy({ headers: { 'content-type': contentType } })
 
     console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] busboy', busboy)
-    const result: { files: [], fields: any } = {
+    const result: Record<string, any> = {
       files: [],
       fields: {},
     }
@@ -33,16 +37,23 @@ export class UploadProductImageController {
           console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] filename', filename)
           console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] encoding', encoding)
           console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] mimetype', mimetype)
+          const fileChunks: any[] = []
           file.on('data', (data: any) => {
             console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] data', data)
-            // result.files.push(data)
+            fileChunks.push(data)
+          }).on('end', () => {
+            result.files.push({
+              filename,
+              encoding,
+              mimetype,
+              data: Buffer.concat(fileChunks), // Combine all the chunks
+            })
           })
         })
         busboy.on('field', (fieldname: any, val: any) => {
           console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] fieldname', fieldname)
           console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] val', val)
           result.fields[fieldname] = val
-          resolve(result)
         })
         busboy.on('finish', () => {
           console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] finish')
@@ -54,6 +65,7 @@ export class UploadProductImageController {
         })
         
       })
+
       console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] parseForm', parseForm)
       console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] request.data.body', request.data.body)
       console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] formData', request.data.body)
