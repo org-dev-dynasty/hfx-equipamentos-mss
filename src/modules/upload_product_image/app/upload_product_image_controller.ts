@@ -10,7 +10,58 @@ import  Busboy  from 'busboy'
 export class UploadProductImageController {
   constructor(private readonly usecase: UploadProductImageUsecase) {}
 
+  async parseMultipartFormData(request: Record<string, any>) {
+    const contentType = request.headers['content-type'] || request.headers['Content-Type']
+    const busboy = Busboy({ headers: { 'content-type': contentType } })
+    const result: Record<string, any> = {
+      files: [],
+      fields: {},
+    }
+  
+    return new Promise((resolve, reject) => {
+      busboy.on('file', (fieldname: any, file: any, filename: any, encoding: any, mimetype: any) => {
+        console.log(`Recebendo arquivo: ${fieldname}`)
+        const fileChunks: Buffer[] = []
+        file.on('data', (data: Buffer) => {
+          fileChunks.push(data)
+        }).on('end', () => {
+          console.log(`Arquivo recebido: ${fieldname}`)
+          result.files.push({
+            fieldname,
+            filename,
+            encoding,
+            mimetype,
+            data: Buffer.concat(fileChunks),
+          })
+        })
+      })
+  
+      busboy.on('field', (fieldname: any, val: any) => {
+        console.log(`Recebendo campo: ${fieldname}`)
+        result.fields[fieldname] = val
+      })
+  
+      busboy.on('finish', () => {
+        console.log('Parse do form-data finalizado')
+        resolve(result)
+      })
+  
+      busboy.on('error', (error: any) => {
+        console.log('Erro no parse do form-data:', error)
+        reject(error)
+      })
+  
+      // Inicia o parsing passando o corpo da requisição
+      busboy.write(request.body, request.isBase64Encoded ? 'base64' : 'binary')
+      busboy.end()
+    })
+  }
+
   async handle(request: Record<string, any>) {
+    const formData = await this.parseMultipartFormData(request)
+
+    console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] formData', formData)
+
     console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] request', request)
     const contentType = request.headers['content-type'] || request.headers['Content-Type']
     
