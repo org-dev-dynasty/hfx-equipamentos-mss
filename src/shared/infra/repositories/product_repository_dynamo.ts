@@ -124,6 +124,14 @@ export class ProductRepositoryDynamo implements IProductRepository {
       }
       modelsImagesNew.push(url)
       itemsToUpdate = { modelsImages: modelsImagesNew }
+    } else if (!isModel && product.categoriesImages) { // apenas preencha o campo de imagem de categoria mantendo as imagens existentes
+      const categoriesImagesNew: string[] = []
+
+      for (let i = 0; i < product.categoriesImages?.length; i++) {
+        categoriesImagesNew.push(product.categoriesImages[i])
+      }
+      categoriesImagesNew.push(url)
+      itemsToUpdate = { categoriesImages: categoriesImagesNew }
     }
 
     // Atualiza o produto no DynamoDB
