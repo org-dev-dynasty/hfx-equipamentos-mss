@@ -16,6 +16,11 @@ export class ProductRepositoryMock implements IProductRepository {
       name: 'Rompedores',
       description:
         'Os rompedores hidráulicos da HXF Equipamentos são verdadeiros aliados quando se trata de demolição e escavação. Com eficiência e robustez, eles enfrentam os desafios mais difíceis, seja na construção civil, mineração ou terraplanagem.',
+      littleDescription: [
+        'Abertura de valas. Demolição em geral.',
+        'Quebra de matacos em pedreiras Desmonte de rocha',
+        'Obras de saneamento básico'
+      ],
       models: [
         'HR150#0195d92b-776d-4662-b233-1d14137b1f95',
         'HR190#0195d92b-776d-4662-b233-1d14137b1f95',
