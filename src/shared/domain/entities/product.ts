@@ -8,6 +8,7 @@ export type ProductProps = {
   description: string
   // models será um array de strings, essas strings terão esse formato: "nome_do_modelo#id_do_produto"
   // const id = models.split('#')[1]
+  littleDescription?: string[]
   models?: string[] | null
   categories?: string[] | null
   attributes?: Record<string, any>[] | null
@@ -33,8 +34,6 @@ export type ProductProps = {
 
 export class Product {
   constructor(private props: ProductProps) {
-
-
     if (!Product.validateId(props.id)) {
       throw new EntityError('props.id')
     }
@@ -50,7 +49,10 @@ export class Product {
     }
     this.props.description = props.description
 
-
+    if (!Product.validateLittleDescription(props.littleDescription ?? [])) {
+      throw new EntityError('props.littleDescription')
+    }
+    this.props.littleDescription = props.littleDescription
 
     if (props.models !== undefined && props.models !== null) {
       if (!Product.validateModel(props.models)) {
@@ -73,7 +75,10 @@ export class Product {
       this.props.modelsImages = props.modelsImages
     }
 
-    if (props.categoriesImages !== undefined && props.categoriesImages !== null) {
+    if (
+      props.categoriesImages !== undefined &&
+      props.categoriesImages !== null
+    ) {
       if (!Product.validateCategoriesImages(props.categoriesImages)) {
         throw new EntityError('props.categoriesImages')
       }
@@ -119,6 +124,17 @@ export class Product {
 
   get description() {
     return this.props.description
+  }
+
+  get littleDescription() {
+    return this.props.littleDescription
+  }
+
+  set setLittleDescription(littleDescription: string[]) {
+    if (!Product.validateLittleDescription(littleDescription)) {
+      throw new EntityError('props.littleDescription')
+    }
+    this.props.littleDescription = littleDescription
   }
 
   set setDescription(description: string) {
@@ -228,10 +244,10 @@ export class Product {
       if (models.includes(value.split('#')[0])) return false
       if (typeof value !== 'string') return false
     })
-    
+
     return true
   }
-  
+
   static validateCategory(categories: string[]) {
     if (Array.isArray(categories) === false) return false
     categories.map((value) => {
@@ -242,7 +258,7 @@ export class Product {
       if (value === null) return false
       if (typeof value !== 'string') return false
     })
-      
+
     return true
   }
 
@@ -299,6 +315,14 @@ export class Product {
       if (value === '') return false
       if (value === null) return false
       if (typeof value !== 'string') return false
+    })
+    return true
+  }
+
+  static validateLittleDescription(littleDescription: string[]) {
+    if (Array.isArray(littleDescription) === false) return false
+    littleDescription.map((value) => {
+      if (!Product.validateDescription(value) === false) return false
     })
     return true
   }
