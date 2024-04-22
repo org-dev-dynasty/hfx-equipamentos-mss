@@ -153,11 +153,9 @@ export class ProductRepositoryDynamo implements IProductRepository {
       try {
         await this.s3.upload(params).promise()
 
-        // Obter URL do arquivo
         const url = this.s3.getSignedUrl('getObject', {
           Bucket: Environments.getEnvs().s3BucketName,
           Key: `${fieldNames[i]}#${id}`,
-          Expires: 3600, // tempo de expiração da URL em segundos (opcional)
         })
 
         urls.push(url)
