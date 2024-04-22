@@ -110,10 +110,7 @@ export class ProductRepositoryDynamo implements IProductRepository {
     }).promise()
 
     // pega a url da nova foto
-    const url = this.s3.getSignedUrl('getObject', {
-      Bucket: Environments.getEnvs().s3BucketName,
-      Key: newImageKey,
-    })
+    const url = `https://${Environments.getEnvs().s3BucketName}.s3.${Environments.getEnvs().region}.amazonaws.com/${newImageKey}`
 
     let itemsToUpdate: Record<string, any> = {}
     const modelsImagesNew: string[] = []
@@ -171,10 +168,7 @@ export class ProductRepositoryDynamo implements IProductRepository {
       try {
         await this.s3.putObject(params).promise()
 
-        const url = this.s3.getSignedUrl('getObject', {
-          Bucket: Environments.getEnvs().s3BucketName,
-          Key: `${fieldNames[i]}#${id}`,
-        })
+        const url = `https://${Environments.getEnvs().s3BucketName}.s3.${Environments.getEnvs().region}.amazonaws.com/${fieldNames[i]}#${id}`
 
         const product = await this.getProductById(id)
 
@@ -205,8 +199,6 @@ export class ProductRepositoryDynamo implements IProductRepository {
           ProductRepositoryDynamo.sortKeyFormat(id),
           itemsToUpdate,
         )
-
-
 
       } catch (error) {
         console.error(`Erro ao fazer upload do arquivo ${fieldNames[i]}#${id}:`, error)
