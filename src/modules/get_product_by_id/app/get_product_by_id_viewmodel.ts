@@ -5,6 +5,7 @@ export class GetProductByIdViewModel {
   private id: string
   private name: string
   private description: string
+  private littleDescription?: string[]
   private models?: string[] | null
   private categories?: string[] | null
   private attributes?: Record<string, any>[] | null
@@ -16,6 +17,7 @@ export class GetProductByIdViewModel {
     this.id = product.id
     this.name = product.name
     this.description = product.description
+    this.littleDescription = product.littleDescription
     this.models = product.models
     this.categories = product.categories
     this.attributes = product.attributes
@@ -29,6 +31,7 @@ export class GetProductByIdViewModel {
       id: this.id,
       name: this.name,
       description: this.description,
+      littleDescription: this.littleDescription,
       models: this.models,
       categories: this.categories,
       attributes: this.attributes,
