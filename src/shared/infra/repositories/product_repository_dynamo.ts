@@ -193,7 +193,9 @@ export class ProductRepositoryDynamo implements IProductRepository {
       }
 
       try {
-        await this.s3.putObject(params).promise()
+        const responseS3: AWS.S3.PutObjectOutput = await this.s3.putObject(params).promise()
+
+        console.log('{Upload} - responseS3: ', responseS3)
 
         const url = `https://${Environments.getEnvs().s3BucketName}.s3.${
           Environments.getEnvs().region
@@ -222,6 +224,8 @@ export class ProductRepositoryDynamo implements IProductRepository {
         } else {
           throw new Error('Invalid image type')
         }
+
+        console.log('{Upload} - itemsToUpdate: ', itemsToUpdate)
 
         await this.dynamo.updateItem(
           ProductRepositoryDynamo.partitionKeyFormat(id),
