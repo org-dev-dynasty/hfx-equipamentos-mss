@@ -30,6 +30,7 @@ export class DeleteCategoryOfProductUsecase {
       productId,
       undefined,
       undefined,
+      undefined,
       updatedCategories,
       undefined,
       updatedAttributes,

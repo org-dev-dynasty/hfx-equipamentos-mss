@@ -14,7 +14,8 @@ export class ProductRepositoryMock implements IProductRepository {
     new Product({
       id: '0195d92b-776d-4662-b233-1d14137b1f95',
       name: 'Rompedores',
-      description: 'Os rompedores hidráulicos da HXF Equipamentos são verdadeiros aliados quando se trata de demolição e escavação. Com eficiência e robustez, eles enfrentam os desafios mais difíceis, seja na construção civil, mineração ou terraplanagem.',
+      description:
+        'Os rompedores hidráulicos da HXF Equipamentos são verdadeiros aliados quando se trata de demolição e escavação. Com eficiência e robustez, eles enfrentam os desafios mais difíceis, seja na construção civil, mineração ou terraplanagem.',
       models: [
         'HR150#0195d92b-776d-4662-b233-1d14137b1f95',
         'HR190#0195d92b-776d-4662-b233-1d14137b1f95',
@@ -26,7 +27,7 @@ export class ProductRepositoryMock implements IProductRepository {
         'HR1850#0195d92b-776d-4662-b233-1d14137b1f95',
         'HR2750#0195d92b-776d-4662-b233-1d14137b1f95',
         'HR3100#0195d92b-776d-4662-b233-1d14137b1f95',
-        'HR4150#0195d92b-776d-4662-b233-1d14137b1f95'
+        'HR4150#0195d92b-776d-4662-b233-1d14137b1f95',
       ],
       attributes: [
         {
@@ -176,18 +177,24 @@ export class ProductRepositoryMock implements IProductRepository {
           pressaoDoGas: '16±0.5 kg/cm²',
           pressaoDoGasAcumulador: '60 kg/cm²',
           pesoDaMaquinaPortadora: '35-45 ton',
-        }
-      ]
+        },
+      ],
     }),
 
     new Product({
       id: '9295eed8-ad58-4e5e-be61-99e4e3409934',
       name: 'Compactadores',
-      description: 'Compactador / estaqueador vibratório operado hidraulicamente que vai dar múltipla utilidade às suas máquinas hidráulicas, que podem ser de pequenas retros até grandes escavadeiras.',
+      description:
+        'Compactador / estaqueador vibratório operado hidraulicamente que vai dar múltipla utilidade às suas máquinas hidráulicas, que podem ser de pequenas retros até grandes escavadeiras.',
+      littleDescription: [
+        'Compactação de Valas',
+        'Compactação de Taludes',
+        'Estaqueamento',
+      ],
       models: [
         'ESTAPAC 200#9295eed8-ad58-4e5e-be61-99e4e3409934',
         'ESTAPAC 300#9295eed8-ad58-4e5e-be61-99e4e3409934',
-        'ESTAPAC 400#9295eed8-ad58-4e5e-be61-99e4e3409934'
+        'ESTAPAC 400#9295eed8-ad58-4e5e-be61-99e4e3409934',
       ],
       attributes: [
         {
@@ -216,23 +223,29 @@ export class ProductRepositoryMock implements IProductRepository {
           frequencia: '2.000 rpm',
           vazao: '65 L/min',
           pressaoDeAlivio: '170 bar',
-        }
-      ]
+        },
+      ],
     }),
 
     new Product({
       id: 'd77ffb97-c99e-470f-b788-0678e0aabcad',
       name: 'Engate Rápido',
-      description: 'Um engate rápido é um dispositivo utilizado para conectar e desconectar de forma fácil e rápida mangueiras ou tubulações em sistemas hidráulicos, pneumáticos ou de fluidos em geral. Ele é composto por duas partes principais: um conector macho e um conector fêmea. Estes conectores são projetados para se encaixarem perfeitamente, proporcionando uma vedação eficiente e segura. A principal vantagem do engate rápido é a sua praticidade e agilidade na conexão e desconexão, o que facilita a manutenção e a operação de sistemas industriais e automotivos.',
+      description:
+        'Um engate rápido é um dispositivo utilizado para conectar e desconectar de forma fácil e rápida mangueiras ou tubulações em sistemas hidráulicos, pneumáticos ou de fluidos em geral. Ele é composto por duas partes principais: um conector macho e um conector fêmea. Estes conectores são projetados para se encaixarem perfeitamente, proporcionando uma vedação eficiente e segura. A principal vantagem do engate rápido é a sua praticidade e agilidade na conexão e desconexão, o que facilita a manutenção e a operação de sistemas industriais e automotivos.',
+      littleDescription: [
+        'Agilidade na troca de implementos',
+        'Segurança com sistema duplo de travamento',
+        'Materiais de altíssima qualidade',
+      ],
       categories: [
-        'HXFMini#d77ffb97-c99e-470f-b788-0678e0aabcad', 
-        'HXF02#d77ffb97-c99e-470f-b788-0678e0aabcad', 
-        'HXF04#d77ffb97-c99e-470f-b788-0678e0aabcad', 
-        'HXF06#d77ffb97-c99e-470f-b788-0678e0aabcad', 
-        'HXF08#d77ffb97-c99e-470f-b788-0678e0aabcad', 
-        'HXF08S#d77ffb97-c99e-470f-b788-0678e0aabcad', 
-        'HXF10#d77ffb97-c99e-470f-b788-0678e0aabcad', 
-        'HXF17#d77ffb97-c99e-470f-b788-0678e0aabcad'
+        'HXFMini#d77ffb97-c99e-470f-b788-0678e0aabcad',
+        'HXF02#d77ffb97-c99e-470f-b788-0678e0aabcad',
+        'HXF04#d77ffb97-c99e-470f-b788-0678e0aabcad',
+        'HXF06#d77ffb97-c99e-470f-b788-0678e0aabcad',
+        'HXF08#d77ffb97-c99e-470f-b788-0678e0aabcad',
+        'HXF08S#d77ffb97-c99e-470f-b788-0678e0aabcad',
+        'HXF10#d77ffb97-c99e-470f-b788-0678e0aabcad',
+        'HXF17#d77ffb97-c99e-470f-b788-0678e0aabcad',
       ],
       attributes: [
         {
@@ -362,19 +375,25 @@ export class ProductRepositoryMock implements IProductRepository {
           pressaoDeOleo: '30-360 kg/cm²',
           vazao: '10-20 L/min',
           maquinaPortadora: '30-40 T',
-        }
-      ]
+        },
+      ],
     }),
 
     new Product({
       id: 'fdab69d1-a87a-4d21-a7e4-77d214bb4924',
       name: 'Tesoura Hidráulica',
-      description: 'A tesoura hidráulica é um equipamento utilizado para cortar materiais metálicos, como chapas, vigas, perfis, entre outros. Ela é composta por uma lâmina superior e uma inferior, que se movem em direções opostas para realizar o corte. O acionamento da tesoura é feito por meio de um sistema hidráulico, que proporciona maior precisão e eficiência no corte. Além disso, a tesoura hidráulica é um equipamento versátil, que pode ser utilizada em diversos segmentos, como serralherias, metalúrgicas, indústrias de construção civil, entre outros.',
+      description:
+        'A tesoura hidráulica é um equipamento utilizado para cortar materiais metálicos, como chapas, vigas, perfis, entre outros. Ela é composta por uma lâmina superior e uma inferior, que se movem em direções opostas para realizar o corte. O acionamento da tesoura é feito por meio de um sistema hidráulico, que proporciona maior precisão e eficiência no corte. Além disso, a tesoura hidráulica é um equipamento versátil, que pode ser utilizada em diversos segmentos, como serralherias, metalúrgicas, indústrias de construção civil, entre outros.',
+      littleDescription: [
+        'Lâmina de liga de aço resistente ao desgaste capaz de cortar materiais de alta resistência',
+        'Fabricada com Material Hardox 500, um aço especial de alta resistência ao desgaste.',
+        'Equipada com um motor rotativo importado da Alemanha, que garante rotação de 360°',
+      ],
       models: [
         'HXF180R#fdab69d1-a87a-4d21-a7e4-77d214bb4924',
         'HXF280R#fdab69d1-a87a-4d21-a7e4-77d214bb4924',
         'HXF350R#fdab69d1-a87a-4d21-a7e4-77d214bb4924',
-        'HXF450R#fdab69d1-a87a-4d21-a7e4-77d214bb4924'
+        'HXF450R#fdab69d1-a87a-4d21-a7e4-77d214bb4924',
       ],
       attributes: [
         {
@@ -388,7 +407,7 @@ export class ProductRepositoryMock implements IProductRepository {
           pressaoRotativa: '90-100 bar',
           abertura: '375 mm',
           profundidadeDeCorte: '395 mm',
-          comprimentoTotal: '2100 mm'
+          comprimentoTotal: '2100 mm',
         },
         {
           modelo: 'HXF280R',
@@ -401,7 +420,7 @@ export class ProductRepositoryMock implements IProductRepository {
           pressaoRotativa: '100-115 bar',
           abertura: '480 mm',
           profundidadeDeCorte: '395 mm',
-          comprimentoTotal: '3169 mm'
+          comprimentoTotal: '3169 mm',
         },
         {
           modelo: 'HXF350R',
@@ -414,7 +433,7 @@ export class ProductRepositoryMock implements IProductRepository {
           pressaoRotativa: '100-115 bar',
           abertura: '572 mm',
           profundidadeDeCorte: '750 mm',
-          comprimentoTotal: '3848 mm'
+          comprimentoTotal: '3848 mm',
         },
         {
           modelo: 'HXF450R',
@@ -427,10 +446,10 @@ export class ProductRepositoryMock implements IProductRepository {
           pressaoRotativa: '120-145 bar',
           abertura: '600 mm',
           profundidadeDeCorte: '750 mm',
-          comprimentoTotal: '3942 mm'
-        }
-      ]
-    })
+          comprimentoTotal: '3942 mm',
+        },
+      ],
+    }),
   ]
 
   async createProduct(product: Product): Promise<Product> {
@@ -439,25 +458,40 @@ export class ProductRepositoryMock implements IProductRepository {
   }
 
   async getProductById(id: string): Promise<Product> {
-    const product = this.products.find(product => product.id === id)
+    const product = this.products.find((product) => product.id === id)
     if (!product) throw new Error('Product not found')
-    return Promise.resolve(product)    
+    return Promise.resolve(product)
   }
 
   async getAllProducts(): Promise<Product[]> {
     return Promise.resolve(this.products)
   }
 
-  async updateProductImage(id: string, name: string, newName: string, isModel: boolean, image: Buffer): Promise<Product> {
+  async updateProductImage(
+    id: string,
+    name: string,
+    newName: string,
+    isModel: boolean,
+    image: Buffer,
+  ): Promise<Product> {
     throw new Error('Method not implemented.')
   }
 
-  async updateProduct(id: string, name?: string | undefined, description?: string | undefined, models?: string[] | undefined, categories?: string[] | undefined, attributes?: Record<string, any>[] | undefined, videos?: string[] | undefined): Promise<Product> {
+  async updateProduct(
+    id: string,
+    name?: string | undefined,
+    description?: string | undefined,
+    littleDescription?: string[] | undefined,
+    models?: string[] | undefined,
+    categories?: string[] | undefined,
+    attributes?: Record<string, any>[] | undefined,
+    videos?: string[] | undefined,
+  ): Promise<Product> {
     throw new Error('Method not implemented.')
   }
 
   async deleteProduct(id: string): Promise<Product> {
-    const index = this.products.findIndex(p => p.id === id)
+    const index = this.products.findIndex((p) => p.id === id)
     if (index === -1) throw new Error('Product not found')
     const product = this.products[index]
     this.products.splice(index, 1)

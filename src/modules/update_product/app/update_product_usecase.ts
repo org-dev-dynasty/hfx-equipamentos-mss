@@ -11,6 +11,7 @@ export class UpdateProductUsecase {
     id: string,
     name: string,
     description: string,
+    littleDescription: string[],
     models?: string[],
     categories?: string[],
     attributes?: Record<string, any>[],
@@ -23,6 +24,10 @@ export class UpdateProductUsecase {
     }
     if (description && !Product.validateDescription(description)) {
       throw new EntityError('description')
+    }
+
+    if (littleDescription && !Product.validateLittleDescription(littleDescription)) {
+      throw new EntityError('littleDescription')
     }
     
     if (models && models.length > 0 && categories && categories.length > 0) {
@@ -83,6 +88,7 @@ export class UpdateProductUsecase {
       id,
       name,
       description,
+      littleDescription,
       models,
       categories,
       attributes,

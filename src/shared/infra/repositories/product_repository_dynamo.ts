@@ -17,8 +17,6 @@ export class ProductRepositoryDynamo implements IProductRepository {
   }
 
   constructor(
-    
-
     private dynamo: DynamoDatasource = new DynamoDatasource(
       Environments.getEnvs().dynamoProductsTableName,
       Environments.getEnvs().dynamoPartitionKey,
@@ -34,9 +32,14 @@ export class ProductRepositoryDynamo implements IProductRepository {
       endpoint: Environments.getEnvs().endpointUrl,
     }),
   ) {
-
-    console.log('[ProductRepositoryDynamo] - Environments.getEnvs(): ', Environments.getEnvs())
-    console.log('[ProductRepositoryDynamo] - Environments.getEnvs().dynamoProductsTableName: ', Environments.getEnvs().dynamoProductsTableName)
+    console.log(
+      '[ProductRepositoryDynamo] - Environments.getEnvs(): ',
+      Environments.getEnvs(),
+    )
+    console.log(
+      '[ProductRepositoryDynamo] - Environments.getEnvs().dynamoProductsTableName: ',
+      Environments.getEnvs().dynamoProductsTableName,
+    )
   }
 
   async createProduct(product: Product): Promise<Product> {
@@ -52,16 +55,25 @@ export class ProductRepositoryDynamo implements IProductRepository {
 
   async getAllProducts(): Promise<Product[]> {
     const finalProducts: Product[] = []
-    console.log('[async getAllProducts()] - envs: ', console.log(Environments.getEnvs()))
+    console.log(
+      '[async getAllProducts()] - envs: ',
+      console.log(Environments.getEnvs()),
+    )
     const resp = await this.dynamo.getAllItems()
     console.log('[async getAllProducts()] - resp: ', resp)
     resp.Items.map((product: Record<any, any>) => {
       console.log('[async getAllProducts()] - product: ', product)
       const productEntity = ProductDynamoDTO.fromDynamo(product).toEntity()
       finalProducts.push(productEntity)
-      console.log('[async getAllProducts()] - ProductDynamoDTO.fromDynamo(product): ', ProductDynamoDTO.fromDynamo(product))
-      console.log('[async getAllProducts()] - ProductDynamoDTO.fromDynamo(product).toEntity(): ', ProductDynamoDTO.fromDynamo(product).toEntity())
-    })    
+      console.log(
+        '[async getAllProducts()] - ProductDynamoDTO.fromDynamo(product): ',
+        ProductDynamoDTO.fromDynamo(product),
+      )
+      console.log(
+        '[async getAllProducts()] - ProductDynamoDTO.fromDynamo(product).toEntity(): ',
+        ProductDynamoDTO.fromDynamo(product).toEntity(),
+      )
+    })
     console.log('[async getAllProducts()] - finalProducts: ', finalProducts)
     return Promise.resolve(finalProducts)
   }
@@ -94,35 +106,43 @@ export class ProductRepositoryDynamo implements IProductRepository {
     // remove a foto antiga do s3
     if (image) {
       const oldImageKey = `${name}#${id}`
-      await this.s3.deleteObject({
-        Bucket: Environments.getEnvs().s3BucketName,
-        Key: oldImageKey,
-      }).promise()
+      await this.s3
+        .deleteObject({
+          Bucket: Environments.getEnvs().s3BucketName,
+          Key: oldImageKey,
+        })
+        .promise()
     }
 
     // adiciona a nova foto ao s3
     const newImageKey = `${newName}#${id}`
-    await this.s3.putObject({
-      Bucket: Environments.getEnvs().s3BucketName,
-      Key: newImageKey,
-      Body: image,
-      ACL: 'public-read',
-    }).promise()
+    await this.s3
+      .putObject({
+        Bucket: Environments.getEnvs().s3BucketName,
+        Key: newImageKey,
+        Body: image,
+        ACL: 'public-read',
+      })
+      .promise()
 
     // pega a url da nova foto
-    const url = `https://${Environments.getEnvs().s3BucketName}.s3.${Environments.getEnvs().region}.amazonaws.com/${newImageKey}`
+    const url = `https://${Environments.getEnvs().s3BucketName}.s3.${
+      Environments.getEnvs().region
+    }.amazonaws.com/${newImageKey}`
 
     let itemsToUpdate: Record<string, any> = {}
     const modelsImagesNew: string[] = []
 
-    if (isModel && product.modelsImages) { // apenas preencha o campo de imagem de modelo mantendo as imagens existentes
-    
+    if (isModel && product.modelsImages) {
+      // apenas preencha o campo de imagem de modelo mantendo as imagens existentes
+
       for (let i = 0; i < product.modelsImages?.length; i++) {
         modelsImagesNew.push(product.modelsImages[i])
       }
       modelsImagesNew.push(url)
       itemsToUpdate = { modelsImages: modelsImagesNew }
-    } else if (!isModel && product.categoriesImages) { // apenas preencha o campo de imagem de categoria mantendo as imagens existentes
+    } else if (!isModel && product.categoriesImages) {
+      // apenas preencha o campo de imagem de categoria mantendo as imagens existentes
       const categoriesImagesNew: string[] = []
 
       for (let i = 0; i < product.categoriesImages?.length; i++) {
@@ -139,11 +159,13 @@ export class ProductRepositoryDynamo implements IProductRepository {
       itemsToUpdate,
     )
 
-    console.log('[ProductRepositoryDynamo] - updateProduct - itemsToUpdate: ', itemsToUpdate)
+    console.log(
+      '[ProductRepositoryDynamo] - updateProduct - itemsToUpdate: ',
+      itemsToUpdate,
+    )
     const updatedProduct = await this.getProductById(id)
     // Retorna o produto atualizado
     return Promise.resolve(updatedProduct)
-    
   }
 
   async deleteProduct(id: string): Promise<Product> {
@@ -156,7 +178,12 @@ export class ProductRepositoryDynamo implements IProductRepository {
     return Promise.resolve(product)
   }
 
-  async uploadProductImage(id: string, images: Buffer[], fieldNames: string[], isModel: boolean): Promise<Product> {
+  async uploadProductImage(
+    id: string,
+    images: Buffer[],
+    fieldNames: string[],
+    isModel: boolean,
+  ): Promise<Product> {
     for (let i = 0; i < images.length; i++) {
       const params: AWS.S3.PutObjectRequest = {
         Bucket: Environments.getEnvs().s3BucketName,
@@ -168,7 +195,9 @@ export class ProductRepositoryDynamo implements IProductRepository {
       try {
         await this.s3.putObject(params).promise()
 
-        const url = `https://${Environments.getEnvs().s3BucketName}.s3.${Environments.getEnvs().region}.amazonaws.com/${fieldNames[i]}#${id}`
+        const url = `https://${Environments.getEnvs().s3BucketName}.s3.${
+          Environments.getEnvs().region
+        }.amazonaws.com/${fieldNames[i]}#${id}`
 
         const product = await this.getProductById(id)
 
@@ -199,14 +228,19 @@ export class ProductRepositoryDynamo implements IProductRepository {
           ProductRepositoryDynamo.sortKeyFormat(id),
           itemsToUpdate,
         )
-
       } catch (error) {
-        console.error(`Erro ao fazer upload do arquivo ${fieldNames[i]}#${id}:`, error)
+        console.error(
+          `Erro ao fazer upload do arquivo ${fieldNames[i]}#${id}:`,
+          error,
+        )
       }
     }
     const updatedProduct = await this.getProductById(id)
 
-    console.log('[ProductRepositoryDynamo] - uploadProductImage - fieldNames: ', fieldNames)
+    console.log(
+      '[ProductRepositoryDynamo] - uploadProductImage - fieldNames: ',
+      fieldNames,
+    )
 
     return Promise.resolve(updatedProduct)
   }
@@ -219,10 +253,19 @@ export class ProductRepositoryDynamo implements IProductRepository {
 
     const data = await this.s3.getObject(params).promise()
 
-    return Promise.resolve(data.Body!.toString())   
+    return Promise.resolve(data.Body!.toString())
   }
 
-  async updateProduct(id: string, name?: string | undefined, description?: string | undefined, models?: string[] | undefined, categories?: string[] | undefined, attributes?: Record<string, any>[] | undefined, videos?: string[] | undefined): Promise<Product> {
+  async updateProduct(
+    id: string,
+    name?: string | undefined,
+    description?: string | undefined,
+    littleDescription?: string[],
+    models?: string[] | undefined,
+    categories?: string[] | undefined,
+    attributes?: Record<string, any>[] | undefined,
+    videos?: string[] | undefined,
+  ): Promise<Product> {
     let itemsToUpdate: Record<string, any> = {}
 
     if (name) {
@@ -231,6 +274,10 @@ export class ProductRepositoryDynamo implements IProductRepository {
 
     if (description) {
       itemsToUpdate = { ...itemsToUpdate, description }
+    }
+
+    if (littleDescription) {
+      itemsToUpdate = { ...itemsToUpdate, littleDescription }
     }
 
     if (models) {

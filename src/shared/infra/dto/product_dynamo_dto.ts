@@ -7,6 +7,7 @@ export type ProductDynamoDTOProps = {
   id: string
   name: string
   description: string
+  littleDescription?: string[]
   models?: string[] | null
   categories?: string[] | null
   attributes?: Record<string, any>[] | null
@@ -19,6 +20,7 @@ export class ProductDynamoDTO {
   private id: string
   private name: string
   private description: string
+  private littleDescription?: string[]
   private models?: string[] | null
   private categories?: string[] | null
   private attributes?: Record<string, any>[] | null
@@ -49,6 +51,7 @@ export class ProductDynamoDTO {
     this.id = props.id
     this.name = props.name
     this.description = props.description
+    this.littleDescription = props.littleDescription
     this.models = props.models
     this.categories = props.categories
     this.attributes = props.attributes
@@ -62,6 +65,7 @@ export class ProductDynamoDTO {
       id: product.id,
       name: product.name,
       description: product.description,
+      littleDescription: product.littleDescription,
       models: product.models,
       categories: product.categories,
       attributes: product.attributes,
@@ -77,6 +81,7 @@ export class ProductDynamoDTO {
       id: 'S',
       name: 'S',
       description: 'S',
+      littleDescription: 'L',
       models: 'L',
       categories: 'L',
       attributes: 'L',
@@ -115,6 +120,7 @@ export class ProductDynamoDTO {
       'id': this.id,
       'name': this.name,
       'description': this.description,
+      'littleDescription': this.littleDescription || null,
       'models': this.models || null,
       'categories': this.categories || null,
       'attributes': this.attributes || null,
@@ -145,11 +151,12 @@ export class ProductDynamoDTO {
     // }) : null
     // const videos = productData['videos'] && productData['videos'] ? productData['videos'].map((video: Record<string, any>) => video['S']) : null
 
-    const { id, name, description, models, categories, attributes, modelsImages, categoriesImages, videos } = unmarshall(productData)
+    const { id, name, description, littleDescription, models, categories, attributes, modelsImages, categoriesImages, videos } = unmarshall(productData)
 
     console.log('[ProductDynamoDTO] - fromDynamo - id: ', id)
     console.log('[ProductDynamoDTO] - fromDynamo - name: ', name)
     console.log('[ProductDynamoDTO] - fromDynamo - description: ', description)
+    console.log('[ProductDynamoDTO] - fromDynamo - models: ', littleDescription)
     console.log('[ProductDynamoDTO] - fromDynamo - models: ', models)
     console.log('[ProductDynamoDTO] - fromDynamo - categories: ', categories)
     console.log('[ProductDynamoDTO] - fromDynamo - attributes: ', attributes)
@@ -161,6 +168,7 @@ export class ProductDynamoDTO {
       id,
       name,
       description,
+      littleDescription,
       models,
       categories,
       attributes,
@@ -176,6 +184,7 @@ export class ProductDynamoDTO {
       id: this.id,
       name: this.name,
       description: this.description,
+      littleDescription: this.littleDescription,
       models: this.models,
       categories: this.categories,
       attributes: this.attributes,

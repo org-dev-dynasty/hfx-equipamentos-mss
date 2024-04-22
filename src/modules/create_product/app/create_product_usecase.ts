@@ -11,6 +11,7 @@ export class CreateProductUsecase {
   async execute(
     name: string,
     description: string,
+    littleDescription?: string[],
     models?: string[],
     categories?: string[],
     attributes?: Record<string, any>[],
@@ -20,6 +21,7 @@ export class CreateProductUsecase {
     if (!Product.validateId(id)) throw new EntityError('id')
     if (!Product.validateName(name)) throw new EntityError('name')
     if (!Product.validateDescription(description)) throw new EntityError('description')
+    if(littleDescription && !Product.validateLittleDescription(littleDescription)) throw new EntityError('littleDescription')
     
     if (models && categories) {
       throw new ConflictItems('models and categories')
@@ -61,6 +63,7 @@ export class CreateProductUsecase {
       id,
       name,
       description,
+      littleDescription,
       models,
       categories,
       attributes,
