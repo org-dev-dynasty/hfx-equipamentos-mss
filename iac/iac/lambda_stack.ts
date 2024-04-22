@@ -53,9 +53,9 @@ export class LambdaStack extends Construct {
     this.createProductFunction = this.createLambdaApiGatewayIntegration('create_product', 'POST', apiGatewayResource, environmentVariables)
     this.updateProductFunction = this.createLambdaApiGatewayIntegration('update_product', 'PUT', apiGatewayResource, environmentVariables)
     this.deleteProductFunction = this.createLambdaApiGatewayIntegration('delete_product', 'DELETE', apiGatewayResource, environmentVariables)
-    this.deleteModelOfProductFunction = this.createLambdaApiGatewayIntegration('delete_model_of_product', 'DELETE', apiGatewayResource, environmentVariables)
+    this.deleteModelOfProductFunction = this.createLambdaApiGatewayIntegration('delete_model_of_product', 'PUT', apiGatewayResource, environmentVariables)
     this.uploadProductImageFunction = this.createLambdaApiGatewayIntegration('upload_product_image', 'POST', apiGatewayResource, environmentVariables)
-    this.deleteCategoryOfProductFunction = this.createLambdaApiGatewayIntegration('delete_category_of_product', 'DELETE', apiGatewayResource, environmentVariables)
+    this.deleteCategoryOfProductFunction = this.createLambdaApiGatewayIntegration('delete_category_of_product', 'PUT', apiGatewayResource, environmentVariables)
 
     this.functionsThatNeedDynamoPermissions = [
       this.loginFunction,
