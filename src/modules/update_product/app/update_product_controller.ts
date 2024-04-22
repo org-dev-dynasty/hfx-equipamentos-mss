@@ -148,6 +148,7 @@ export class UpdateProductController {
         request.data.id,
         request.data.name,
         request.data.description,
+        request.data.littleDescription,
         models,
         categories,
         request.data.attributes,
