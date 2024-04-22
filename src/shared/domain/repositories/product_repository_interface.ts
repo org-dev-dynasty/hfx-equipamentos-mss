@@ -9,6 +9,7 @@ export interface IProductRepository {
     id: string,
     name?: string,
     description?: string,
+    littleDescription?: string[],
     models?: string[],
     categories?: string[],
     attributes?: Record<string, any>[],
