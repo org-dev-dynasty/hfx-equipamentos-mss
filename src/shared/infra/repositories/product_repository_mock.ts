@@ -4,7 +4,7 @@ import { Product } from '../../domain/entities/product'
 import { IProductRepository } from '../../domain/repositories/product_repository_interface'
 
 export class ProductRepositoryMock implements IProductRepository {
-  uploadProductImage(_id: string, _image: string): Promise<Product> {
+  uploadProductImage(_id: string, _image: Buffer[]): Promise<string[]> {
     throw new Error('Method not implemented.')
   }
   downloadProductImage(_id: string): Promise<string> {

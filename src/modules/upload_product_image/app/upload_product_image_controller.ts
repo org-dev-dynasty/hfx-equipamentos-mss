@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { MissingParameters, WrongTypeParameters } from '../../../shared/helpers/errors/controller_errors'
 import { EntityError } from '../../../shared/helpers/errors/domain_errors'
@@ -10,7 +11,7 @@ import  Busboy  from 'busboy'
 export class UploadProductImageController {
   constructor(private readonly usecase: UploadProductImageUsecase) {}
 
-  async parseMultipartFormData(request: Record<string, any>) {
+  async parseMultipartFormData(request: Record<string, any>): Promise<Record<string, any>>{
     const contentType = request.headers['content-type'] || request.headers['Content-Type']
     const busboy = Busboy({ headers: { 'content-type': contentType } })
     const result: Record<string, any> = {
@@ -60,88 +61,27 @@ export class UploadProductImageController {
   async handle(request: Record<string, any>) {
     const formData = await this.parseMultipartFormData(request)
 
-    console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] formData', formData)
-
-    console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] request', request)
-    const contentType = request.headers['content-type'] || request.headers['Content-Type']
-    
-    console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] contentType', contentType)
-
-    const requestBody = Buffer.from(request.body, 'base64')
-    console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] requestBody', requestBody)
-
-    const busboy = Busboy({ headers: { 'content-type': contentType } })
-
-    console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] busboy', busboy)
-    const result: Record<string, any> = {
-      files: [],
-      fields: {},
-    }
-    console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] result', result)
-    
+    console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] formData', formData)   
     
     try {
-      console.log('vai entrar no busboy')
-      const parseForm = await new Promise((resolve, reject) => {
-        busboy.on('file', (_fieldname: any, file: any, filename: any, encoding: any, mimetype: any) => {
-          console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] file', file)
-          console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] filename', filename)
-          console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] encoding', encoding)
-          console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] mimetype', mimetype)
-          const fileChunks: any[] = []
-          file.on('data', (data: any) => {
-            console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] data', data)
-            fileChunks.push(data)
-          }).on('end', () => {
-            result.files.push({
-              filename,
-              encoding,
-              mimetype,
-              data: Buffer.concat(fileChunks), // Combine all the chunks
-            })
-          })
-        })
-        busboy.on('field', (fieldname: any, val: any) => {
-          console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] fieldname', fieldname)
-          console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] val', val)
-          result.fields[fieldname] = val
-        })
-        busboy.on('finish', () => {
-          console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] finish')
-          resolve(result)
-        })
-        busboy.on('error', (error: any) => {
-          console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] error', error)
-          reject(error)
-        })
-        
-      })
-
-      console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] parseForm', parseForm)
-      console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] request.data.body', request.data.body)
-      console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] formData', request.data.body)
-      // console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] formDataRequest', formDataRequest)
-      // const productId = formDataRequest.get('productId')?.toString() as string
-      // console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] productId', productId)
-      const productId = request.data.productId as string
-      if (request.data.productId === undefined) {
+      if (formData.fields.productId === undefined) {
         throw new MissingParameters('productId')
       }
-
-      if (typeof request.data.productId !== 'string') {
-        throw new WrongTypeParameters('productId', 'string', typeof request.data.productId)
-      }
-
-      if (request.data.image === undefined) {
+      if (formData.files.length === 0) {
         throw new MissingParameters('image')
       }
 
-      if (typeof request.data.image !== 'string') {
-        throw new WrongTypeParameters('image', 'string', typeof request.data.image)
-      }
-      const image = request.data.image
+      const productId = formData.fields.productId
 
-      await this.usecase.execute(productId, image)
+      const imagesData = formData.files.map((file: any) => {
+        return file.data
+      }) as Buffer[]
+
+      const fieldNames = formData.files.map((file: any) => {
+        return file.fieldname
+      }) as string[]
+
+      const imagesUrls = await this.usecase.execute(productId, imagesData, fieldNames)
 
       return new OK('Image uploaded successfully')
     } catch (error: any) {

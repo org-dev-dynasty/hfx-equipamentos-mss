@@ -140,18 +140,35 @@ export class ProductRepositoryDynamo implements IProductRepository {
     return Promise.resolve(product)
   }
 
-  async uploadProductImage(id: string, image: string): Promise<Product> {
-    const product = await this.getProductById(id)
+  async uploadProductImage(id: string, images: Buffer[], fieldNames: string[]): Promise<string[]> {
+    const urls: string[] = []
 
-    const params = {
-      Bucket: Environments.getEnvs().s3BucketName,
-      Key: id,
-      Body: image,
+    for (let i = 0; i < images.length; i++) {
+      const params: AWS.S3.PutObjectRequest = {
+        Bucket: Environments.getEnvs().s3BucketName,
+        Key: `${fieldNames[i]}#${id}`,
+        Body: images[i],
+      }
+
+      try {
+        await this.s3.upload(params).promise()
+
+        // Obter URL do arquivo
+        const url = this.s3.getSignedUrl('getObject', {
+          Bucket: Environments.getEnvs().s3BucketName,
+          Key: `${fieldNames[i]}#${id}`,
+          Expires: 3600, // tempo de expiração da URL em segundos (opcional)
+        })
+
+        urls.push(url)
+      } catch (error) {
+        console.error(`Erro ao fazer upload do arquivo ${fieldNames[i]}#${id}:`, error)
+      }
     }
 
-    await this.s3.upload(params).promise()
+    console.log('[ProductRepositoryDynamo] - uploadProductImage - fieldNames: ', fieldNames)
 
-    return Promise.resolve(product)
+    return urls
   }
 
   async downloadProductImage(id: string): Promise<string> {

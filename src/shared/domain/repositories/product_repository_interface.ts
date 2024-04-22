@@ -15,6 +15,6 @@ export interface IProductRepository {
     videos?: string[],
   ): Promise<Product>
   deleteProduct(id: string): Promise<Product>
-  uploadProductImage(id: string, image: string): Promise<Product>
+  uploadProductImage(id: string, images: Buffer[], fieldNames: string[]): Promise<string[]>
   downloadProductImage(id: string): Promise<string>
 }
