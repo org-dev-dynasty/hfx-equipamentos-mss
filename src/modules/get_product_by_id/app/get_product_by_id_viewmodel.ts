@@ -8,6 +8,8 @@ export class GetProductByIdViewModel {
   private models?: string[] | null
   private categories?: string[] | null
   private attributes?: Record<string, any>[] | null
+  private modelsImages?: string[] | null
+  private categoriesImages?: string[] | null
   private videos?: string[] | null
 
   constructor(product: Product) {
@@ -17,6 +19,8 @@ export class GetProductByIdViewModel {
     this.models = product.models
     this.categories = product.categories
     this.attributes = product.attributes
+    this.modelsImages = product.modelsImages
+    this.categoriesImages = product.categoriesImages
     this.videos = product.videos
   }
 
@@ -28,6 +32,8 @@ export class GetProductByIdViewModel {
       models: this.models,
       categories: this.categories,
       attributes: this.attributes,
+      modelsImages: this.modelsImages,
+      categoriesImages: this.categoriesImages,
       videos: this.videos,
     }
   }

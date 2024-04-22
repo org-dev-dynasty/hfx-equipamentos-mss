@@ -8,6 +8,8 @@ export class CreateProductViewModel {
   private models?: string[] | null
   private categories?: string[] | null
   private attributes?: Record<string, any>[] | null
+  private modelsImages?: string[] | null
+  private categoriesImages?: string[] | null
   private videos?: string[] | null
 
   constructor(product: ProductProps) {
@@ -17,6 +19,8 @@ export class CreateProductViewModel {
     this.models = product.models
     this.categories = product.categories
     this.attributes = product.attributes
+    this.modelsImages = product.modelsImages
+    this.categoriesImages = product.categoriesImages
     this.videos = product.videos
   }
 

@@ -7,6 +7,7 @@ import { NoItemsFound } from '../../../shared/helpers/errors/usecase_errors'
 import { BadRequest, InternalServerError, NotFound, OK } from '../../../shared/helpers/external_interfaces/http_codes'
 import { UploadProductImageUsecase } from './upload_product_image_usecase'
 import  Busboy  from 'busboy'
+import { UploadProductImageViewModel } from './upload_product_image_viewmodel'
 
 export class UploadProductImageController {
   constructor(private readonly usecase: UploadProductImageUsecase) {}
@@ -72,6 +73,7 @@ export class UploadProductImageController {
       }
 
       const productId = formData.fields.productId
+      const isModel = formData.fields.isModel
 
       const imagesData = formData.files.map((file: any) => {
         return file.data
@@ -81,9 +83,11 @@ export class UploadProductImageController {
         return file.fieldname
       }) as string[]
 
-      const imagesUrls = await this.usecase.execute(productId, imagesData, fieldNames)
+      const product = await this.usecase.execute(productId, imagesData, fieldNames, isModel)
 
-      return new OK('Image uploaded successfully')
+      const viewmodel = new UploadProductImageViewModel(product)
+
+      return new OK(viewmodel.toJSON())
     } catch (error: any) {
       if (error instanceof EntityError) {
         return new BadRequest(error.message)

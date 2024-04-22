@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ProductProps } from '../../../shared/domain/entities/product'
+import { Product } from '../../../shared/domain/entities/product'
 
-export class ProductViewModel {
+export class UploadProductImageViewModel {
   private id: string
   private name: string
   private description: string
@@ -12,7 +12,7 @@ export class ProductViewModel {
   private categoriesImages?: string[] | null
   private videos?: string[] | null
 
-  constructor(product: ProductProps) {
+  constructor(product: Product) {
     this.id = product.id
     this.name = product.name
     this.description = product.description
@@ -35,21 +35,6 @@ export class ProductViewModel {
       modelsImages: this.modelsImages,
       categoriesImages: this.categoriesImages,
       videos: this.videos,
-    }
-  }
-}
-
-export class GetAllProductViewModel {
-  private products: ProductViewModel[]
-
-  constructor(products: ProductProps[]) {
-    this.products = products.map((product) => new ProductViewModel(product))
-  }
-
-  toJSON() {
-    return {
-      products: this.products.map((product) => product.toJSON()),
-      message: 'Products have been retrieved successfully.',
     }
   }
 }

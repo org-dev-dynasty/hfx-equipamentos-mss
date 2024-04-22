@@ -8,6 +8,8 @@ export class DeleteCategoryOfProductViewModel {
   private models?: string[]
   private categories?: string[]
   private attributes?: Record<string, any>[]
+  private modelsImages?: string[]
+  private categoriesImages?: string[]
   private videos?: string[]
 
   constructor(product: Product) {
@@ -17,6 +19,8 @@ export class DeleteCategoryOfProductViewModel {
     this.models = product.models ?? []
     this.categories = product.categories ?? []
     this.attributes = product.attributes ?? []
+    this.modelsImages = product.modelsImages ?? []
+    this.categoriesImages = product.categoriesImages ?? []
     this.videos = product.videos ?? []
   }
 
@@ -28,6 +32,8 @@ export class DeleteCategoryOfProductViewModel {
       models: this.models,
       categories: this.categories,
       attributes: this.attributes,
+      modelsImages: this.modelsImages,
+      categoriesImages: this.categoriesImages,
       videos: this.videos,
     }
   }
