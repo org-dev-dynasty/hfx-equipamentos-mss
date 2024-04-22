@@ -3,7 +3,7 @@ import { Construct } from 'constructs'
 import * as lambda from 'aws-cdk-lib/aws-lambda'
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs'
 import { Resource, LambdaIntegration } from 'aws-cdk-lib/aws-apigateway'
-import { Duration } from 'aws-cdk-lib'
+import { Duration, aws_iam } from 'aws-cdk-lib'
 import * as path from 'path'
 
 export class LambdaStack extends Construct {
@@ -48,6 +48,13 @@ export class LambdaStack extends Construct {
       compatibleRuntimes: [lambda.Runtime.NODEJS_18_X],
     })
 
+    function addS3Permissions(lambdaFunction: lambda.Function) {
+      lambdaFunction.addToRolePolicy(new aws_iam.PolicyStatement({
+        actions: ['s3:PutObject', 's3:GetObject', 's3:DeleteObject'],
+        resources: [`arn:aws:s3:::${environmentVariables.S3_BUCKET_NAME}/*`]
+      }))
+    }
+
     this.loginFunction = this.createLambdaApiGatewayIntegration('login', 'POST', apiGatewayResource, environmentVariables)
     this.getAllProductsFunction = this.createLambdaApiGatewayIntegration('get_all_products', 'GET', apiGatewayResource, environmentVariables)
     this.getProductByIdFunction = this.createLambdaApiGatewayIntegration('get_product_by_id', 'GET', apiGatewayResource, environmentVariables)
@@ -58,6 +65,10 @@ export class LambdaStack extends Construct {
     this.uploadProductImageFunction = this.createLambdaApiGatewayIntegration('upload_product_image', 'POST', apiGatewayResource, environmentVariables)
     this.deleteCategoryOfProductFunction = this.createLambdaApiGatewayIntegration('delete_category_of_product', 'PUT', apiGatewayResource, environmentVariables)
     this.updateProductImageFunction = this.createLambdaApiGatewayIntegration('update_product_image', 'PUT', apiGatewayResource, environmentVariables)
+
+
+    addS3Permissions(this.uploadProductImageFunction)
+    addS3Permissions(this.updateProductImageFunction)
 
     this.functionsThatNeedDynamoPermissions = [
       this.loginFunction,
@@ -70,4 +81,6 @@ export class LambdaStack extends Construct {
       this.deleteCategoryOfProductFunction
     ]
   }
+
+
 }

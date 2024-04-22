@@ -102,10 +102,11 @@ export class ProductRepositoryDynamo implements IProductRepository {
 
     // adiciona a nova foto ao s3
     const newImageKey = `${newName}#${id}`
-    await this.s3.upload({
+    await this.s3.putObject({
       Bucket: Environments.getEnvs().s3BucketName,
       Key: newImageKey,
       Body: image,
+      ACL: 'public-read',
     }).promise()
 
     // pega a url da nova foto
@@ -164,10 +165,11 @@ export class ProductRepositoryDynamo implements IProductRepository {
         Bucket: Environments.getEnvs().s3BucketName,
         Key: `${fieldNames[i]}#${id}`,
         Body: images[i],
+        ACL: 'public-read',
       }
 
       try {
-        await this.s3.upload(params).promise()
+        await this.s3.putObject(params).promise()
 
         const url = this.s3.getSignedUrl('getObject', {
           Bucket: Environments.getEnvs().s3BucketName,
