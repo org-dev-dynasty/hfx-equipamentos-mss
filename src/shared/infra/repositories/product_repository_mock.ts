@@ -452,6 +452,10 @@ export class ProductRepositoryMock implements IProductRepository {
     throw new Error('Method not implemented.')
   }
 
+  async updateProduct(id: string, name?: string | undefined, description?: string | undefined, models?: string[] | undefined, categories?: string[] | undefined, attributes?: Record<string, any>[] | undefined, videos?: string[] | undefined): Promise<Product> {
+    throw new Error('Method not implemented.')
+  }
+
   async deleteProduct(id: string): Promise<Product> {
     const index = this.products.findIndex(p => p.id === id)
     if (index === -1) throw new Error('Product not found')

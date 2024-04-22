@@ -227,4 +227,42 @@ export class ProductRepositoryDynamo implements IProductRepository {
 
     return Promise.resolve(data.Body!.toString())   
   }
+
+  async updateProduct(id: string, name?: string | undefined, description?: string | undefined, models?: string[] | undefined, categories?: string[] | undefined, attributes?: Record<string, any>[] | undefined, videos?: string[] | undefined): Promise<Product> {
+    let itemsToUpdate: Record<string, any> = {}
+
+    if (name) {
+      itemsToUpdate = { name }
+    }
+
+    if (description) {
+      itemsToUpdate = { ...itemsToUpdate, description }
+    }
+
+    if (models) {
+      itemsToUpdate = { ...itemsToUpdate, models }
+    }
+
+    if (categories) {
+      itemsToUpdate = { ...itemsToUpdate, categories }
+    }
+
+    if (attributes) {
+      itemsToUpdate = { ...itemsToUpdate, attributes }
+    }
+
+    if (videos) {
+      itemsToUpdate = { ...itemsToUpdate, videos }
+    }
+
+    await this.dynamo.updateItem(
+      ProductRepositoryDynamo.partitionKeyFormat(id),
+      ProductRepositoryDynamo.sortKeyFormat(id),
+      itemsToUpdate,
+    )
+
+    const updatedProduct = await this.getProductById(id)
+
+    return Promise.resolve(updatedProduct)
+  }
 }
