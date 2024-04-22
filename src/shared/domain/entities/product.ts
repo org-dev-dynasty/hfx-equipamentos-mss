@@ -26,7 +26,6 @@ export type ProductProps = {
   ] 
 
   */
-  productImages?: string[] | null
   modelsImages?: string[] | null
   categoriesImages?: string[] | null
   videos?: string[] | null
@@ -65,13 +64,6 @@ export class Product {
         throw new EntityError('props.categories')
       }
       this.props.categories = props.categories
-    }
-
-    if (props.productImages !== undefined && props.productImages !== null) {
-      if (!Product.validateProductImages(props.productImages)) {
-        throw new EntityError('props.productImages')
-      }
-      this.props.productImages = props.productImages
     }
 
     if (props.modelsImages !== undefined && props.modelsImages !== null) {
@@ -169,17 +161,6 @@ export class Product {
     this.props.attributes = attributes
   }
 
-  get productImages() {
-    return this.props.productImages
-  }
-
-  set setProductImages(productImages: string[]) {
-    if (!Product.validateProductImages(productImages)) {
-      throw new EntityError('props.productImages')
-    }
-    this.props.productImages = productImages
-  }
-
   get modelsImages() {
     return this.props.modelsImages
   }
@@ -189,6 +170,17 @@ export class Product {
       throw new EntityError('props.modelsImages')
     }
     this.props.modelsImages = modelsImages
+  }
+
+  get categoriesImages() {
+    return this.props.categoriesImages
+  }
+
+  set setCategoriesImages(categoriesImages: string[]) {
+    if (!Product.validateCategoriesImages(categoriesImages)) {
+      throw new EntityError('props.categoriesImages')
+    }
+    this.props.categoriesImages = categoriesImages
   }
 
   get videos() {

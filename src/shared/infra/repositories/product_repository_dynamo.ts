@@ -80,39 +80,50 @@ export class ProductRepositoryDynamo implements IProductRepository {
     return Promise.resolve(productDto.toEntity())
   }
 
-  async updateProduct(
+  async updateProductImage(
     id: string,
-    name?: string,
-    description?: string,
-    models?: string[],
-    categories?: string[],
-    attributes?: Record<string, any>[],
-    videos?: string[],
+    name: string,
+    newName: string,
+    isModel: boolean,
+    image: Buffer,
   ): Promise<Product> {
     // Obtém o produto atual do DynamoDB
 
-    console.log('[Chegou no repo dynamo updateProduct()]')
+    const product = await this.getProductById(id)
+
+    // remove a foto antiga do s3
+    if (image) {
+      const oldImageKey = `${name}#${id}`
+      await this.s3.deleteObject({
+        Bucket: Environments.getEnvs().s3BucketName,
+        Key: oldImageKey,
+      }).promise()
+    }
+
+    // adiciona a nova foto ao s3
+    const newImageKey = `${newName}#${id}`
+    await this.s3.upload({
+      Bucket: Environments.getEnvs().s3BucketName,
+      Key: newImageKey,
+      Body: image,
+    }).promise()
+
+    // pega a url da nova foto
+    const url = this.s3.getSignedUrl('getObject', {
+      Bucket: Environments.getEnvs().s3BucketName,
+      Key: newImageKey,
+    })
 
     let itemsToUpdate: Record<string, any> = {}
+    const modelsImagesNew: string[] = []
 
-    // Atualiza os campos do produto
-    if (name) {
-      itemsToUpdate = { ...itemsToUpdate, name }
-    }
-    if (description) {
-      itemsToUpdate = { ...itemsToUpdate, description }
-    }
-    if (models) {
-      itemsToUpdate = { ...itemsToUpdate, models }
-    }
-    if (categories) {
-      itemsToUpdate = { ...itemsToUpdate, categories }
-    }
-    if (attributes) {
-      itemsToUpdate = { ...itemsToUpdate, attributes }
-    }
-    if (videos) {
-      itemsToUpdate = { ...itemsToUpdate, videos }
+    if (isModel && product.modelsImages) { // apenas preencha o campo de imagem de modelo mantendo as imagens existentes
+    
+      for (let i = 0; i < product.modelsImages?.length; i++) {
+        modelsImagesNew.push(product.modelsImages[i])
+      }
+      modelsImagesNew.push(url)
+      itemsToUpdate = { modelsImages: modelsImagesNew }
     }
 
     // Atualiza o produto no DynamoDB
@@ -123,10 +134,9 @@ export class ProductRepositoryDynamo implements IProductRepository {
     )
 
     console.log('[ProductRepositoryDynamo] - updateProduct - itemsToUpdate: ', itemsToUpdate)
-
+    const updatedProduct = await this.getProductById(id)
     // Retorna o produto atualizado
-    const product = await this.getProductById(id)
-    return Promise.resolve(product)
+    return Promise.resolve(updatedProduct)
     
   }
 
@@ -140,9 +150,7 @@ export class ProductRepositoryDynamo implements IProductRepository {
     return Promise.resolve(product)
   }
 
-  async uploadProductImage(id: string, images: Buffer[], fieldNames: string[]): Promise<string[]> {
-    const urls: string[] = []
-
+  async uploadProductImage(id: string, images: Buffer[], fieldNames: string[], isModel: boolean): Promise<Product> {
     for (let i = 0; i < images.length; i++) {
       const params: AWS.S3.PutObjectRequest = {
         Bucket: Environments.getEnvs().s3BucketName,
@@ -158,15 +166,47 @@ export class ProductRepositoryDynamo implements IProductRepository {
           Key: `${fieldNames[i]}#${id}`,
         })
 
-        urls.push(url)
+        const product = await this.getProductById(id)
+
+        let itemsToUpdate: Record<string, any> = {}
+
+        if (isModel && product.modelsImages) {
+          const modelsImagesNew: string[] = []
+
+          for (let i = 0; i < product.modelsImages?.length; i++) {
+            modelsImagesNew.push(product.modelsImages[i])
+          }
+          modelsImagesNew.push(url)
+          itemsToUpdate = { modelsImages: modelsImagesNew }
+        } else if (!isModel && product.categoriesImages) {
+          const categoriesImagesNew: string[] = []
+
+          for (let i = 0; i < product.categoriesImages?.length; i++) {
+            categoriesImagesNew.push(product.categoriesImages[i])
+          }
+          categoriesImagesNew.push(url)
+          itemsToUpdate = { categoriesImages: categoriesImagesNew }
+        } else {
+          throw new Error('Invalid image type')
+        }
+
+        await this.dynamo.updateItem(
+          ProductRepositoryDynamo.partitionKeyFormat(id),
+          ProductRepositoryDynamo.sortKeyFormat(id),
+          itemsToUpdate,
+        )
+
+
+
       } catch (error) {
         console.error(`Erro ao fazer upload do arquivo ${fieldNames[i]}#${id}:`, error)
       }
     }
+    const updatedProduct = await this.getProductById(id)
 
     console.log('[ProductRepositoryDynamo] - uploadProductImage - fieldNames: ', fieldNames)
 
-    return urls
+    return Promise.resolve(updatedProduct)
   }
 
   async downloadProductImage(id: string): Promise<string> {

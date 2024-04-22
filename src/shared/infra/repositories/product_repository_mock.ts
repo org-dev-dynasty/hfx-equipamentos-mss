@@ -4,7 +4,7 @@ import { Product } from '../../domain/entities/product'
 import { IProductRepository } from '../../domain/repositories/product_repository_interface'
 
 export class ProductRepositoryMock implements IProductRepository {
-  uploadProductImage(_id: string, _image: Buffer[]): Promise<string[]> {
+  uploadProductImage(_id: string, _image: Buffer[]): Promise<Product> {
     throw new Error('Method not implemented.')
   }
   downloadProductImage(_id: string): Promise<string> {
@@ -448,36 +448,8 @@ export class ProductRepositoryMock implements IProductRepository {
     return Promise.resolve(this.products)
   }
 
-  async updateProduct(
-    id: string,
-    name?: string,
-    description?: string,
-    models?: string[],
-    categories?: string[],
-    attributes?: Record<string, any>[],
-    videos?: string[],
-  ): Promise<Product> {
-    const product = this.products.find(product => product.id === id)
-    if (!product) throw new Error('Product not found')
-    if (name !== undefined) {
-      product.setName = name
-    }
-    if (description !== undefined) {
-      product.setDescription = description
-    }
-    if (models !== undefined) {
-      product.setModels = models
-    }
-    if (categories !== undefined) {
-      product.setCategories = categories
-    }
-    if (attributes !== undefined) {
-      product.setAttributes = attributes
-    }
-    if (videos !== undefined) {
-      product.setVideos = videos
-    }
-    return Promise.resolve(product)
+  async updateProductImage(id: string, name: string, newName: string, isModel: boolean, image: Buffer): Promise<Product> {
+    throw new Error('Method not implemented.')
   }
 
   async deleteProduct(id: string): Promise<Product> {

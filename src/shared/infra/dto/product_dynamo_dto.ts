@@ -10,6 +10,8 @@ export type ProductDynamoDTOProps = {
   models?: string[] | null
   categories?: string[] | null
   attributes?: Record<string, any>[] | null
+  modelsImages?: string[] | null
+  categoriesImages?: string[] | null
   videos?: string[] | null
 }
 
@@ -20,6 +22,8 @@ export class ProductDynamoDTO {
   private models?: string[] | null
   private categories?: string[] | null
   private attributes?: Record<string, any>[] | null
+  private modelsImages?: string[] | null
+  private categoriesImages?: string[] | null
   private videos?: string[] | null
 
   constructor(props: ProductDynamoDTOProps) {
@@ -35,6 +39,12 @@ export class ProductDynamoDTO {
     if (this.videos === undefined) {
       this.videos = null
     }
+    if (this.modelsImages === undefined) {
+      this.modelsImages = null
+    }
+    if (this.categoriesImages === undefined) {
+      this.categoriesImages = null
+    }
 
     this.id = props.id
     this.name = props.name
@@ -42,6 +52,8 @@ export class ProductDynamoDTO {
     this.models = props.models
     this.categories = props.categories
     this.attributes = props.attributes
+    this.modelsImages = props.modelsImages
+    this.categoriesImages = props.categoriesImages
     this.videos = props.videos
   }
 
@@ -53,6 +65,8 @@ export class ProductDynamoDTO {
       models: product.models,
       categories: product.categories,
       attributes: product.attributes,
+      modelsImages: product.modelsImages,
+      categoriesImages: product.categoriesImages,
       videos: product.videos,
     })
   }
@@ -104,6 +118,8 @@ export class ProductDynamoDTO {
       'models': this.models || null,
       'categories': this.categories || null,
       'attributes': this.attributes || null,
+      'modelsImages': this.modelsImages || null,
+      'categoriesImages': this.categoriesImages || null,
       'videos': this.videos || null
     }
 
@@ -129,7 +145,7 @@ export class ProductDynamoDTO {
     // }) : null
     // const videos = productData['videos'] && productData['videos'] ? productData['videos'].map((video: Record<string, any>) => video['S']) : null
 
-    const { id, name, description, models, categories, attributes, videos } = unmarshall(productData)
+    const { id, name, description, models, categories, attributes, modelsImages, categoriesImages, videos } = unmarshall(productData)
 
     console.log('[ProductDynamoDTO] - fromDynamo - id: ', id)
     console.log('[ProductDynamoDTO] - fromDynamo - name: ', name)
@@ -138,6 +154,8 @@ export class ProductDynamoDTO {
     console.log('[ProductDynamoDTO] - fromDynamo - categories: ', categories)
     console.log('[ProductDynamoDTO] - fromDynamo - attributes: ', attributes)
     console.log('[ProductDynamoDTO] - fromDynamo - videos: ', videos)
+    console.log('[ProductDynamoDTO] - fromDynamo - modelsImages: ', modelsImages)
+    console.log('[ProductDynamoDTO] - fromDynamo - categoriesImages: ', categoriesImages)
 
     return new ProductDynamoDTO({
       id,
@@ -146,6 +164,8 @@ export class ProductDynamoDTO {
       models,
       categories,
       attributes,
+      modelsImages,
+      categoriesImages,
       videos
     })
   }
@@ -159,6 +179,8 @@ export class ProductDynamoDTO {
       models: this.models,
       categories: this.categories,
       attributes: this.attributes,
+      modelsImages: this.modelsImages,
+      categoriesImages: this.categoriesImages,
       videos: this.videos,
     })
   }
