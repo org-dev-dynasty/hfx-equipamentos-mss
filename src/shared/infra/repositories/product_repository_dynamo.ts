@@ -28,7 +28,7 @@ export class ProductRepositoryDynamo implements IProductRepository {
     ),
 
     private s3: S3 = new S3({
-      region: Environments.getEnvs().region,
+      region: 'sa-east-1',
       endpoint: Environments.getEnvs().endpointUrl,
     }),
   ) {
