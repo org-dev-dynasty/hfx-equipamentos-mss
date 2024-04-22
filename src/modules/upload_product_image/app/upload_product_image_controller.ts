@@ -15,7 +15,7 @@ export class UploadProductImageController {
     const contentType = request.headers['content-type'] || request.headers['Content-Type']
     
     console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] contentType', contentType)
-    const busboy = Busboy({ headers: { 'content-type': contentType } })
+    const busboy = Busboy({ headers: { 'content-type': request.body } })
 
     console.log('[UPLOAD PRODUCT IMAGE CONTROLLER] busboy', busboy)
     const result: { files: [], fields: any } = {
