@@ -27,6 +27,7 @@ export class DeleteModelOfProductUsecase {
       productId,
       undefined,
       undefined,
+      undefined,
       updatedModels,
       undefined,
       updatedAttributes,
