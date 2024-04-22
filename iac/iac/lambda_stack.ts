@@ -78,7 +78,9 @@ export class LambdaStack extends Construct {
       this.updateProductFunction,
       this.deleteProductFunction,
       this.deleteModelOfProductFunction,
-      this.deleteCategoryOfProductFunction
+      this.deleteCategoryOfProductFunction,
+      this.uploadProductImageFunction,
+      this.updateProductImageFunction
     ]
   }
 
