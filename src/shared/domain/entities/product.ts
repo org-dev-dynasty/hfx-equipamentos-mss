@@ -69,9 +69,6 @@ export class Product {
     }
 
     if (props.modelsImages !== undefined && props.modelsImages !== null) {
-      if (!Product.validateModelsImages(props.modelsImages)) {
-        throw new EntityError('props.modelsImages')
-      }
       this.props.modelsImages = props.modelsImages
     }
 
@@ -79,9 +76,6 @@ export class Product {
       props.categoriesImages !== undefined &&
       props.categoriesImages !== null
     ) {
-      if (!Product.validateCategoriesImages(props.categoriesImages)) {
-        throw new EntityError('props.categoriesImages')
-      }
       this.props.categoriesImages = props.categoriesImages
     }
 
