@@ -50,7 +50,7 @@ export class LambdaStack extends Construct {
 
     function addS3Permissions(lambdaFunction: lambda.Function) {
       lambdaFunction.addToRolePolicy(new aws_iam.PolicyStatement({
-        actions: ['s3:PutObject', 's3:GetObject', 's3:DeleteObject'],
+        actions: ['s3:PutObject', 's3:GetObject', 's3:DeleteObject', 's3:PutObjectAcl', 's3:GetObjectAcl', 's3:ListBucket'],
         resources: [`arn:aws:s3:::${environmentVariables.S3_BUCKET_NAME}/*`]
       }))
     }
