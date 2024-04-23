@@ -108,39 +108,47 @@ export class ProductRepositoryDynamo implements IProductRepository {
       }
     })
     const oldImageKey = `${name}-${id}`
-    console.log('[ProductRepositoryDynamo] - updateProduct - oldImageKey: ', oldImageKey)
-    const respDelete: AWS.S3.DeleteObjectOutput = await this.s3
-      .deleteObject({
-        Bucket: Environments.getEnvs().s3BucketName,
-        Key: oldImageKey,
-      })
-      .promise()
-    console.log('[ProductRepositoryDynamo] - updateProduct - respDelete: ', respDelete)
     const newImageKey = `${newName}-${id}`
-    await this.s3
-      .putObject({
-        Bucket: Environments.getEnvs().s3BucketName,
-        Key: newImageKey,
-        Body: image,
-        ACL: 'public-read',
-      })
-      .promise()
-
+    console.log('[ProductRepositoryDynamo] - updateProduct - oldImageKey: ', oldImageKey)
+    try {
+      const respDelete: AWS.S3.DeleteObjectOutput = await this.s3
+        .deleteObject({
+          Bucket: Environments.getEnvs().s3BucketName,
+          Key: oldImageKey,
+        })
+        .promise()
+      console.log('[ProductRepositoryDynamo] - updateProduct - respDelete: ', respDelete)
+      await this.s3
+        .putObject({
+          Bucket: Environments.getEnvs().s3BucketName,
+          Key: newImageKey,
+          Body: image,
+          ACL: 'public-read',
+        })
+        .promise()
+  
+        
+    } catch (error) {
+      console.error(
+        `Erro ao fazer upload do arquivo ${name}#${id}:`,
+        error,
+      )
+    }
     const url = `https://${Environments.getEnvs().s3BucketName}.s3.${
       Environments.getEnvs().region
     }.amazonaws.com/${newImageKey}.png`
-
+  
     let itemsToUpdate: Record<string, any> = {}
     const modelsImagesNew: string[] = []
     const categoriesImagesNew: string[] = []
-
+  
     if (!removedOldImageFilter) {
       return Promise.reject('Product does not have any images')
     }
     if (!oldImages) {
       return Promise.reject('Product does not have any images')
     }
-
+  
     for (let i = 0; i < removedOldImageFilter.length; i++) {
       if (isModel) {
         modelsImagesNew.push(removedOldImageFilter[i])
@@ -148,25 +156,25 @@ export class ProductRepositoryDynamo implements IProductRepository {
         categoriesImagesNew.push(removedOldImageFilter[i])
       }
     }
-
+  
     if (isModel) {
       modelsImagesNew.push(url)
     } else {
       categoriesImagesNew.push(url)
     }
-
+  
     if (isModel) {
       itemsToUpdate = { modelsImages: modelsImagesNew }
     } else {
       itemsToUpdate = { categoriesImages: categoriesImagesNew }
     }
-
+  
     await this.dynamo.updateItem(
       ProductRepositoryDynamo.partitionKeyFormat(id),
       ProductRepositoryDynamo.sortKeyFormat(id),
       itemsToUpdate,
     )
-
+  
     console.log(
       '[ProductRepositoryDynamo] - updateProduct - itemsToUpdate: ',
       itemsToUpdate,
