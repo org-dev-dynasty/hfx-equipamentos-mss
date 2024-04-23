@@ -72,14 +72,14 @@ export class UpdateProductImageController {
     try {
       const formData = await this.parseMultipartFormData(request)
 
-      const id = formData.fields.id
+      const productId = formData.fields.productId
       const name = formData.fields.name
       const newName = formData.fields.newName
       const isModel = formData.fields.isModel
       const image = formData.files[0].data
 
-      if (typeof id !== 'string') {
-        throw new WrongTypeParameters('id', 'string', typeof id)
+      if (typeof productId !== 'string') {
+        throw new WrongTypeParameters('productId', 'string', typeof productId)
       }
 
       if (typeof name !== 'string') {
@@ -100,6 +100,10 @@ export class UpdateProductImageController {
         throw new EntityError('modelImage or categoryImage')
       }
 
+      if (!productId) {
+        throw new MissingParameters('productId')
+      }
+
       if (!name) {
         throw new MissingParameters('name')
       }
@@ -113,7 +117,7 @@ export class UpdateProductImageController {
       }
 
       const updatedProduct = await this.usecase.execute(
-        id,
+        productId,
         name,
         newName,
         isModelBool,
