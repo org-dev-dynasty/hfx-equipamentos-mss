@@ -98,23 +98,15 @@ export class ProductRepositoryDynamo implements IProductRepository {
     newName: string,
     isModel: boolean,
     image: Buffer,
-  ): Promise<Product> {
-    // Obtém o produto atual do DynamoDB
+  ): Promise<Product> {    
+    const oldImageKey = `${name}-${id}`
+    await this.s3
+      .deleteObject({
+        Bucket: Environments.getEnvs().s3BucketName,
+        Key: oldImageKey,
+      })
+      .promise()
 
-    const product = await this.getProductById(id)
-
-    // remove a foto antiga do s3
-    if (image) {
-      const oldImageKey = `${name}#${id}`
-      await this.s3
-        .deleteObject({
-          Bucket: Environments.getEnvs().s3BucketName,
-          Key: oldImageKey,
-        })
-        .promise()
-    }
-
-    // adiciona a nova foto ao s3
     const newImageKey = `${newName}-${id}`
     await this.s3
       .putObject({
@@ -125,34 +117,26 @@ export class ProductRepositoryDynamo implements IProductRepository {
       })
       .promise()
 
-    // pega a url da nova foto
     const url = `https://${Environments.getEnvs().s3BucketName}.s3.${
       Environments.getEnvs().region
     }.amazonaws.com/${newImageKey}`
 
     let itemsToUpdate: Record<string, any> = {}
     const modelsImagesNew: string[] = []
+    const categoriesImagesNew: string[] = []
 
-    if (isModel && product.modelsImages) {
-      // apenas preencha o campo de imagem de modelo mantendo as imagens existentes
-
-      for (let i = 0; i < product.modelsImages?.length; i++) {
-        modelsImagesNew.push(product.modelsImages[i])
-      }
+    if (isModel) {
       modelsImagesNew.push(url)
-      itemsToUpdate = { modelsImages: modelsImagesNew }
-    } else if (!isModel && product.categoriesImages) {
-      // apenas preencha o campo de imagem de categoria mantendo as imagens existentes
-      const categoriesImagesNew: string[] = []
-
-      for (let i = 0; i < product.categoriesImages?.length; i++) {
-        categoriesImagesNew.push(product.categoriesImages[i])
-      }
+    } else {
       categoriesImagesNew.push(url)
+    }
+
+    if (isModel) {
+      itemsToUpdate = { modelsImages: modelsImagesNew }
+    } else {
       itemsToUpdate = { categoriesImages: categoriesImagesNew }
     }
 
-    // Atualiza o produto no DynamoDB
     await this.dynamo.updateItem(
       ProductRepositoryDynamo.partitionKeyFormat(id),
       ProductRepositoryDynamo.sortKeyFormat(id),
@@ -164,7 +148,6 @@ export class ProductRepositoryDynamo implements IProductRepository {
       itemsToUpdate,
     )
     const updatedProduct = await this.getProductById(id)
-    // Retorna o produto atualizado
     return Promise.resolve(updatedProduct)
   }
 
