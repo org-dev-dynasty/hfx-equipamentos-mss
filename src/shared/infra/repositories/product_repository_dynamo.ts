@@ -115,7 +115,7 @@ export class ProductRepositoryDynamo implements IProductRepository {
     }
 
     // adiciona a nova foto ao s3
-    const newImageKey = `${newName}#${id}`
+    const newImageKey = `${newName}-${id}`
     await this.s3
       .putObject({
         Bucket: Environments.getEnvs().s3BucketName,
@@ -190,7 +190,7 @@ export class ProductRepositoryDynamo implements IProductRepository {
     for (let i = 0; i < images.length; i++) {
       const params: AWS.S3.PutObjectRequest = {
         Bucket: Environments.getEnvs().s3BucketName,
-        Key: `${fieldNames[i]}#${id}.png`,
+        Key: `${fieldNames[i]}-${id}.png`,
         Body: images[i],
         ACL: 'public-read',
       }
@@ -202,7 +202,7 @@ export class ProductRepositoryDynamo implements IProductRepository {
 
         const url = `https://${Environments.getEnvs().s3BucketName}.s3.${
           Environments.getEnvs().region
-        }.amazonaws.com/${fieldNames[i]}#${id}.png`
+        }.amazonaws.com/${fieldNames[i]}-${id}.png`
 
 
         if (isModel) {
