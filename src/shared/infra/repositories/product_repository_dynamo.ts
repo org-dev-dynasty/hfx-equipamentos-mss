@@ -187,7 +187,7 @@ export class ProductRepositoryDynamo implements IProductRepository {
     for (let i = 0; i < images.length; i++) {
       const params: AWS.S3.PutObjectRequest = {
         Bucket: Environments.getEnvs().s3BucketName,
-        Key: `${fieldNames[i]}#${id}`,
+        Key: `${fieldNames[i]}#${id}.png`,
         Body: images[i],
         ACL: 'public-read',
       }
@@ -199,7 +199,7 @@ export class ProductRepositoryDynamo implements IProductRepository {
 
         const url = `https://${Environments.getEnvs().s3BucketName}.s3.${
           Environments.getEnvs().region
-        }.amazonaws.com/${fieldNames[i]}#${id}`
+        }.amazonaws.com/${fieldNames[i]}#${id}.png`
 
         const product = await this.getProductById(id)
 
@@ -212,7 +212,9 @@ export class ProductRepositoryDynamo implements IProductRepository {
             modelsImagesNew.push(product.modelsImages[i])
           }
           modelsImagesNew.push(url)
+          console.log('{Upload} - modelsImagesNew: ', modelsImagesNew)
           itemsToUpdate = { modelsImages: modelsImagesNew }
+          console.log('{Upload} - itemsToUpdate NO FOR: ', itemsToUpdate)
         } else if (!isModel && product.categoriesImages) {
           const categoriesImagesNew: string[] = []
 
@@ -227,11 +229,13 @@ export class ProductRepositoryDynamo implements IProductRepository {
 
         console.log('{Upload} - itemsToUpdate: ', itemsToUpdate)
 
-        await this.dynamo.updateItem(
+        const responseUpdate = await this.dynamo.updateItem(
           ProductRepositoryDynamo.partitionKeyFormat(id),
           ProductRepositoryDynamo.sortKeyFormat(id),
           itemsToUpdate,
         )
+
+        console.log('{Upload} - responseUpdate: ', responseUpdate)
       } catch (error) {
         console.error(
           `Erro ao fazer upload do arquivo ${fieldNames[i]}#${id}:`,
