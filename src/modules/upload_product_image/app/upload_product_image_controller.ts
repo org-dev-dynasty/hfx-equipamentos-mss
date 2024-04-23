@@ -73,7 +73,10 @@ export class UploadProductImageController {
       }
 
       const productId = formData.fields.productId
-      const isModel = formData.fields.isModel
+      const isModel: string = formData.fields.isModel
+      // convert string to boolean
+      const isModelBoolean = isModel === 'true'
+
 
       const imagesData = formData.files.map((file: any) => {
         return file.data
@@ -83,7 +86,7 @@ export class UploadProductImageController {
         return file.fieldname
       }) as string[]
 
-      const product = await this.usecase.execute(productId, imagesData, fieldNames, isModel)
+      const product = await this.usecase.execute(productId, imagesData, fieldNames, isModelBoolean)
 
       const viewmodel = new UploadProductImageViewModel(product)
 
