@@ -9,6 +9,9 @@ export class UploadProductImageUsecase {
     if (!Product.validateId(productId)) {
       throw new EntityError('id')
     }
+    if (typeof isModel !== 'boolean') {
+      throw new EntityError('isModel')
+    }
     console.log('[chegou no usecase do upload]')
     console.log('[Upload usecase] - productId ', productId)
     console.log('[Upload usecase] - images ', images)

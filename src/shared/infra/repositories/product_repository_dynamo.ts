@@ -201,31 +201,27 @@ export class ProductRepositoryDynamo implements IProductRepository {
           Environments.getEnvs().region
         }.amazonaws.com/${fieldNames[i]}#${id}.png`
 
-        const product = await this.getProductById(id)
-
         let itemsToUpdate: Record<string, any> = {}
 
-        if (isModel && product.modelsImages) {
+        if (isModel) {
           const modelsImagesNew: string[] = []
 
-          for (let i = 0; i < product.modelsImages?.length; i++) {
-            modelsImagesNew.push(product.modelsImages[i])
+          for (let i = 0; i < images.length; i++) {
+            modelsImagesNew.push(url)
           }
           modelsImagesNew.push(url)
           console.log('{Upload} - modelsImagesNew: ', modelsImagesNew)
           itemsToUpdate = { modelsImages: modelsImagesNew }
           console.log('{Upload} - itemsToUpdate NO FOR: ', itemsToUpdate)
-        } else if (!isModel && product.categoriesImages) {
+        } else {
           const categoriesImagesNew: string[] = []
 
-          for (let i = 0; i < product.categoriesImages?.length; i++) {
-            categoriesImagesNew.push(product.categoriesImages[i])
+          for (let i = 0; i < images.length; i++) {
+            categoriesImagesNew.push(url)
           }
           categoriesImagesNew.push(url)
           itemsToUpdate = { categoriesImages: categoriesImagesNew }
-        } else {
-          throw new Error('Invalid image type')
-        }
+        } 
 
         console.log('{Upload} - itemsToUpdate: ', itemsToUpdate)
 
