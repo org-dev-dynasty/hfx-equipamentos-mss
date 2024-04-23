@@ -184,6 +184,7 @@ export class ProductRepositoryDynamo implements IProductRepository {
     fieldNames: string[],
     isModel: boolean,
   ): Promise<Product> {
+    let itemsToUpdate: Record<string, any> = {}
     for (let i = 0; i < images.length; i++) {
       const params: AWS.S3.PutObjectRequest = {
         Bucket: Environments.getEnvs().s3BucketName,
@@ -201,7 +202,6 @@ export class ProductRepositoryDynamo implements IProductRepository {
           Environments.getEnvs().region
         }.amazonaws.com/${fieldNames[i]}#${id}.png`
 
-        let itemsToUpdate: Record<string, any> = {}
 
         if (isModel) {
           const modelsImagesNew: string[] = []
@@ -216,15 +216,8 @@ export class ProductRepositoryDynamo implements IProductRepository {
           itemsToUpdate = { categoriesImages: categoriesImagesNew }
         } 
 
-        console.log('{Upload} - itemsToUpdate: ', itemsToUpdate)
-
-        const responseUpdate = await this.dynamo.updateItem(
-          ProductRepositoryDynamo.partitionKeyFormat(id),
-          ProductRepositoryDynamo.sortKeyFormat(id),
-          itemsToUpdate,
-        )
-
-        console.log('{Upload} - responseUpdate: ', responseUpdate)
+        
+        
       } catch (error) {
         console.error(
           `Erro ao fazer upload do arquivo ${fieldNames[i]}#${id}:`,
@@ -232,6 +225,15 @@ export class ProductRepositoryDynamo implements IProductRepository {
         )
       }
     }
+    console.log('{Upload} - itemsToUpdate: ', itemsToUpdate)
+    
+    const responseUpdate = await this.dynamo.updateItem(
+      ProductRepositoryDynamo.partitionKeyFormat(id),
+      ProductRepositoryDynamo.sortKeyFormat(id),
+      itemsToUpdate,
+    )
+    console.log('{Upload} - responseUpdate: ', responseUpdate)
+
     const updatedProduct = await this.getProductById(id)
 
     console.log(
