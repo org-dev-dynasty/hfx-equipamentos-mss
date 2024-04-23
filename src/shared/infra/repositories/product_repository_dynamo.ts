@@ -206,19 +206,12 @@ export class ProductRepositoryDynamo implements IProductRepository {
         if (isModel) {
           const modelsImagesNew: string[] = []
 
-          for (let i = 0; i < images.length; i++) {
-            modelsImagesNew.push(url)
-          }
           modelsImagesNew.push(url)
           console.log('{Upload} - modelsImagesNew: ', modelsImagesNew)
           itemsToUpdate = { modelsImages: modelsImagesNew }
           console.log('{Upload} - itemsToUpdate NO FOR: ', itemsToUpdate)
         } else {
           const categoriesImagesNew: string[] = []
-
-          for (let i = 0; i < images.length; i++) {
-            categoriesImagesNew.push(url)
-          }
           categoriesImagesNew.push(url)
           itemsToUpdate = { categoriesImages: categoriesImagesNew }
         } 
