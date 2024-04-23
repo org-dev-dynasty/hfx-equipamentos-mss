@@ -296,8 +296,7 @@ export class Product {
 
     if (!Array.isArray(modelsImages)) return false
     modelsImages.map((value) => {
-      console.log('value: ', value)
-      console.log('typeof value: ', typeof value)
+      if (value.length < 3) return false
       if (typeof value !== 'string') return false
     })
   }
