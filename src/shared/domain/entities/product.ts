@@ -292,16 +292,15 @@ export class Product {
   }
 
   static validateModelsImages(modelsImages: string[]) {
-    console.log('antes do validateModelsImages')
+    console.log('[validateModelsImages] - isArray: ', Array.isArray(modelsImages))
+
     if (!Array.isArray(modelsImages)) return false
-    console.log('depois do isArray')
     modelsImages.map((value) => {
+      console.log('value: ', value)
+      console.log('typeof value: ', typeof value)
       if (value === '') return false
-      console.log('depois do if ""')
       if (value === null) return false
-      console.log('depois do if null')
       if (typeof value !== 'string') return false
-      console.log('depois do if typeof')
     })
   }
 
