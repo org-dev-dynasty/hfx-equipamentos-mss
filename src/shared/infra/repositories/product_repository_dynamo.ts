@@ -108,13 +108,13 @@ export class ProductRepositoryDynamo implements IProductRepository {
       }
     })
     const oldImageKey = `${name}-${id}`
-    await this.s3
+    const respDelete: AWS.S3.DeleteObjectOutput = await this.s3
       .deleteObject({
         Bucket: Environments.getEnvs().s3BucketName,
         Key: oldImageKey,
       })
       .promise()
-
+    console.log('[ProductRepositoryDynamo] - updateProduct - respDelete: ', respDelete)
     const newImageKey = `${newName}-${id}`
     await this.s3
       .putObject({
