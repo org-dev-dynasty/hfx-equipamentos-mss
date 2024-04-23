@@ -99,6 +99,14 @@ export class ProductRepositoryDynamo implements IProductRepository {
     isModel: boolean,
     image: Buffer,
   ): Promise<Product> {    
+    const oldProduct = await this.getProductById(id)
+    const oldImages = oldProduct.categoriesImages || oldProduct.modelsImages
+    const removedOldImageFilter = oldImages?.filter((oldImage) => {
+      const oldImageName = oldImage.split('-')[0]
+      if (oldImageName !== name) {
+        return oldImage
+      }
+    })
     const oldImageKey = `${name}-${id}`
     await this.s3
       .deleteObject({
@@ -124,6 +132,21 @@ export class ProductRepositoryDynamo implements IProductRepository {
     let itemsToUpdate: Record<string, any> = {}
     const modelsImagesNew: string[] = []
     const categoriesImagesNew: string[] = []
+
+    if (!removedOldImageFilter) {
+      return Promise.reject('Product does not have any images')
+    }
+    if (!oldImages) {
+      return Promise.reject('Product does not have any images')
+    }
+
+    for (let i = 0; i < removedOldImageFilter.length; i++) {
+      if (isModel) {
+        modelsImagesNew.push(removedOldImageFilter[i])
+      } else {
+        categoriesImagesNew.push(removedOldImageFilter[i])
+      }
+    }
 
     if (isModel) {
       modelsImagesNew.push(url)
