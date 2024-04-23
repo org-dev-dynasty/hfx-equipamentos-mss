@@ -293,20 +293,11 @@ export class Product {
 
   static validateModelsImages(modelsImages: string[]) {
     console.log('[validateModelsImages] - isArray: ', Array.isArray(modelsImages))
-
     if (!Array.isArray(modelsImages)) return false
-    modelsImages.map((value) => {
-      if (value.length < 3) return false
-      if (typeof value !== 'string') return false
-    })
   }
 
   static validateCategoriesImages(categoriesImages: string[]) {
     if (!Array.isArray(categoriesImages)) return false
-    categoriesImages.map((value) => {
-      if (value.length < 3) return false
-      if (typeof value !== 'string') return false
-    })
   }
 
   static validateVideos(videos: string[]) {
