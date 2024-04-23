@@ -107,8 +107,8 @@ export class ProductRepositoryDynamo implements IProductRepository {
         return oldImage
       }
     })
-    const oldImageKey = `${name}-${id}`
-    const newImageKey = `${newName}-${id}`
+    const oldImageKey = `${name}-${id}.png`
+    const newImageKey = `${newName}-${id}.png`
     console.log('[ProductRepositoryDynamo] - updateProduct - oldImageKey: ', oldImageKey)
     try {
       const respDelete: AWS.S3.DeleteObjectOutput = await this.s3
