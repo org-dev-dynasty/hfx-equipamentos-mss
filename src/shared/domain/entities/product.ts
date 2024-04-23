@@ -298,8 +298,6 @@ export class Product {
     modelsImages.map((value) => {
       console.log('value: ', value)
       console.log('typeof value: ', typeof value)
-      if (value === '') return false
-      if (value === null) return false
       if (typeof value !== 'string') return false
     })
   }
@@ -307,8 +305,7 @@ export class Product {
   static validateCategoriesImages(categoriesImages: string[]) {
     if (!Array.isArray(categoriesImages)) return false
     categoriesImages.map((value) => {
-      if (value === '') return false
-      if (value === null) return false
+      if (value.length < 3) return false
       if (typeof value !== 'string') return false
     })
   }
