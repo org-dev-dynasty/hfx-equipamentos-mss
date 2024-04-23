@@ -90,9 +90,7 @@ export class UpdateProductImageController {
         throw new WrongTypeParameters('newName', 'string', typeof newName)
       }
 
-      if (typeof isModel !== 'boolean') {
-        throw new WrongTypeParameters('isModel', 'boolean', typeof isModel)
-      }
+      const isModelBool = isModel === 'true'
 
       if (!image) {
         throw new MissingParameters('image')
@@ -118,7 +116,7 @@ export class UpdateProductImageController {
         id,
         name,
         newName,
-        isModel,
+        isModelBool,
         image,
       )
 
