@@ -101,23 +101,19 @@ export class ProductRepositoryDynamo implements IProductRepository {
   ): Promise<Product> {    
     const oldProduct = await this.getProductById(id)
     const oldImages = oldProduct.categoriesImages || oldProduct.modelsImages
-    const removedOldImageFilter = oldImages?.filter((oldImage) => {
-      const oldImageName = oldImage.split('-')[0]
-      if (oldImageName !== name) {
-        return oldImage
-      }
+    const removedOldImageFilter = oldImages?.filter((image) => {
+      return !image.includes(name)
     })
     const oldImageKey = `${name}-${id}.png`
-    const newImageKey = `${newName}-${id}.png`
+    const newImageKey = `${newName}-${id}`
     console.log('[ProductRepositoryDynamo] - updateProduct - oldImageKey: ', oldImageKey)
     try {
-      const respDelete: AWS.S3.DeleteObjectOutput = await this.s3
+      await this.s3
         .deleteObject({
           Bucket: Environments.getEnvs().s3BucketName,
           Key: oldImageKey,
         })
         .promise()
-      console.log('[ProductRepositoryDynamo] - updateProduct - respDelete: ', respDelete)
       await this.s3
         .putObject({
           Bucket: Environments.getEnvs().s3BucketName,
@@ -125,9 +121,7 @@ export class ProductRepositoryDynamo implements IProductRepository {
           Body: image,
           ACL: 'public-read',
         })
-        .promise()
-  
-        
+        .promise()        
     } catch (error) {
       console.error(
         `Erro ao fazer upload do arquivo ${name}#${id}:`,
