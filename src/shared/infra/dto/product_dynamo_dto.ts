@@ -75,45 +75,6 @@ export class ProductDynamoDTO {
     })
   }
 
-  static validateDynamoItemTypes(dynamoItem: Record<string, any>) {
-    const expectedTypes: Record<string, 'S' | 'L' | 'NULL'> = {
-      entity: 'S',
-      id: 'S',
-      name: 'S',
-      description: 'S',
-      littleDescription: 'L',
-      models: 'L',
-      categories: 'L',
-      attributes: 'L',
-      videos: 'L'
-    }
-
-    for (const [key, value] of Object.entries(dynamoItem)) {
-      const expectedType = expectedTypes[key]
-      if (!expectedType) {
-        throw new Error(`Tipo inesperado para a chave '${key}' no DynamoDB item.`)
-      }
-      if (value.hasOwnProperty('NULL')) {
-        continue // Permite valores nulos, então pula a verificação de tipo para essa chave
-      }
-      if (!value.hasOwnProperty(expectedType)) {
-        throw new Error(`Tipo incorreto para a chave '${key}'. Esperado '${expectedType}', encontrado '${Object.keys(value)[0]}' no DynamoDB item.`)
-      }
-
-      // Validação específica para 'attributes'
-      if (key === 'attributes' && expectedType === 'L') {
-        if (!Array.isArray(value.L)) {
-          throw new Error(`Esperado um array para 'attributes', encontrado ${typeof value.L}`)
-        }
-        value.L.forEach((attribute: Record<string, any>, index: number) => {
-          if (!attribute.hasOwnProperty('M') || Array.isArray(attribute.M)) {
-            throw new Error(`Esperado um objeto para 'attributes[${index}]', encontrado ${typeof attribute.M}`)
-          }
-        })
-      }
-    }
-  }
-
   toDynamo() {
     return {
       'entity': 'product',
@@ -132,37 +93,7 @@ export class ProductDynamoDTO {
   }
 
   static fromDynamo(productData: any) {
-    console.log('[ProductDynamoDTO] - fromDynamo - productData: ', productData)
-    
-
-    console.log('[ProductDynamoDTO] - fromDynamo - unMarshall(productData): ', unmarshall(productData))
-
-    // const id = productData['id'] && productData['id']['S'] ? productData['id']['S'] : null
-    // const name = productData['name'] && productData['name']['S'] ? productData['name']['S'] : null
-    // const description = productData['description'] && productData['description']['S'] ? productData['description']['S'] : null
-    // const models = productData['models'] && productData['models'] ? productData['models'].map((model: Record<string, any>) => model['S']) : null
-    // const categories = productData['categories'] && productData['categories']['M'] ? productData['categories'].map((category: Record<string, any>) => {
-    //   const categories = unmarshall(category)
-    //   return categories
-    // }) : null
-    // const attributes = productData['attributes'] && productData['attributes']['M'] ? productData['attributes'].map((attribute: Record<string, any>) => {
-    //   const attributes = unmarshall(attribute)
-    //   return attributes
-    // }) : null
-    // const videos = productData['videos'] && productData['videos'] ? productData['videos'].map((video: Record<string, any>) => video['S']) : null
-
     const { id, name, description, littleDescription, models, categories, attributes, modelsImages, categoriesImages, videos } = unmarshall(productData)
-
-    console.log('[ProductDynamoDTO] - fromDynamo - id: ', id)
-    console.log('[ProductDynamoDTO] - fromDynamo - name: ', name)
-    console.log('[ProductDynamoDTO] - fromDynamo - description: ', description)
-    console.log('[ProductDynamoDTO] - fromDynamo - models: ', littleDescription)
-    console.log('[ProductDynamoDTO] - fromDynamo - models: ', models)
-    console.log('[ProductDynamoDTO] - fromDynamo - categories: ', categories)
-    console.log('[ProductDynamoDTO] - fromDynamo - attributes: ', attributes)
-    console.log('[ProductDynamoDTO] - fromDynamo - videos: ', videos)
-    console.log('[ProductDynamoDTO] - fromDynamo - modelsImages: ', modelsImages)
-    console.log('[ProductDynamoDTO] - fromDynamo - categoriesImages: ', categoriesImages)
 
     return new ProductDynamoDTO({
       id,
