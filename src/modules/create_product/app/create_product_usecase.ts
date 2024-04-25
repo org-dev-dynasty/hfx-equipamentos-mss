@@ -36,7 +36,7 @@ export class CreateProductUsecase {
     if (models) {
       models = models.map(appendId)
     }
-    console.log('LOG ADICIONADO AQUI - [MODELS] !!!!', models)
+    console.log('LOG ADICIONADO AQUI - [CATEGORIES] !!!! VENDO COMO CHEGA', categories)
     if (categories) {
       categories = categories.map(appendId)
     }
@@ -67,8 +67,7 @@ export class CreateProductUsecase {
 
     if (models && !Product.validateModel(models))
       throw new EntityError('models')
-    console.log('LOG ADICIONADO AQUI - [VALIDACAO DE CATEGORIES] !!!!')
-    console.log(categories)
+    console.log('LOG ADICIONADO AQUI - [VALIDACAO DE CATEGORIES] !!!! ->>> ', categories)
     if (categories && !Product.validateCategory(categories))
       throw new EntityError('categories')
     if (attributes && !Product.validateAttributes(attributes))
