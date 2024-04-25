@@ -55,9 +55,11 @@ export class CreateProductUsecase {
               throw new EntityError('categories')
             }
             const categoryName = category.split('#')[0] 
+            console.log('LOG ADICIONADO AQUI - [CATEGORIES NOMEEEEEE] !!!! ->>> ', categoryName)
             return `${categoryName}#${id}` 
           })
         }
+        console.log('LOG ADICIONADO AQUI - [RETORNO DO ATRIBUTO AQUIIII] !!!! ->>> ', attribute)
         return attribute
       })
     }
