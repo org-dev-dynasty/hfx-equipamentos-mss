@@ -36,6 +36,9 @@ export class CreateProductUsecase {
 
     if (categories) {
       categories = categories.map((category) => {
+        if (typeof category !== 'string') {
+          throw new EntityError('categories')
+        }
         const categoryName = category.split('#')[0] 
         return `${categoryName}#${id}` 
       })
