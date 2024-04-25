@@ -33,7 +33,7 @@ export class CreateProductUsecase {
     }
 
     const appendId = (item: string) => `${item}#${id}`
-
+    console.log('LOG ADICIONADO AQUI - [APPENDID] !!!!', appendId)
     if (models) {
       models = models.map(appendId)
     }
@@ -68,6 +68,8 @@ export class CreateProductUsecase {
 
     if (models && !Product.validateModel(models))
       throw new EntityError('models')
+    console.log('LOG ADICIONADO AQUI - [VALIDACAO DE CATEGORIES] !!!!')
+    console.log(categories)
     if (categories && !Product.validateCategory(categories))
       throw new EntityError('categories')
     if (attributes && !Product.validateAttributes(attributes))
@@ -85,7 +87,9 @@ export class CreateProductUsecase {
       attributes,
       videos,
     })
-
+    console.log('LOG ADICIONADO AQUI!!!!')
+    console.log('[LOG DE PRODUCT INTEIRO] ',product)
+    console.log('[LOG DE CATEGORIES ]',product.categories)
     const productCreated = await this.repo.createProduct(product)
     return productCreated
   }
