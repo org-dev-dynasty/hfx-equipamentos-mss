@@ -33,11 +33,10 @@ export class CreateProductUsecase {
     }
 
     const appendId = (item: string) => `${item}#${id}`
-    console.log('LOG ADICIONADO AQUI - [APPENDID] !!!!', appendId)
     if (models) {
       models = models.map(appendId)
     }
-
+    console.log('LOG ADICIONADO AQUI - [MODELS] !!!!', models)
     if (categories) {
       categories = categories.map(appendId)
     }
