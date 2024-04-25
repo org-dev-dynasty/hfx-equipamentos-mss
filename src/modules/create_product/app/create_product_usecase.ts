@@ -33,19 +33,12 @@ export class CreateProductUsecase {
     }
 
     const appendId = (item: string) => `${item}#${id}`
-
-    if (categories) {
-      categories = categories.map((category) => {
-        if (typeof category !== 'string') {
-          throw new EntityError('categories')
-        }
-        const categoryName = category.split('#')[0] 
-        return `${categoryName}#${id}` 
-      })
-    }
-
     if (models) {
       models = models.map(appendId)
+    }
+    console.log('LOG ADICIONADO AQUI - [CATEGORIES] !!!! VENDO COMO CHEGA', categories)
+    if (categories) {
+      categories = categories.map(appendId)
     }
 
     if (attributes) {
@@ -57,12 +50,13 @@ export class CreateProductUsecase {
           }
         }
         if (categories) {
-          return {
-            ...attribute,
-            categoryId: categories.find((category) =>
-              category.includes(attribute.categoryId),
-            ),
-          }
+          categories = categories.map((category) => {
+            if (typeof category !== 'string') {
+              throw new EntityError('categories')
+            }
+            const categoryName = category.split('#')[0] 
+            return `${categoryName}#${id}` 
+          })
         }
         return attribute
       })
@@ -74,6 +68,7 @@ export class CreateProductUsecase {
 
     if (models && !Product.validateModel(models))
       throw new EntityError('models')
+    console.log('LOG ADICIONADO AQUI - [VALIDACAO DE CATEGORIES] !!!! ->>> ', categories)
     if (categories && !Product.validateCategory(categories))
       throw new EntityError('categories')
     if (attributes && !Product.validateAttributes(attributes))
@@ -91,7 +86,9 @@ export class CreateProductUsecase {
       attributes,
       videos,
     })
-
+    console.log('LOG ADICIONADO AQUI!!!!')
+    console.log('[LOG DE PRODUCT INTEIRO] ',product)
+    console.log('[LOG DE CATEGORIES ]',product.categories)
     const productCreated = await this.repo.createProduct(product)
     return productCreated
   }
