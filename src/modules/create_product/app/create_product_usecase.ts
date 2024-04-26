@@ -34,37 +34,31 @@ export class CreateProductUsecase {
 
     const appendId = (item: string) => `${item}#${id}`
     if (models && models?.length > 0) {
-      models = models.map(appendId)
+      models = models.map((model) => appendId(model))
     }
     console.log('LOG ADICIONADO AQUI - [CATEGORIES] !!!! VENDO COMO CHEGA', categories)
     if (categories && categories?.length > 0) {
-      categories = categories.map(appendId)
+      categories = categories.map((category) => appendId(category))
     }
 
     if (attributes && attributes.length > 0) {
       attributes = attributes.map((attribute) => {
-        if (models) {
-          return {
-            ...attribute,
-            modelId: models.find((model) => model.includes(attribute.modelId)),
-          }
+        const updatedAttribute = { ...attribute } // Clone the original attribute object
+        
+        if (models && models.length > 0 && attribute.modelId) {
+          updatedAttribute.modelId = models.find(model => model.includes(attribute.modelId))
         }
-        console.log('attribute com models ', attribute)
-        if (categories) {
-          return {
-            ...attribute,
-            categoryId: categories.find((category) =>
-              category.includes(attribute.categoryId),
-            ),
-          }
+        
+        if (categories && categories.length > 0 && attribute.categoryId) {
+          updatedAttribute.categoryId = categories.find(category => category.includes(attribute.categoryId))
         }
-        console.log('attribute com categories ', attribute)
-        return attribute
+        
+        return updatedAttribute
       })
     }
 
     if (videos) {
-      videos = videos.map(appendId)
+      videos = videos.map((video) => appendId(video))
     }
 
     if (models && !Product.validateModel(models))
