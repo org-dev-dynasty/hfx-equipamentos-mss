@@ -33,15 +33,15 @@ export class CreateProductUsecase {
     }
 
     const appendId = (item: string) => `${item}#${id}`
-    if (models) {
+    if (models && models?.length > 0) {
       models = models.map(appendId)
     }
     console.log('LOG ADICIONADO AQUI - [CATEGORIES] !!!! VENDO COMO CHEGA', categories)
-    if (categories) {
+    if (categories && categories?.length > 0) {
       categories = categories.map(appendId)
     }
 
-    if (attributes) {
+    if (attributes && attributes.length > 0) {
       attributes = attributes.map((attribute) => {
         if (models) {
           return {
@@ -49,17 +49,16 @@ export class CreateProductUsecase {
             modelId: models.find((model) => model.includes(attribute.modelId)),
           }
         }
+        console.log('attribute com models ', attribute)
         if (categories) {
-          categories = categories.map((category) => {
-            if (typeof category !== 'string') {
-              throw new EntityError('categories')
-            }
-            const categoryName = category.split('#')[0] 
-            console.log('LOG ADICIONADO AQUI - [CATEGORIES NOMEEEEEE] !!!! ->>> ', categoryName)
-            return `${categoryName}#${id}` 
-          })
+          return {
+            ...attribute,
+            categoryId: categories.find((category) =>
+              category.includes(attribute.categoryId),
+            ),
+          }
         }
-        console.log('LOG ADICIONADO AQUI - [RETORNO DO ATRIBUTO AQUIIII] !!!! ->>> ', attribute)
+        console.log('attribute com categories ', attribute)
         return attribute
       })
     }
