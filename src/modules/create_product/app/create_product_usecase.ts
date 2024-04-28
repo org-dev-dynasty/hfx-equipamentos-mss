@@ -28,7 +28,7 @@ export class CreateProductUsecase {
     )
       throw new EntityError('littleDescription')
 
-    if (models && categories) {
+    if (models && categories && models.length > 0 && categories.length > 0) {
       throw new ConflictItems('models and categories')
     }
 
