@@ -83,17 +83,17 @@ export class CreateProductController {
         littleDescription.push(...request.data.littleDescription as string[])
       }
       if (request.data.models !== undefined) {
-        if (!Array.isArray(models)) {
+        if (!Array.isArray(request.data.models)) {
           throw new WrongTypeParameters(
             'models',
             'array',
-            typeof models,
+            typeof request.data.models,
           )
         }
-        if (models.length === 0) {
+        if (request.data.models.length === 0) {
           throw new EntityError('models')
         }
-        models.map((model) => {
+        request.data.models.map((model) => {
           if (typeof model !== 'string') {
             throw new WrongTypeParameters(
               'models',
@@ -105,17 +105,17 @@ export class CreateProductController {
         models.push(...request.data.models as string[])
       }
       if (request.data.categories !== undefined) {
-        if (!Array.isArray(categories)) {
+        if (!Array.isArray(request.data.categories)) {
           throw new WrongTypeParameters(
             'categories',
             'array',
-            typeof categories,
+            typeof request.data.categories,
           )
         }
-        if (categories.length === 0) {
+        if (request.data.categories.length === 0) {
           throw new EntityError('categories')
         }
-        categories.map((category) => {
+        request.data.categories.map((category) => {
           if (typeof category !== 'string') {
             throw new WrongTypeParameters(
               'categories',
