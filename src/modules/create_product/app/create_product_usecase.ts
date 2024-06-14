@@ -41,9 +41,12 @@ export class CreateProductUsecase {
       categories = categories.map((category) => appendId(category))
     }
 
+    console.log('LOG ADICIONADO AQUI - [Attrs] !!!! VENDO COMO CHEGA', attributes)
     if (attributes && attributes.length > 0) {
       attributes = attributes.map((attribute) => {
         const updatedAttribute = { ...attribute } // Clone the original attribute object
+
+        console.log('LOG ADICIONADO AQUI - [MODEL] !!!! ->>> ', models)
         
         if (models && models.length > 0 && attribute.modelId) {
           updatedAttribute.modelId = models.find(model => model.includes(attribute.modelId))

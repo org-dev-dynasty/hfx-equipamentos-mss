@@ -27,10 +27,10 @@ export class CreateProductController {
     try {
       let name = ''
       let description = ''
-      let littleDescription: string[] = []
-      let models: string[] = []
-      let categories: string[] = []
-      let attributes: Record<string, any>[] = []
+      const littleDescription: string[] = []
+      const models: string[] = []
+      const categories: string[] = []
+      const attributes: Record<string, any>[] = []
       const videos: string[] = []
 
       if (request.data.name === undefined) {
@@ -55,8 +55,7 @@ export class CreateProductController {
         )
       }
       description = request.data.description
-      if (request.data.littleDescription !== undefined && typeof request.data.littleDescription === 'string') {
-        littleDescription = JSON.parse(request.data.littleDescription) as string[]
+      if (request.data.littleDescription !== undefined) {
         if (!Array.isArray(littleDescription)) {
           throw new WrongTypeParameters(
             'littleDescription',
@@ -67,9 +66,19 @@ export class CreateProductController {
         if (littleDescription.length === 0) {
           throw new EntityError('littleDescription')
         }
+        littleDescription.map((little) => {
+          if (typeof little !== 'string') {
+            throw new WrongTypeParameters(
+              'littleDescription',
+              'array of strings',
+              typeof little,
+            )
+          }
+        })
+
+        littleDescription.push(...request.data.littleDescription as string[])
       }
-      if (request.data.models !== undefined && typeof request.data.models === 'string') {
-        models = JSON.parse(request.data.models) as string[]
+      if (request.data.models !== undefined) {
         if (!Array.isArray(models)) {
           throw new WrongTypeParameters(
             'models',
@@ -89,9 +98,9 @@ export class CreateProductController {
             )
           }
         })
+        models.push(...request.data.models as string[])
       }
-      if (request.data.categories !== undefined && typeof request.data.categories === 'string') {
-        categories = JSON.parse(request.data.categories) as string[]
+      if (request.data.categories !== undefined) {
         if (!Array.isArray(categories)) {
           throw new WrongTypeParameters(
             'categories',
@@ -111,21 +120,22 @@ export class CreateProductController {
             )
           }
         })
+
+        categories.push(...request.data.categories as string[])
       }
-      if (request.data.attributes !== undefined && typeof request.data.attributes === 'string') {
+      if (request.data.attributes !== undefined) {
         console.log('LOG ADICIONADO AQUI - [ATTRIBUTES] !!!! ->>> ', request.data.attributes)
-        attributes = JSON.parse(request.data.attributes) as Record<string, any>[]
         if (!Array.isArray(request.data.attributes)) {
           throw new WrongTypeParameters(
             'attributes',
             'array',
-            typeof attributes,
+            typeof request.data.attributes,
           )
         }
-        if (attributes.length === 0) {
+        if (request.data.attributes.length === 0) {
           throw new EntityError('attributes')
         }
-        attributes.map((attribute) => {
+        request.data.attributes.map((attribute) => {
           if (typeof attribute !== 'object') {
             throw new WrongTypeParameters(
               'attributes',
@@ -134,6 +144,7 @@ export class CreateProductController {
             )
           }
         })
+        attributes.push(...request.data.attributes as Record<string, any>[])
       }
 
       if (request.data.videos !== undefined) {
@@ -156,6 +167,7 @@ export class CreateProductController {
         if (request.data.videos.length === 0) {
           throw new EntityError('videos')
         }
+        videos.push(...request.data.videos)
       }
 
       const product = await this.usecase.execute(
