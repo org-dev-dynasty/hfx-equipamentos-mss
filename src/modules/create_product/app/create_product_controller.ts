@@ -33,6 +33,9 @@ export class CreateProductController {
       const attributes: Record<string, any>[] = []
       const videos: string[] = []
 
+      console.log('LOG ADICIONADO AQUI - [REQUEST.DATA] !!!! ->>> ', request.data)
+      console.log('LOG ADICIONADO AQUI - [littleDesc] !!!! ->>> ', request.data.littleDescription)
+
       if (request.data.name === undefined) {
         throw new MissingParameters('name')
       }
@@ -56,17 +59,18 @@ export class CreateProductController {
       }
       description = request.data.description
       if (request.data.littleDescription !== undefined) {
-        if (!Array.isArray(littleDescription)) {
+        if (!Array.isArray(request.data.littleDescription)) {
           throw new WrongTypeParameters(
             'littleDescription',
             'array',
-            typeof littleDescription,
+            typeof request.data.littleDescription,
           )
         }
-        if (littleDescription.length === 0) {
+
+        if (request.data.littleDescription.length === 0) {
           throw new EntityError('littleDescription')
         }
-        littleDescription.map((little) => {
+        request.data.littleDescription.map((little) => {
           if (typeof little !== 'string') {
             throw new WrongTypeParameters(
               'littleDescription',
